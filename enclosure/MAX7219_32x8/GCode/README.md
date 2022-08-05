@@ -3,7 +3,7 @@
 ## Parameters for sides
 
 - Stock material: plywood
-- Stock thickness: 4 mm
+- Stock thickness: 4.0 mm
 - Bit diameter: 1 mm
 - Depth per pass: 1 mm
 - Plunge rate: 175 mm/min
