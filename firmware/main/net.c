@@ -1,20 +1,20 @@
 /**
  * @brief     Cronus Digital Clock Network Functions
  *
- * @author    Alexander Shepetko <a@shepetko.com>
+ * @author    Oleksandr Shepetko <a@shepetko.com>
  * @copyright MIT License
  */
 
 #include <stdbool.h>
 #include <string.h>
 
-#include "aespl/httpd.h"
-#include "aespl/service.h"
+#include "app_dtime.h"
+#include "app_net.h"
+#include "app_version.h"
+#include "app_weather.h"
 #include "cJSON.h"
-#include "cronus/dtime.h"
-#include "cronus/network.h"
-#include "cronus/version.h"
-#include "cronus/weather.h"
+#include "cronus_httpd.h"
+#include "cronus_service.h"
 #include "esp_err.h"
 #include "esp_http_client.h"
 #include "esp_log.h"
@@ -250,12 +250,12 @@ static void wifi_eh(void *arg, esp_event_base_t ev_base, int32_t ev_id, void *ev
 
         case WIFI_EVENT_AP_STACONNECTED:;  // a station connected to the access point
             wifi_event_ap_staconnected_t *d_ap_con = (wifi_event_ap_staconnected_t *)ev_data;
-            ESP_LOGI(APP_NAME, "WiFi station connected: %d, " MACSTR, d_ap_con->aid, MAC2STR(d_ap_con->mac));
+            // ESP_LOGI(APP_NAME, "WiFi station connected: %d, " MACSTR, d_ap_con->aid, MAC2STR(d_ap_con->mac));
             break;
 
         case WIFI_EVENT_AP_STADISCONNECTED:;  // a station disconnected from the access point
             wifi_event_ap_stadisconnected_t *d_ap_dis = (wifi_event_ap_stadisconnected_t *)ev_data;
-            ESP_LOGI(APP_NAME, "WiFi station disconnected: %d, " MACSTR, d_ap_dis->aid, MAC2STR(d_ap_dis->mac));
+            // ESP_LOGI(APP_NAME, "WiFi station disconnected: %d, " MACSTR, d_ap_dis->aid, MAC2STR(d_ap_dis->mac));
             break;
 
         default:

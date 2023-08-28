@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"time"
+	_ "time/tzdata"
 )
 
 type RootHandlerResponse struct {

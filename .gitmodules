@@ -1,3 +1,0 @@
-[submodule "firmware/lib/aespl"]
-	path = firmware/lib/aespl
-	url = https://github.com/ashep/aespl.git
