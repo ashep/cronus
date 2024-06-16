@@ -1,3 +1,5 @@
+#include <string.h>
+
 #include "esp_log.h"
 #include "esp_event.h"
 
@@ -7,11 +9,14 @@
 #include "dy/error.h"
 #include "dy/rtc.h"
 #include "dy/bt.h"
-#include "dy/wifi.h"
+#include "dy/net.h"
+#include "dy/ds3231.h"
 
 #include "cronus/widget.h"
 #include "cronus/display.h"
 #include "cronus/main.h"
+
+static dy_ds3231_handle_t ds3231;
 
 static dy_err_t init_nvs() {
     esp_err_t esp_err;
@@ -52,17 +57,30 @@ void app_main(void) {
         abort();
     }
 
-    if (dy_nok(err = dy_rtc_init())) {
+#ifdef CONFIG_CRONUS_DS3231_ENABLED
+    err = dy_ds3231_init(CONFIG_CRONUS_DS3231_PIN_SCL, CONFIG_CRONUS_DS3231_PIN_SDA, &ds3231);
+    if (dy_nok(err)) {
+        ESP_LOGE(LTAG, "dy_ds3231_init: %s", dy_err_str(err));
+        abort();
+    }
+
+    if (dy_nok(err = dy_rtc_init(&ds3231))) {
         ESP_LOGE(LTAG, "dy_rtc_init: %s", dy_err_str(err));
         abort();
     }
+#else
+    if (dy_nok(err = dy_rtc_init(true, NULL))) {
+        ESP_LOGE(LTAG, "dy_rtc_init: %s", dy_err_str(err));
+        abort();
+    }
+#endif
 
     if (dy_nok(err = dy_net_init())) {
         ESP_LOGE(LTAG, "dy_net_init: %s", dy_err_str(err));
         abort();
     }
 
-    if (dy_nok(err = dy_bt_init())) {
+    if (dy_nok(err = dy_bt_init("Cronus"))) {
         ESP_LOGE(LTAG, "dy_bt_init: %s", dy_err_str(err));
         abort();
     }
