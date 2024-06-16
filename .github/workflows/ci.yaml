@@ -1,0 +1,4 @@
+on: push
+jobs:
+  build:
+    uses: ashep/ci/.github/workflows/esp-idf-build.yaml@v1
