@@ -10,11 +10,14 @@
 #include "dy/rtc.h"
 #include "dy/bt.h"
 #include "dy/net.h"
+#include "dy/net_cfg_bt.h"
 #include "dy/ds3231.h"
 
 #include "cronus/widget.h"
 #include "cronus/display.h"
 #include "cronus/main.h"
+
+#define LTAG "CRONUS"
 
 static dy_ds3231_handle_t ds3231;
 
@@ -80,7 +83,17 @@ void app_main(void) {
         abort();
     }
 
-    if (dy_nok(err = dy_bt_init("Cronus"))) {
+    if (dy_nok(err = dy_bt_set_device_name_prefix("Cronus"))) {
+        ESP_LOGE(LTAG, "dy_bt_set_device_name_prefix: %s", dy_err_str(err));
+        abort();
+    }
+
+    if (dy_nok(err = dy_net_cfg_bt_init(DY_BT_CHRC_1))) {
+        ESP_LOGE(LTAG, "dy_bt_init: %s", dy_err_str(err));
+        abort();
+    }
+
+    if (dy_nok(err = dy_bt_init())) {
         ESP_LOGE(LTAG, "dy_bt_init: %s", dy_err_str(err));
         abort();
     }

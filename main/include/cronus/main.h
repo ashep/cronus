@@ -1,8 +1,6 @@
 #ifndef CRONUS_MAIN_H
 #define CRONUS_MAIN_H
 
-#include "dy/display.h"
-
-#define LTAG "DY_MAIN"
+#define APP_VERSION 0x3ABED
 
 #endif // CRONUS_MAIN_H

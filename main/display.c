@@ -3,8 +3,9 @@
 #include "dy/error.h"
 #include "dy/display.h"
 
-#include "cronus/main.h"
 #include "cronus/display.h"
+
+#define LTAG "CRONUS"
 
 static dy_err_t init_max7219() {
     dy_err_t err;
