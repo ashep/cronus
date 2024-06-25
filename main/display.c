@@ -40,10 +40,13 @@ static dy_err_t init_max7219() {
     return dy_ok();
 }
 
-dy_err_t init_display() {
-#ifdef CONFIG_CRONUS_DISPLAY_DRIVER_MAX7219_ENABLED
-    return init_max7219();
-#else
-    return dy_ok();
-#endif
+dy_err_t init_display(cronus_display_type_t dt) {
+    switch (dt) {
+        case CRONUS_DISPLAY_TYPE_MAX7219_32X8:
+            return init_max7219();
+        case CRONUS_DISPLAY_TYPE_MAX7219_32X16:
+            return init_max7219();
+        default:
+            return dy_ok();
+    }
 }
