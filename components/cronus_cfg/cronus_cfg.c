@@ -10,24 +10,25 @@
 
 #include "cronus/cfg.h"
 
-#define LTAG "CRONUS_CFG_BT"
-#define CRONUS_CFG_BT_BUF_LEN (CRONUS_CFG_BLOB_LEN + CRONUS_CFG_ID_SETTINGS_1)
+#define LTAG "CRONUS_CFG"
+#define CRONUS_CFG_BT_BUF_LEN (CRONUS_CFG_CFG_BUF_LEN + CRONUS_CFG_ID_SETTINGS_1)
 
 static SemaphoreHandle_t mux;
 static nvs_handle_t nvs_hdl;
 static uint32_t firmware_version = 0;
 static uint8_t display_type = 0;
 
-uint8_t bt_buf[CRONUS_CFG_BT_BUF_LEN];
+static uint8_t cfg_buf[CRONUS_CFG_CFG_BUF_LEN];
+static uint8_t bt_buf[CRONUS_CFG_BT_BUF_LEN];
 
 // dst size must be at least CRONUS_CFG_BT_DATA_LEN
-static dy_err_t load(uint8_t *dst) {
+static dy_err_t load() {
     if (xSemaphoreTake(mux, portTICK_PERIOD_MS) != pdTRUE) {
         return dy_err(DY_ERR_FAILED, "xSemaphoreTake failed");
     }
 
-    size_t len = CRONUS_CFG_BLOB_LEN;
-    esp_err_t err = nvs_get_blob(nvs_hdl, "config", dst, &len);
+    size_t len = CRONUS_CFG_CFG_BUF_LEN;
+    esp_err_t err = nvs_get_blob(nvs_hdl, "config", cfg_buf, &len);
 
     if (err != ESP_OK) {
         xSemaphoreGive(mux);
@@ -41,15 +42,17 @@ static dy_err_t load(uint8_t *dst) {
 
     xSemaphoreGive(mux);
 
+    ESP_LOGI(LTAG, "config loaded");
+
     return dy_ok();
 }
 
-static dy_err_t save(uint8_t *src) {
+static dy_err_t save() {
     if (xSemaphoreTake(mux, portTICK_PERIOD_MS) != pdTRUE) {
         return dy_err(DY_ERR_FAILED, "xSemaphoreTake failed");
     }
 
-    esp_err_t err = nvs_set_blob(nvs_hdl, "config", src, CRONUS_CFG_BLOB_LEN);
+    esp_err_t err = nvs_set_blob(nvs_hdl, "config", cfg_buf, CRONUS_CFG_CFG_BUF_LEN);
 
     xSemaphoreGive(mux);
 
@@ -57,21 +60,12 @@ static dy_err_t save(uint8_t *src) {
         return dy_err(DY_ERR_FAILED, "nvs_set_blob failed: %s", esp_err_to_name(err));
     }
 
+    ESP_LOGI(LTAG, "config saved");
+
     return dy_ok();
 }
 
 static void on_bt_chrc_read(uint16_t *len, uint8_t **val) {
-    uint8_t cfg_buf[CRONUS_CFG_BLOB_LEN];
-    memset(cfg_buf, 0, CRONUS_CFG_BLOB_LEN);
-
-    // Get actual config from the NVS
-    dy_err_t err = load(cfg_buf);
-    if (dy_nok(err)) {
-        ESP_LOGE(LTAG, "load data from nvs failed: %s", dy_err_str(err));
-        return;
-    }
-
-    // To not intersect with on_bt_chrc_write
     if (xSemaphoreTake(mux, portTICK_PERIOD_MS) != pdTRUE) {
         ESP_LOGE(LTAG, "%s: xSemaphoreTake failed", __func__);
     }
@@ -83,7 +77,7 @@ static void on_bt_chrc_read(uint16_t *len, uint8_t **val) {
     bt_buf[CRONUS_CFG_ID_VERSION_PATCH] = firmware_version;
     bt_buf[CRONUS_CFG_ID_DISPLAY_TYPE] = display_type;
 
-    memcpy(&bt_buf[CRONUS_CFG_ID_SETTINGS_1], cfg_buf, CRONUS_CFG_BLOB_LEN);
+    memcpy(&bt_buf[CRONUS_CFG_ID_SETTINGS_1], cfg_buf, CRONUS_CFG_CFG_BUF_LEN);
 
     *len = sizeof(bt_buf);
     *val = bt_buf;
@@ -98,15 +92,44 @@ static dy_err_t on_bt_chrc_write(uint16_t len, uint16_t offset, const uint8_t *v
     if (xSemaphoreTake(mux, portTICK_PERIOD_MS) != pdTRUE) {
         return dy_err(DY_ERR_FAILED, "xSemaphoreTake failed");
     }
-    memcpy(bt_buf, val, CRONUS_CFG_BLOB_LEN + CRONUS_CFG_ID_SETTINGS_1);
+
+    memcpy(cfg_buf, &val[CRONUS_CFG_ID_SETTINGS_1], CRONUS_CFG_CFG_BUF_LEN);
+
     xSemaphoreGive(mux);
 
-    dy_err_t err = save(&bt_buf[4]);
+    dy_err_t err = save();
     if (dy_nok(err)) {
         return dy_err_pfx("store data to nvs failed", err);
     }
 
     return dy_ok();
+}
+
+static uint8_t get_cfg_buf_byte(uint8_t n) {
+    if (xSemaphoreTake(mux, portTICK_PERIOD_MS) != pdTRUE) {
+        ESP_LOGE(LTAG, "%s: xSemaphoreTake failed", __func__);
+        return 0;
+    }
+    uint8_t v = cfg_buf[n];
+    xSemaphoreGive(mux);
+
+    return v;
+}
+
+bool cronus_cfg_get_multiline_mode() {
+    return get_cfg_buf_byte(CRONUS_CFG_ID_SETTINGS_1) & 1 << CRONUS_CFG_ID_SETTINGS_1_MULTILINE_MODE;
+}
+
+bool cronus_cfg_get_show_date() {
+    return get_cfg_buf_byte(CRONUS_CFG_ID_SETTINGS_1) & 1 << CRONUS_CFG_ID_SETTINGS_1_SHOW_DATE;
+}
+
+bool cronus_cfg_get_show_ambient_temp() {
+    return get_cfg_buf_byte(CRONUS_CFG_ID_SETTINGS_1) & 1 << CRONUS_CFG_ID_SETTINGS_1_SHOW_AMBIENT_TEMP;
+}
+
+bool cronus_cfg_get_show_weather_temp() {
+    return get_cfg_buf_byte(CRONUS_CFG_ID_SETTINGS_1) & 1 << CRONUS_CFG_ID_SETTINGS_1_SHOW_WEATHER_TEMP;
 }
 
 dy_err_t cronus_cfg_init(uint32_t fw_ver, uint8_t dspl_type, dy_bt_chrc_num btc_n) {
@@ -126,16 +149,17 @@ dy_err_t cronus_cfg_init(uint32_t fw_ver, uint8_t dspl_type, dy_bt_chrc_num btc_
         return dy_err(DY_ERR_FAILED, "nvs_open failed: %s", esp_err_to_name(esp_err));
     }
 
-    uint8_t tmp[CRONUS_CFG_BLOB_LEN] = {0};
-    err = load(tmp);
+    err = load();
     if (err.code == DY_ERR_NOT_FOUND) {
-        err = save(tmp);
+        memset(cfg_buf, 0, CRONUS_CFG_CFG_BUF_LEN);
+        err = save();
         if (dy_nok(err)) {
             return dy_err_pfx("initial data save failed", err);
         }
     } else if (dy_nok(err)) {
         return dy_err_pfx("initial data load failed", err);
     }
+
 
     err = dy_bt_register_chrc_reader(btc_n, on_bt_chrc_read);
     if (dy_nok(err)) {
