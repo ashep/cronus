@@ -11,7 +11,6 @@
 #include "cronus/cfg.h"
 
 #define LTAG "CRONUS_CFG"
-#define CRONUS_CFG_BT_BUF_LEN (CRONUS_CFG_CFG_BUF_LEN + CRONUS_CFG_ID_SETTINGS_1)
 
 static SemaphoreHandle_t mux;
 static nvs_handle_t nvs_hdl;
@@ -19,7 +18,6 @@ static uint32_t firmware_version = 0;
 static uint8_t display_type = 0;
 
 static uint8_t cfg_buf[CRONUS_CFG_CFG_BUF_LEN];
-static uint8_t bt_buf[CRONUS_CFG_BT_BUF_LEN];
 
 // dst size must be at least CRONUS_CFG_BT_DATA_LEN
 static dy_err_t load() {
@@ -52,6 +50,11 @@ static dy_err_t save() {
         return dy_err(DY_ERR_FAILED, "xSemaphoreTake failed");
     }
 
+    cfg_buf[CRONUS_CFG_ID_VERSION_MAJOR] = firmware_version >> 16;
+    cfg_buf[CRONUS_CFG_ID_VERSION_MINOR] = firmware_version >> 8;
+    cfg_buf[CRONUS_CFG_ID_VERSION_PATCH] = firmware_version;
+    cfg_buf[CRONUS_CFG_ID_DISPLAY_TYPE] = display_type;
+
     esp_err_t err = nvs_set_blob(nvs_hdl, "config", cfg_buf, CRONUS_CFG_CFG_BUF_LEN);
 
     xSemaphoreGive(mux);
@@ -70,17 +73,8 @@ static void on_bt_chrc_read(uint16_t *len, uint8_t **val) {
         ESP_LOGE(LTAG, "%s: xSemaphoreTake failed", __func__);
     }
 
-    memset(bt_buf, 0, CRONUS_CFG_BT_BUF_LEN);
-
-    bt_buf[CRONUS_CFG_ID_VERSION_MAJOR] = firmware_version >> 16;
-    bt_buf[CRONUS_CFG_ID_VERSION_MINOR] = firmware_version >> 8;
-    bt_buf[CRONUS_CFG_ID_VERSION_PATCH] = firmware_version;
-    bt_buf[CRONUS_CFG_ID_DISPLAY_TYPE] = display_type;
-
-    memcpy(&bt_buf[CRONUS_CFG_ID_SETTINGS_1], cfg_buf, CRONUS_CFG_CFG_BUF_LEN);
-
-    *len = sizeof(bt_buf);
-    *val = bt_buf;
+    *len = sizeof(cfg_buf);
+    *val = cfg_buf;
 
     xSemaphoreGive(mux);
 }
@@ -93,7 +87,7 @@ static dy_err_t on_bt_chrc_write(uint16_t len, uint16_t offset, const uint8_t *v
         return dy_err(DY_ERR_FAILED, "xSemaphoreTake failed");
     }
 
-    memcpy(cfg_buf, &val[CRONUS_CFG_ID_SETTINGS_1], CRONUS_CFG_CFG_BUF_LEN);
+    memcpy(cfg_buf, val, CRONUS_CFG_CFG_BUF_LEN);
 
     xSemaphoreGive(mux);
 
@@ -111,9 +105,14 @@ static uint8_t get_cfg_buf_byte(uint8_t n) {
         return 0;
     }
     uint8_t v = cfg_buf[n];
+
     xSemaphoreGive(mux);
 
     return v;
+}
+
+cronus_cfg_display_type_t cronus_cfg_display_type() {
+    return get_cfg_buf_byte(CRONUS_CFG_ID_DISPLAY_TYPE);
 }
 
 bool cronus_cfg_get_multiline_mode() {
@@ -132,7 +131,7 @@ bool cronus_cfg_get_show_weather_temp() {
     return get_cfg_buf_byte(CRONUS_CFG_ID_SETTINGS_1) & 1 << CRONUS_CFG_ID_SETTINGS_1_SHOW_WEATHER_TEMP;
 }
 
-dy_err_t cronus_cfg_init(uint32_t fw_ver, uint8_t dspl_type, dy_bt_chrc_num btc_n) {
+dy_err_t cronus_cfg_init(uint32_t fw_ver, cronus_cfg_display_type_t dspl_type, dy_bt_chrc_num btc_n) {
     dy_err_t err;
     esp_err_t esp_err;
 

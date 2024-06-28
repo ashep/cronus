@@ -40,11 +40,10 @@ static dy_err_t init_max7219() {
     return dy_ok();
 }
 
-dy_err_t init_display(cronus_display_type_t dt) {
+dy_err_t init_display(cronus_cfg_display_type_t dt) {
     switch (dt) {
-        case CRONUS_DISPLAY_TYPE_MAX7219_32X8:
-            return init_max7219();
-        case CRONUS_DISPLAY_TYPE_MAX7219_32X16:
+        case CRONUS_CFG_DISPLAY_TYPE_MAX7219_32X8:
+        case CRONUS_CFG_DISPLAY_TYPE_MAX7219_32X16:
             return init_max7219();
         default:
             return dy_ok();

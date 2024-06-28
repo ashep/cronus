@@ -17,6 +17,14 @@
 #define CRONUS_CFG_ID_SETTINGS_1_SHOW_AMBIENT_TEMP  2
 #define CRONUS_CFG_ID_SETTINGS_1_SHOW_WEATHER_TEMP  3
 
+typedef enum {
+    CRONUS_CFG_DISPLAY_TYPE_NONE,
+    CRONUS_CFG_DISPLAY_TYPE_MAX7219_32X8,
+    CRONUS_CFG_DISPLAY_TYPE_MAX7219_32X16,
+} cronus_cfg_display_type_t;
+
+cronus_cfg_display_type_t cronus_cfg_display_type();
+
 bool cronus_cfg_get_multiline_mode();
 
 bool cronus_cfg_get_show_date();
@@ -25,6 +33,6 @@ bool cronus_cfg_get_show_ambient_temp();
 
 bool cronus_cfg_get_show_weather_temp();
 
-dy_err_t cronus_cfg_init(uint32_t fw_ver, uint8_t display_type, dy_bt_chrc_num btc_n);
+dy_err_t cronus_cfg_init(uint32_t fw_ver, cronus_cfg_display_type_t display_type, dy_bt_chrc_num btc_n);
 
 #endif

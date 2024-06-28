@@ -57,18 +57,18 @@ void app_main(void) {
         abort();
     }
 
-    cronus_display_type_t display_type = CRONUS_DISPLAY_TYPE_NONE;
+    cronus_cfg_display_type_t dspl_type = CRONUS_CFG_DISPLAY_TYPE_NONE;
 #ifdef CONFIG_CRONUS_DISPLAY_DRIVER_MAX7219_ENABLED
 #if CONFIG_CRONUS_DISPLAY_DRIVER_MAX7219_NX == 4 && CONFIG_CRONUS_DISPLAY_DRIVER_MAX7219_NX == 2
-    display_type = CRONUS_DISPLAY_TYPE_MAX7219_32X8;
+    display_type = CRONUS_CFG_DISPLAY_TYPE_MAX7219_32X8;
 #elif CONFIG_CRONUS_DISPLAY_DRIVER_MAX7219_NX == 4 && CONFIG_CRONUS_DISPLAY_DRIVER_MAX7219_NX == 4
-    display_type = CRONUS_DISPLAY_TYPE_MAX7219_32X16;
+    dspl_type = CRONUS_CFG_DISPLAY_TYPE_MAX7219_32X16;
 #else
     ESP_LOGE(LTAG, "invalid max7219 display configuration");
     abort();
 #endif
 #endif
-    if (dy_nok(err = init_display(display_type))) {
+    if (dy_nok(err = init_display(dspl_type))) {
         ESP_LOGE(LTAG, "init_display: %s", dy_err_str(err));
         abort();
     }
@@ -101,12 +101,12 @@ void app_main(void) {
         abort();
     }
 
-    if (dy_nok(err = dy_net_cfg_bt_init(DY_BT_CHRC_1))) {
-        ESP_LOGE(LTAG, "dy_net_cfg_bt_init: %s", dy_err_str(err));
+    if (dy_nok(err = dy_net_cfg_init(DY_BT_CHRC_1))) {
+        ESP_LOGE(LTAG, "dy_net_cfg_init: %s", dy_err_str(err));
         abort();
     }
 
-    if (dy_nok(err = cronus_cfg_init(CRONUS_FW_VERSION, display_type, DY_BT_CHRC_2))) {
+    if (dy_nok(err = cronus_cfg_init(CRONUS_FW_VERSION, dspl_type, DY_BT_CHRC_2))) {
         ESP_LOGE(LTAG, "cronus_cfg_init: %s", dy_err_str(err));
         abort();
     }

@@ -1,11 +1,7 @@
 #ifndef CRONUS_DISPLAY_H
 #define CRONUS_DISPLAY_H
 
-typedef enum {
-    CRONUS_DISPLAY_TYPE_NONE,
-    CRONUS_DISPLAY_TYPE_MAX7219_32X8,
-    CRONUS_DISPLAY_TYPE_MAX7219_32X16,
-} cronus_display_type_t;
+#include "cronus/cfg.h"
 
 #ifdef CONFIG_CRONUS_DISPLAY_DRIVER_MAX7219_ENABLED
 #ifndef CONFIG_CRONUS_DISPLAY_DRIVER_MAX7219_RX
@@ -16,6 +12,6 @@ typedef enum {
 #endif
 #endif // CONFIG_CRONUS_DISPLAY_DRIVER_MAX7219_ENABLED
 
-dy_err_t init_display(cronus_display_type_t dt);
+dy_err_t init_display(cronus_cfg_display_type_t dt);
 
 #endif // CRONUS_DISPLAY_H
