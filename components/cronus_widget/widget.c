@@ -1,8 +1,10 @@
+#include <sys/cdefs.h>
 #include <stdio.h>
 #include <time.h>
 
-#include "esp_log.h"
 #include "freertos/FreeRTOS.h"
+#include "esp_log.h"
+#include "esp_adc/adc_oneshot.h"
 
 #include "dy/error.h"
 #include "dy/display.h"
@@ -30,7 +32,38 @@ typedef enum {
 static bool weather_ok;
 static dy_cloud_resp_weather_t weather;
 
-static void fetch_data_task() {
+#ifdef CONFIG_CRONUS_LIGHT_SENSOR_ENABLED
+static adc_oneshot_unit_handle_t adc_handle;
+static int adc_light_out;
+
+_Noreturn static void fetch_light_data_task() {
+    dy_err_t err;
+    esp_err_t esp_err;
+    uint8_t bv;
+
+    while (1) {
+        vTaskDelay(pdMS_TO_TICKS(1000));
+
+        esp_err = adc_oneshot_read(adc_handle, CONFIG_CRONUS_LIGHT_SENSOR_ADC_CHANNEL, &adc_light_out);
+        if (esp_err != ESP_OK) {
+            ESP_LOGI(LTAG, "adc_oneshot_read failed: %s", esp_err_to_name(esp_err));
+            continue;
+        }
+
+        bv = (adc_light_out / 16) >> 4;
+
+        err = dy_display_set_brightness(0, bv);
+        if (dy_nok(err)) {
+            ESP_LOGI(LTAG, "dy_display_set_brightness: %s", dy_err_str(err));
+            continue;
+        }
+
+        ESP_LOGI(LTAG, "ADC: %d: %d", adc_light_out, bv);
+    }
+}
+#endif // CONFIG_CRONUS_LIGHT_SENSOR_ENABLED
+
+_Noreturn static void fetch_cloud_data_task() {
     dy_err_t err;
 
     // Wait for active network after boot
@@ -49,7 +82,8 @@ static void fetch_data_task() {
     }
 }
 
-static void render_task() {
+_Noreturn static void render_task() {
+    dy_err_t err;
     uint8_t x;
     uint8_t show_cycle = SHOW_CYCLE_MIN + 1;
     time_t now;
@@ -57,6 +91,11 @@ static void render_task() {
 
     char time_str[8], date_str[8], weather_temp_str[6];
     char sepa = ':';
+
+    err = dy_display_set_brightness(0, CONFIG_CRONUS_DISPLAY_INITIAL_BRIGHTNESS);
+    if (dy_nok(err)) {
+        ESP_LOGE(LTAG, "dy_display_set_brightness: %s", dy_err_str(err));
+    }
 
     cronus_cfg_display_type_t dt = cronus_cfg_display_type();
     dy_gfx_buf_t *buf = dy_gfx_make_buf(32, 16, DY_GFX_COLOR_MONO);
@@ -127,12 +166,28 @@ static void render_task() {
 }
 
 dy_err_t cronus_widget_init() {
-    if (xTaskCreate(render_task, "cronus_widget_render", 4096, NULL, tskIDLE_PRIORITY, NULL) != pdTRUE) {
-        return dy_err(DY_ERR_FAILED, "render task create failed");
+#ifdef CONFIG_CRONUS_LIGHT_SENSOR_ENABLED
+    adc_oneshot_unit_init_cfg_t adc_cfg = {
+        .unit_id = ADC_UNIT_1,
+        .ulp_mode = ADC_ULP_MODE_DISABLE,
+    };
+
+    esp_err_t esp_err = adc_oneshot_new_unit(&adc_cfg, &adc_handle);
+    if (esp_err != ESP_OK) {
+        return dy_err(DY_ERR_FAILED, "adc_oneshot_new_unit failed: %s", esp_err_to_name(esp_err));
     }
 
-    if (xTaskCreate(fetch_data_task, "cronus_widget_fetch_data", 4096, NULL, tskIDLE_PRIORITY, NULL) != pdTRUE) {
+    if (xTaskCreate(fetch_light_data_task, "cw_fetch_light", 4096, NULL, tskIDLE_PRIORITY, NULL) != pdTRUE) {
         return dy_err(DY_ERR_FAILED, "fetch data task create failed");
+    }
+#endif
+
+    if (xTaskCreate(fetch_cloud_data_task, "cw_fetch_cloud", 4096, NULL, tskIDLE_PRIORITY, NULL) != pdTRUE) {
+        return dy_err(DY_ERR_FAILED, "fetch data task create failed");
+    }
+
+    if (xTaskCreate(render_task, "cw_render", 4096, NULL, tskIDLE_PRIORITY, NULL) != pdTRUE) {
+        return dy_err(DY_ERR_FAILED, "render task create failed");
     }
 
     return dy_ok();

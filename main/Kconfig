@@ -43,18 +43,23 @@ menu "Cronus"
 
             config CRONUS_DISPLAY_DRIVER_MAX7219_RX
                 bool "Reverse X"
-                default n
+                default y
 
             config CRONUS_DISPLAY_DRIVER_MAX7219_RY
                 bool "Reverse Y"
                 default n
         endmenu
+
+        config CRONUS_DISPLAY_INITIAL_BRIGHTNESS
+            int "Initial brightness"
+            range 0 15
+            default 0
     endmenu
 
     menu "External RTC (DS3231)"
         config CRONUS_DS3231_ENABLED
             bool "Enabled"
-            default n
+            default y
         config CRONUS_DS3231_PIN_SCL
             depends on CRONUS_DS3231_ENABLED
             int "SCL pin"
@@ -70,11 +75,11 @@ menu "Cronus"
     menu "Light sensor"
         config CRONUS_LIGHT_SENSOR_ENABLED
             bool "Enabled"
-            default n
-        config CRONUS_LIGHT_SENSOR_ADC_PIN
+            default y
+        config CRONUS_LIGHT_SENSOR_ADC_CHANNEL
             depends on CRONUS_LIGHT_SENSOR_ENABLED
-            int "SCL pin"
+            int "ADC channel"
             range 0 48
-            default 21
+            default 0
     endmenu
 endmenu
