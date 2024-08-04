@@ -1,0 +1,6 @@
+# Name,   Type, SubType, Offset, Size
+nvs,      data, nvs,     0x9000, 16K
+otadata,  data, ota,     ,       8K
+factory,  app,  factory, ,       5M
+ota_0,    app,  ota_0,   ,       5M
+ota_1,    app,  ota_1,   ,       5M
