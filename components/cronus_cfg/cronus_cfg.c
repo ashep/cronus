@@ -19,7 +19,6 @@ static uint8_t display_type = 0;
 
 static uint8_t cfg_buf[CRONUS_CFG_CFG_BUF_LEN];
 
-// dst size must be at least CRONUS_CFG_BT_DATA_LEN
 static dy_err_t load() {
     if (xSemaphoreTake(mux, portTICK_PERIOD_MS) != pdTRUE) {
         return dy_err(DY_ERR_FAILED, "xSemaphoreTake failed");
@@ -104,6 +103,7 @@ static uint8_t get_cfg_buf_byte(uint8_t n) {
         ESP_LOGE(LTAG, "%s: xSemaphoreTake failed", __func__);
         return 0;
     }
+
     uint8_t v = cfg_buf[n];
 
     xSemaphoreGive(mux);
@@ -115,20 +115,36 @@ cronus_cfg_display_type_t cronus_cfg_display_type() {
     return get_cfg_buf_byte(CRONUS_CFG_ID_DISPLAY_TYPE);
 }
 
+uint8_t cronus_cfg_get_min_brightness() {
+    return get_cfg_buf_byte(CRONUS_CFG_ID_DISPLAY_MIN_BRI);
+}
+
+uint8_t cronus_cfg_get_max_brightness() {
+    return get_cfg_buf_byte(CRONUS_CFG_ID_DISPLAY_MAX_BRI);
+}
+
 bool cronus_cfg_get_multiline_mode() {
-    return get_cfg_buf_byte(CRONUS_CFG_ID_SETTINGS_1) & 1 << CRONUS_CFG_ID_SETTINGS_1_MULTILINE_MODE;
+    return get_cfg_buf_byte(CRONUS_CFG_ID_FLAGS_1) & 1 << CRONUS_CFG_ID_SETTINGS_1_MULTILINE_MODE;
 }
 
-bool cronus_cfg_get_show_date() {
-    return get_cfg_buf_byte(CRONUS_CFG_ID_SETTINGS_1) & 1 << CRONUS_CFG_ID_SETTINGS_1_SHOW_DATE;
+uint8_t cronus_cfg_get_show_time_dur() {
+    return get_cfg_buf_byte(CRONUS_CFG_ID_SHOW_TIME_DUR);
 }
 
-bool cronus_cfg_get_show_ambient_temp() {
-    return get_cfg_buf_byte(CRONUS_CFG_ID_SETTINGS_1) & 1 << CRONUS_CFG_ID_SETTINGS_1_SHOW_AMBIENT_TEMP;
+uint8_t cronus_cfg_get_show_date_dur() {
+    return get_cfg_buf_byte(CRONUS_CFG_ID_SHOW_DATE_DUR);
 }
 
-bool cronus_cfg_get_show_weather_temp() {
-    return get_cfg_buf_byte(CRONUS_CFG_ID_SETTINGS_1) & 1 << CRONUS_CFG_ID_SETTINGS_1_SHOW_WEATHER_TEMP;
+uint8_t cronus_cfg_get_show_dow_dur() {
+    return get_cfg_buf_byte(CRONUS_CFG_ID_SHOW_DOW_DUR);
+}
+
+uint8_t cronus_cfg_get_show_amb_temp_dur() {
+    return get_cfg_buf_byte(CRONUS_CFG_ID_SHOW_AMB_TEMP_DUR);
+}
+
+uint8_t cronus_cfg_get_show_odr_temp_dur() {
+    return get_cfg_buf_byte(CRONUS_CFG_ID_SHOW_ODR_TEMP_DUR);
 }
 
 dy_err_t cronus_cfg_init(uint32_t fw_ver, cronus_cfg_display_type_t dspl_type, dy_bt_chrc_num btc_n) {
@@ -158,7 +174,6 @@ dy_err_t cronus_cfg_init(uint32_t fw_ver, cronus_cfg_display_type_t dspl_type, d
     } else if (dy_nok(err)) {
         return dy_err_pfx("initial data load failed", err);
     }
-
 
     err = dy_bt_register_chrc_reader(btc_n, on_bt_chrc_read);
     if (dy_nok(err)) {
