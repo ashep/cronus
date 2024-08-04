@@ -28,7 +28,7 @@ static dy_err_t init_max7219() {
         return err;
     }
 
-    err = dy_display_init_driver_max7219(CONFIG_CRONUS_DISPLAY_DRIVER_MAX7219_ID, cfg);
+    err = dy_display_init_driver_max7219(0, cfg);
     if (err.code != DY_OK) {
         return err;
     }

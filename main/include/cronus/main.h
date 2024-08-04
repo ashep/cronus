@@ -6,7 +6,4 @@
 #define CRONUS_FW_VERSION 0x010000 // may be passed via compiler arg
 #endif
 
-
-
-
 #endif // CRONUS_MAIN_H
