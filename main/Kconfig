@@ -2,45 +2,35 @@ menu "Cronus"
     menu "Display"
         choice CRONUS_DISPLAY_DRIVER
             prompt "Driver"
-            default CRONUS_DISPLAY_DRIVER_MAX7219_ENABLED
+            default CRONUS_DISPLAY_DRIVER_MAX7219_32X16_ENABLED
 
-            config CRONUS_DISPLAY_DRIVER_MAX7219_ENABLED
-                bool "MAX7219"
+            config CRONUS_DISPLAY_DRIVER_MAX7219_32X16_ENABLED
+                bool "MAX7219 (32x16)"
         endchoice
 
         menu "MAX7219 Configuration"
-            depends on CRONUS_DISPLAY_DRIVER_MAX7219_ENABLED
+            depends on CRONUS_DISPLAY_DRIVER_MAX7219_32X16_ENABLED
 
-            config CRONUS_DISPLAY_DRIVER_MAX7219_PIN_CLK
+            config CRONUS_DISPLAY_DRIVER_MAX7219_32X16_PIN_CLK
                 int "CLK pin"
                 range 0 48
                 default 16
 
-            config CRONUS_DISPLAY_DRIVER_MAX7219_PIN_CS
+            config CRONUS_DISPLAY_DRIVER_MAX7219_32X16_PIN_CS
                 int "CS pin"
                 range 0 48
                 default 17
 
-            config CRONUS_DISPLAY_DRIVER_MAX7219_PIN_DATA
+            config CRONUS_DISPLAY_DRIVER_MAX7219_32X16_PIN_DATA
                 int "DATA pin"
                 range 0 48
                 default 18
 
-            config CRONUS_DISPLAY_DRIVER_MAX7219_NX
-                int "Devices per X"
-                range 1 8
-                default 4
-
-            config CRONUS_DISPLAY_DRIVER_MAX7219_NY
-                int "Devices per Y"
-                range 1 8
-                default 1
-
-            config CRONUS_DISPLAY_DRIVER_MAX7219_RX
+            config CRONUS_DISPLAY_DRIVER_MAX7219_32X16_RX
                 bool "Reverse X"
                 default y
 
-            config CRONUS_DISPLAY_DRIVER_MAX7219_RY
+            config CRONUS_DISPLAY_DRIVER_MAX7219_32X16_RY
                 bool "Reverse Y"
                 default n
         endmenu

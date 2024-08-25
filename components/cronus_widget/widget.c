@@ -1,9 +1,11 @@
 #include <sys/cdefs.h>
 #include <stdio.h>
+#include <string.h>
 #include <time.h>
 
 #include "freertos/FreeRTOS.h"
 #include "esp_log.h"
+#include "esp_event.h"
 #include "esp_adc/adc_oneshot.h"
 
 #include "dy/error.h"
@@ -33,8 +35,9 @@ typedef enum {
 
 static SemaphoreHandle_t mux;
 static int cur_cycle = SHOW_CYCLE_TIME;
-static bool weather_ok;
-static dy_cloud_resp_weather_t weather;
+
+static time_t weather_ts;
+static dy_cloud_weather_t weather;
 
 #ifdef CONFIG_CRONUS_LIGHT_SENSOR_ENABLED
 static adc_oneshot_unit_handle_t adc_handle;
@@ -42,7 +45,6 @@ static int adc_light_out;
 #endif // CONFIG_CRONUS_LIGHT_SENSOR_ENABLED
 
 #ifdef CONFIG_CRONUS_LIGHT_SENSOR_ENABLED
-
 _Noreturn static void fetch_light_data_task() {
     dy_err_t err;
     esp_err_t esp_err;
@@ -56,7 +58,7 @@ _Noreturn static void fetch_light_data_task() {
 
         esp_err = adc_oneshot_read(adc_handle, CONFIG_CRONUS_LIGHT_SENSOR_ADC_CHANNEL, &adc_light_out);
         if (esp_err != ESP_OK) {
-            ESP_LOGI(LTAG, "adc_oneshot_read failed: %s", esp_err_to_name(esp_err));
+            ESP_LOGE(LTAG, "adc_oneshot_read: %s", esp_err_to_name(esp_err));
             continue;
         }
 
@@ -77,35 +79,30 @@ _Noreturn static void fetch_light_data_task() {
         }
     }
 }
-
 #endif // CONFIG_CRONUS_LIGHT_SENSOR_ENABLED
 
-_Noreturn static void fetch_cloud_data_task() {
-    dy_err_t err;
+static void weather_update_handler(void *arg, esp_event_base_t base, int32_t id, void *data) {
+    dy_cloud_weather_t *dt = (dy_cloud_weather_t *) data;
 
-    // Wait for active network after boot
-    vTaskDelay(pdMS_TO_TICKS(5000));
+    strncpy(weather.title, dt->title, DY_CLOUD_WEATHER_TITLE_LEN);
+    weather.temp = dt->temp;
+    weather.feels = dt->feels;
+    weather.pressure = dt->pressure;
+    weather.humidity = dt->humidity;
 
-    while (1) {
-        err = dy_cloud_weather(&weather);
+    weather_ts = time(NULL);
 
-        if (dy_nok(err)) {
-            ESP_LOGE(LTAG, "dy_cloud_weather failed: %s", dy_err_str(err));
-            weather_ok = false;
-            vTaskDelay(pdMS_TO_TICKS(10000));
-        } else {
-            weather_ok = true;
-            vTaskDelay(pdMS_TO_TICKS(900000)); // 15 min
-        }
-    }
+    ESP_LOGI(LTAG, "weather updated");
 }
 
-_Noreturn static void switch_show_cycle_task() {
+_Noreturn static void switch_cycle_task() {
     uint8_t delay = 0;
     uint8_t new_cycle;
+    time_t now;
 
     while (1) {
         vTaskDelay(pdMS_TO_TICKS(1000 * (delay ? delay : 5)));
+        now = time(NULL);
 
         // Search for the next cycle having non-zero delay
         delay = 0;
@@ -133,7 +130,7 @@ _Noreturn static void switch_show_cycle_task() {
                     delay = cronus_cfg_get_show_amb_temp_dur();
                     break;
                 case SHOW_CYCLE_ODR_TEMP:
-                    if (weather_ok) {
+                    if (weather_ts > 0 && now - weather_ts < 1800) { // weather data older than 30 minutes is obsolete
                         delay = cronus_cfg_get_show_odr_temp_dur();
                     }
                     break;
@@ -275,9 +272,6 @@ _Noreturn static void render_task() {
         dy_gfx_clear_buf(buf);
 
         switch (dt) {
-            case CRONUS_CFG_DISPLAY_TYPE_MAX7219_32X8:
-                // Not implemented yet
-                break;
             case CRONUS_CFG_DISPLAY_TYPE_MAX7219_32X16:
                 render_max7219_32x16(buf, &ti);
                 break;
@@ -292,6 +286,8 @@ _Noreturn static void render_task() {
 }
 
 dy_err_t cronus_widget_init() {
+    esp_err_t esp_err;
+
     mux = xSemaphoreCreateMutex();
     if (mux == NULL) {
         return dy_err(DY_ERR_NO_MEM, "xSemaphoreCreateMutex returned null");
@@ -303,9 +299,9 @@ dy_err_t cronus_widget_init() {
         .ulp_mode = ADC_ULP_MODE_DISABLE,
     };
 
-    esp_err_t esp_err = adc_oneshot_new_unit(&adc_cfg, &adc_handle);
+    esp_err = adc_oneshot_new_unit(&adc_cfg, &adc_handle);
     if (esp_err != ESP_OK) {
-        return dy_err(DY_ERR_FAILED, "adc_oneshot_new_unit failed: %s", esp_err_to_name(esp_err));
+        return dy_err(DY_ERR_FAILED, "adc_oneshot_new_unit: %s", esp_err_to_name(esp_err));
     }
 
     if (xTaskCreate(fetch_light_data_task, "cw_fetch_light", 4096, NULL, tskIDLE_PRIORITY, NULL) != pdTRUE) {
@@ -313,16 +309,17 @@ dy_err_t cronus_widget_init() {
     }
 #endif
 
-    if (xTaskCreate(switch_show_cycle_task, "cw_switch_cycle", 4096, NULL, tskIDLE_PRIORITY, NULL) != pdTRUE) {
+    if (xTaskCreate(switch_cycle_task, "cw_switch_cycle", 4096, NULL, tskIDLE_PRIORITY, NULL) != pdTRUE) {
         return dy_err(DY_ERR_FAILED, "switch show cycle task create failed");
-    }
-
-    if (xTaskCreate(fetch_cloud_data_task, "cw_fetch_cloud", 4096, NULL, tskIDLE_PRIORITY, NULL) != pdTRUE) {
-        return dy_err(DY_ERR_FAILED, "fetch data task create failed");
     }
 
     if (xTaskCreate(render_task, "cw_render", 4096, NULL, tskIDLE_PRIORITY, NULL) != pdTRUE) {
         return dy_err(DY_ERR_FAILED, "render task create failed");
+    }
+
+    esp_err = esp_event_handler_register(DY_CLOUD_EV_BASE, DY_CLOUD_EV_WEATHER_UPDATED, weather_update_handler, NULL);
+    if (esp_err != ESP_OK) {
+        return dy_err(DY_ERR_FAILED, "esp_event_handler_register: %s", esp_err_to_name(esp_err));
     }
 
     return dy_ok();

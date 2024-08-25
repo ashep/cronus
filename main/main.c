@@ -2,26 +2,30 @@
 
 #include "esp_log.h"
 #include "esp_event.h"
+#include "esp_tls.h"
 
 #include "nvs.h"
 #include "nvs_flash.h"
 
 #include "dy/error.h"
+#include "dy/appinfo.h"
 #include "dy/rtc.h"
 #include "dy/bt.h"
 #include "dy/net.h"
 #include "dy/net_cfg.h"
 #include "dy/ds3231.h"
+#include "dy/cloud.h"
 
 #include "cronus/cfg.h"
 #include "cronus/widget.h"
 #include "cronus/display.h"
 
-#include "cronus/main.h"
-
 #define LTAG "CRONUS"
 
 static dy_ds3231_handle_t ds3231;
+
+extern const uint8_t ca_crt_start[] asm("_binary_ca_pem_start");
+extern const uint8_t ca_crt_end[]   asm("_binary_ca_pem_end");
 
 static dy_err_t init_nvs() {
     esp_err_t esp_err;
@@ -42,12 +46,28 @@ static dy_err_t init_nvs() {
     return dy_ok();
 }
 
+static dy_err_t init_tls() {
+    esp_err_t esp_err;
+
+    esp_err = esp_tls_set_global_ca_store(ca_crt_start, ca_crt_end - ca_crt_start);
+    if (esp_err != ESP_OK) {
+        return dy_err(DY_ERR_FAILED, "esp_tls_set_global_ca_store: %s", esp_err_to_name(esp_err));
+    }
+
+    return dy_ok();
+}
+
 void app_main(void) {
     esp_err_t esp_err;
     dy_err_t err;
 
     if (dy_nok(err = init_nvs())) {
         ESP_LOGE(LTAG, "init_nvs: %s", dy_err_str(err));
+        abort();
+    }
+
+    if (dy_nok(err = init_tls())) {
+        ESP_LOGE(LTAG, "init_tls: %s", dy_err_str(err));
         abort();
     }
 
@@ -58,15 +78,10 @@ void app_main(void) {
     }
 
     cronus_cfg_display_type_t dspl_type = CRONUS_CFG_DISPLAY_TYPE_NONE;
-#ifdef CONFIG_CRONUS_DISPLAY_DRIVER_MAX7219_ENABLED
-#if CONFIG_CRONUS_DISPLAY_DRIVER_MAX7219_NX == 4 && CONFIG_CRONUS_DISPLAY_DRIVER_MAX7219_NX == 2
-    display_type = CRONUS_CFG_DISPLAY_TYPE_MAX7219_32X8;
-#elif CONFIG_CRONUS_DISPLAY_DRIVER_MAX7219_NX == 4 && CONFIG_CRONUS_DISPLAY_DRIVER_MAX7219_NX == 4
+    char hw_id[16] = "none";
+#ifdef CONFIG_CRONUS_DISPLAY_DRIVER_MAX7219_32X16_ENABLED
     dspl_type = CRONUS_CFG_DISPLAY_TYPE_MAX7219_32X16;
-#else
-    ESP_LOGE(LTAG, "invalid max7219 display configuration");
-    abort();
-#endif
+    strncpy(hw_id, "max7219_32x16", sizeof(hw_id));
 #endif
     if (dy_nok(err = init_display(dspl_type))) {
         ESP_LOGE(LTAG, "init_display: %s", dy_err_str(err));
@@ -91,6 +106,17 @@ void app_main(void) {
     }
 #endif
 
+    dy_appinfo_info_t app_info = {
+        .owner = APP_OWNER,
+        .name = APP_NAME,
+        .version = APP_VERSION,
+        .arch = CONFIG_IDF_TARGET,
+        .hw_id = hw_id,
+        .auth = "TODO",
+    };
+    dy_appinfo_set(&app_info);
+
+    // Network
     if (dy_nok(err = dy_net_init())) {
         ESP_LOGE(LTAG, "dy_net_init: %s", dy_err_str(err));
         abort();
@@ -101,21 +127,43 @@ void app_main(void) {
         abort();
     }
 
+    // Network config
     if (dy_nok(err = dy_net_cfg_init(DY_BT_CHRC_1))) {
         ESP_LOGE(LTAG, "dy_net_cfg_init: %s", dy_err_str(err));
         abort();
     }
 
-    if (dy_nok(err = cronus_cfg_init(CRONUS_FW_VERSION, dspl_type, DY_BT_CHRC_2))) {
+    // Cronus config
+    if (dy_nok(err = cronus_cfg_init(dspl_type, DY_BT_CHRC_2))) {
         ESP_LOGE(LTAG, "cronus_cfg_init: %s", dy_err_str(err));
         abort();
     }
 
+    // Bluetooth
     if (dy_nok(err = dy_bt_init())) {
         ESP_LOGE(LTAG, "dy_bt_init: %s", dy_err_str(err));
         abort();
     }
 
+    // Time sync
+    if (dy_nok(err = dy_cloud_time_start_scheduler())) {
+        ESP_LOGE(LTAG, "dy_cloud_time_start_scheduler: %s", dy_err_str(err));
+        abort();
+    }
+
+    // Weather sync
+    if (dy_nok(err = dy_cloud_weather_start_scheduler())) {
+        ESP_LOGE(LTAG, "dy_cloud_weather_start_scheduler: %s", dy_err_str(err));
+        abort();
+    }
+
+    // Firmware update
+    if (dy_nok(err = dy_cloud_update_start_scheduler())) {
+        ESP_LOGE(LTAG, "dy_cloud_update_start_scheduler: %s", dy_err_str(err));
+        abort();
+    }
+
+    // Widgets
     if (dy_nok(err = cronus_widget_init())) {
         ESP_LOGE(LTAG, "cronus_widget_init: %s", dy_err_str(err));
         abort();

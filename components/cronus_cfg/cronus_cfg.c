@@ -14,7 +14,6 @@
 
 static SemaphoreHandle_t mux;
 static nvs_handle_t nvs_hdl;
-static uint32_t firmware_version = 0;
 static uint8_t display_type = 0;
 
 static uint8_t cfg_buf[CRONUS_CFG_CFG_BUF_LEN];
@@ -39,6 +38,8 @@ static dy_err_t load() {
 
     xSemaphoreGive(mux);
 
+    cfg_buf[CRONUS_CFG_ID_DISPLAY_TYPE] = display_type;
+
     ESP_LOGI(LTAG, "config loaded");
 
     return dy_ok();
@@ -49,9 +50,16 @@ static dy_err_t save() {
         return dy_err(DY_ERR_FAILED, "xSemaphoreTake failed");
     }
 
-    cfg_buf[CRONUS_CFG_ID_VERSION_MAJOR] = firmware_version >> 16;
-    cfg_buf[CRONUS_CFG_ID_VERSION_MINOR] = firmware_version >> 8;
-    cfg_buf[CRONUS_CFG_ID_VERSION_PATCH] = firmware_version;
+    int app_v_major, app_v_minor, app_v_patch = 0;
+    uint8_t c = sscanf(APP_VERSION, "%d.%d.%d", &app_v_major, &app_v_minor, &app_v_patch);
+    if (c != 3) {
+        ESP_LOGE(LTAG, "invalid app version string: %s", APP_VERSION);
+        abort();
+    }
+
+    cfg_buf[CRONUS_CFG_ID_VERSION_MAJOR] = app_v_major;
+    cfg_buf[CRONUS_CFG_ID_VERSION_MINOR] = app_v_minor;
+    cfg_buf[CRONUS_CFG_ID_VERSION_PATCH] = app_v_patch;
     cfg_buf[CRONUS_CFG_ID_DISPLAY_TYPE] = display_type;
 
     esp_err_t err = nvs_set_blob(nvs_hdl, "config", cfg_buf, CRONUS_CFG_CFG_BUF_LEN);
@@ -105,7 +113,6 @@ static uint8_t get_cfg_buf_byte(uint8_t n) {
     }
 
     uint8_t v = cfg_buf[n];
-
     xSemaphoreGive(mux);
 
     return v;
@@ -147,12 +154,9 @@ uint8_t cronus_cfg_get_show_odr_temp_dur() {
     return get_cfg_buf_byte(CRONUS_CFG_ID_SHOW_ODR_TEMP_DUR);
 }
 
-dy_err_t cronus_cfg_init(uint32_t fw_ver, cronus_cfg_display_type_t dspl_type, dy_bt_chrc_num btc_n) {
+dy_err_t cronus_cfg_init(cronus_cfg_display_type_t dsp_type, dy_bt_chrc_num btc_n) {
     dy_err_t err;
     esp_err_t esp_err;
-
-    firmware_version = fw_ver;
-    display_type = dspl_type;
 
     mux = xSemaphoreCreateMutex();
     if (mux == NULL) {
@@ -164,8 +168,11 @@ dy_err_t cronus_cfg_init(uint32_t fw_ver, cronus_cfg_display_type_t dspl_type, d
         return dy_err(DY_ERR_FAILED, "nvs_open failed: %s", esp_err_to_name(esp_err));
     }
 
+    // NOTE: mu always be set BEFORE any load()/save() calls
+    display_type = dsp_type;
+
     err = load();
-    if (err.code == DY_ERR_NOT_FOUND) {
+    if (err->code == DY_ERR_NOT_FOUND) {
         memset(cfg_buf, 0, CRONUS_CFG_CFG_BUF_LEN);
         err = save();
         if (dy_nok(err)) {

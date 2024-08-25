@@ -27,7 +27,6 @@
 
 typedef enum {
     CRONUS_CFG_DISPLAY_TYPE_NONE,
-    CRONUS_CFG_DISPLAY_TYPE_MAX7219_32X8,
     CRONUS_CFG_DISPLAY_TYPE_MAX7219_32X16,
 } cronus_cfg_display_type_t;
 
@@ -49,6 +48,6 @@ uint8_t cronus_cfg_get_show_amb_temp_dur();
 
 uint8_t cronus_cfg_get_show_odr_temp_dur();
 
-dy_err_t cronus_cfg_init(uint32_t fw_ver, cronus_cfg_display_type_t display_type, dy_bt_chrc_num btc_n);
+dy_err_t cronus_cfg_init(cronus_cfg_display_type_t dsp_type, dy_bt_chrc_num btc_n);
 
 #endif
