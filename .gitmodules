@@ -1,6 +1,4 @@
-[submodule "d5y"]
-	path = vendor/d5y
+[submodule "firmware/vendor/d5y"]
+	path = firmware/vendor/d5y
 	url = git@github.com:ashep/d5y.git
 	branch = main
-	update = merge
-
