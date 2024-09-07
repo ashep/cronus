@@ -9,6 +9,7 @@ jobs:
     uses: ashep/ci/.github/workflows/js-build.yaml@v1
     with:
       workdir: frontend
+      app_name: ${{ github.event.repository.name }}-gui
       registry_user: ${{ vars.REGISTRY_USER }}
     secrets:
       registry_password: ${{ secrets.REGISTRY_PASSWORD }}
@@ -19,6 +20,7 @@ jobs:
       - build-frontend
     with:
       workdir: frontend
+      app_name: ${{ github.event.repository.name }}-gui
     secrets:
       ssh_host: ${{ secrets.DEPLOY_SSH_HOST }}
       ssh_port: ${{ secrets.DEPLOY_SSH_PORT }}
