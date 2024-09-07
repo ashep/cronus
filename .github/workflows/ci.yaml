@@ -3,11 +3,12 @@ jobs:
   build-firmware:
     uses: ashep/ci/.github/workflows/esp-idf-build.yaml@v1
     with:
-      path: firmware
+      workdir: firmware
 
   build-frontend:
     uses: ashep/ci/.github/workflows/js-build.yaml@v1
     with:
+      workdir: frontend
       registry_user: ${{ vars.REGISTRY_USER }}
     secrets:
       registry_password: ${{ secrets.REGISTRY_PASSWORD }}
@@ -17,7 +18,7 @@ jobs:
     needs:
       - build-frontend
     with:
-      path: frontend
+      workdir: frontend
     secrets:
       ssh_host: ${{ secrets.DEPLOY_SSH_HOST }}
       ssh_port: ${{ secrets.DEPLOY_SSH_PORT }}
