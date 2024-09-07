@@ -1,0 +1,20 @@
+on: push
+jobs:
+  build:
+    uses: ashep/ci/.github/workflows/js-build.yaml@v1
+    with:
+      registry_user: ${{ vars.REGISTRY_USER }}
+    secrets:
+      registry_password: ${{ secrets.REGISTRY_PASSWORD }}
+
+  deploy:
+    uses: ashep/ci/.github/workflows/deploy-docker.yaml@v1
+    needs:
+      - build
+    secrets:
+      ssh_host: ${{ secrets.DEPLOY_SSH_HOST }}
+      ssh_port: ${{ secrets.DEPLOY_SSH_PORT }}
+      ssh_user: ${{ secrets.DEPLOY_SSH_USER }}
+      ssh_key: ${{ secrets.DEPLOY_SSH_KEY }}
+      dotenv: |
+        HTTP_PORT=${{ vars.DEPLOY_HTTP_PORT }}
