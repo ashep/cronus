@@ -15,7 +15,7 @@ jobs:
   deploy-frontend:
     uses: ashep/ci/.github/workflows/deploy-docker.yaml@v1
     needs:
-      - build
+      - build-frontend
     with:
       path: frontend
     secrets:
