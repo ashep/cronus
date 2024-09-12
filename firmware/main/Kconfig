@@ -49,12 +49,12 @@ menu "Cronus"
             depends on CRONUS_DS3231_ENABLED
             int "SCL pin"
             range 0 48
-            default 38
+            default 39
         config CRONUS_DS3231_PIN_SDA
             depends on CRONUS_DS3231_ENABLED
             int "SDA pin"
             range 0 48
-            default 39
+            default 38
     endmenu
 
     menu "Light sensor"
