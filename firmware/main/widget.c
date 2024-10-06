@@ -9,6 +9,7 @@
 #include "esp_adc/adc_oneshot.h"
 
 #include "dy/error.h"
+#include "dy/cfg.h"
 #include "dy/display.h"
 #include "dy/gfx/gfx.h"
 #include "dy/gfx/text.h"
@@ -17,7 +18,6 @@
 #include "dy/gfx/font/clock/6x12v1.h"
 #include "dy/cloud.h"
 
-#include "cronus/widget.h"
 #include "cronus/cfg.h"
 
 #define LTAG "CRONUS_WIDGET"
@@ -45,16 +45,18 @@ static int adc_light_out;
 #endif // CONFIG_CRONUS_LIGHT_SENSOR_ENABLED
 
 #ifdef CONFIG_CRONUS_LIGHT_SENSOR_ENABLED
+
 _Noreturn static void fetch_light_data_task() {
     dy_err_t err;
     esp_err_t esp_err;
-    uint8_t min_b, max_b, cur_b;
+    uint8_t min_b = 0, max_b = 0, cur_b = 0, new_b = 0;
 
     while (1) {
         vTaskDelay(pdMS_TO_TICKS(3000));
 
-        min_b = cronus_cfg_get_min_brightness();
-        max_b = cronus_cfg_get_max_brightness();
+        min_b = dy_cfg_get(CRONUS_CFG_ID_USER_BRIGHTNESS_MIN, 0);
+        max_b = dy_cfg_get(CRONUS_CFG_ID_USER_BRIGHTNESS_MAX, 15);
+
 
         esp_err = adc_oneshot_read(adc_handle, CONFIG_CRONUS_LIGHT_SENSOR_ADC_CHANNEL, &adc_light_out);
         if (esp_err != ESP_OK) {
@@ -62,23 +64,32 @@ _Noreturn static void fetch_light_data_task() {
             continue;
         }
 
-        cur_b = (adc_light_out / 16) >> 4;
+        new_b = (adc_light_out / 16) >> 4;
 
-        if (cur_b < min_b) {
-            cur_b = min_b;
+        if (new_b < min_b) {
+            new_b = min_b;
         }
 
-        if (cur_b > max_b) {
-            cur_b = max_b;
+        if (new_b > max_b) {
+            new_b = max_b;
         }
 
-        err = dy_display_set_brightness(0, cur_b);
-        if (dy_nok(err)) {
+        if (new_b == cur_b) {
+            continue;
+        }
+
+        err = dy_display_set_brightness(0, new_b);
+        if (dy_is_err(err)) {
             ESP_LOGI(LTAG, "dy_display_set_brightness: %s", dy_err_str(err));
             continue;
         }
+
+        ESP_LOGI(LTAG, "brightness changed: %d -> %d", cur_b, new_b);
+
+        cur_b = new_b;
     }
 }
+
 #endif // CONFIG_CRONUS_LIGHT_SENSOR_ENABLED
 
 static void weather_update_handler(void *arg, esp_event_base_t base, int32_t id, void *data) {
@@ -96,13 +107,16 @@ static void weather_update_handler(void *arg, esp_event_base_t base, int32_t id,
 }
 
 _Noreturn static void switch_cycle_task() {
+    uint8_t mode;
     uint8_t delay = 0;
     uint8_t new_cycle;
     time_t now;
 
     while (1) {
-        vTaskDelay(pdMS_TO_TICKS(1000 * (delay ? delay : 5)));
+        vTaskDelay(pdMS_TO_TICKS(1000 * (delay ? delay : 1)));
         now = time(NULL);
+
+        mode = dy_cfg_get(CRONUS_CFG_ID_USER_SHOW_MODE, CRONUS_CFG_USER_SHOW_MODE_SINGLE_LINE);
 
         // Search for the next cycle having non-zero delay
         delay = 0;
@@ -115,23 +129,25 @@ _Noreturn static void switch_cycle_task() {
 
             switch (new_cycle) {
                 case SHOW_CYCLE_TIME:
-                    // Time string is always shown in multiline mode
-                    if (!cronus_cfg_get_multiline_mode()) {
-                        delay = cronus_cfg_get_show_time_dur();
+                    if (mode == CRONUS_CFG_USER_SHOW_MODE_MULTI_LINE) {
+                        // Time string is always shown in multiline mode as a first line, so we just skip this cycle
+                        delay = 0;
+                    } else {
+                        delay = dy_cfg_get(CRONUS_CFG_ID_USER_SHOW_DUR_TIME, 0);
                     }
                     break;
                 case SHOW_CYCLE_DATE:
-                    delay = cronus_cfg_get_show_date_dur();
+                    delay = dy_cfg_get(CRONUS_CFG_ID_USER_SHOW_DUR_DATE, 0);
                     break;
                 case SHOW_CYCLE_DOW:
-                    delay = cronus_cfg_get_show_dow_dur();
+                    delay = dy_cfg_get(CRONUS_CFG_ID_USER_SHOW_DUR_DOW, 0);
                     break;
                 case SHOW_CYCLE_AMB_TEMP:
-                    delay = cronus_cfg_get_show_amb_temp_dur();
+                    delay = dy_cfg_get(CRONUS_CFG_ID_USER_SHOW_DUR_AMB_TEMP, 0);
                     break;
                 case SHOW_CYCLE_ODR_TEMP:
                     if (weather_ts > 0 && now - weather_ts < 1800) { // weather data older than 30 minutes is obsolete
-                        delay = cronus_cfg_get_show_odr_temp_dur();
+                        delay = dy_cfg_get(CRONUS_CFG_ID_USER_SHOW_DUR_ODR_TEMP, 0);
                     }
                     break;
                 default:
@@ -234,7 +250,7 @@ static void render_max7219_32x16_multi_line(
 }
 
 static void render_max7219_32x16(dy_gfx_buf_t *buf, struct tm *ti) {
-    bool multi_line = cronus_cfg_get_multiline_mode();
+    uint8_t mode = dy_cfg_get(CRONUS_CFG_ID_USER_SHOW_MODE, CRONUS_CFG_USER_SHOW_MODE_SINGLE_LINE);
 
     char time_str[8], date_str[8], odr_temp_str[6];
     char sepa = ti->tm_sec % 2 ? ':' : ' ';
@@ -245,11 +261,51 @@ static void render_max7219_32x16(dy_gfx_buf_t *buf, struct tm *ti) {
     char *fmt = weather.feels ? FMT_TEMP_NON_ZERO : FMT_TEMP_ZERO;
     snprintf(odr_temp_str, sizeof(odr_temp_str), fmt, weather.feels);
 
-    if (multi_line) {
+    if (mode == CRONUS_CFG_USER_SHOW_MODE_MULTI_LINE) {
         render_max7219_32x16_multi_line(buf, time_str, date_str, odr_temp_str);
     } else {
         render_max7219_32x16_single_line(buf, time_str, date_str, odr_temp_str);
     }
+}
+
+static void test_display() {
+    dy_err_t err;
+
+    dy_gfx_buf_t *buf = dy_gfx_make_buf(32, 16, DY_GFX_COLOR_MONO);
+
+    err = dy_gfx_fill_buf(buf, 1);
+    if (dy_is_err(err)) {
+        ESP_LOGE(LTAG, "display test: dy_gfx_fill_buf failed: %s", dy_err_str(err));
+        return;
+    }
+
+    err = dy_display_write(0, buf);
+    if (dy_is_err(err)) {
+        ESP_LOGE(LTAG, "display test: dy_display_write failed: %s", dy_err_str(err));
+        return;
+    }
+
+    for (int i = 0; i < CONFIG_CRONUS_DISPLAY_BRIGHTNESS_HARD_LIMIT; i++) {
+        err = dy_display_set_brightness(0, i);
+        if (dy_is_err(err)) {
+            ESP_LOGE(LTAG, "display test: dy_display_set_brightness: %s", dy_err_str(err));
+            return;
+        }
+
+        vTaskDelay(pdMS_TO_TICKS(100));
+    }
+
+    for (int i = CONFIG_CRONUS_DISPLAY_BRIGHTNESS_HARD_LIMIT; i > 0; i--) {
+        err = dy_display_set_brightness(0, i);
+        if (dy_is_err(err)) {
+            ESP_LOGE(LTAG, "display test: dy_display_set_brightness: %s", dy_err_str(err));
+            return;
+        }
+
+        vTaskDelay(pdMS_TO_TICKS(100));
+    }
+
+    dy_gfx_free_buf(buf);
 }
 
 _Noreturn static void render_task() {
@@ -257,13 +313,13 @@ _Noreturn static void render_task() {
     time_t now;
     struct tm ti;
 
+    cronus_cfg_display_type_t dt = dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_TYPE, 0);
+    dy_gfx_buf_t *buf = dy_gfx_make_buf(32, 16, DY_GFX_COLOR_MONO);
+
     err = dy_display_set_brightness(0, CONFIG_CRONUS_DISPLAY_INITIAL_BRIGHTNESS);
-    if (dy_nok(err)) {
+    if (dy_is_err(err)) {
         ESP_LOGE(LTAG, "dy_display_set_brightness: %s", dy_err_str(err));
     }
-
-    cronus_cfg_display_type_t dt = cronus_cfg_display_type();
-    dy_gfx_buf_t *buf = dy_gfx_make_buf(32, 16, DY_GFX_COLOR_MONO);
 
     while (1) {
         time(&now);
@@ -287,6 +343,10 @@ _Noreturn static void render_task() {
 
 dy_err_t cronus_widget_init() {
     esp_err_t esp_err;
+
+#ifdef CONFIG_CRONUS_DISPLAY_TEST_ON_START
+    test_display();
+#endif
 
     mux = xSemaphoreCreateMutex();
     if (mux == NULL) {

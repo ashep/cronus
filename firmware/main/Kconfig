@@ -39,6 +39,17 @@ menu "Cronus"
             int "Initial brightness"
             range 0 15
             default 0
+
+        config CRONUS_DISPLAY_BRIGHTNESS_HARD_LIMIT
+            int "Brightness hard limit"
+            help
+                May be useful if the PSU isn't capable of providing enough current.
+            range 0 15
+            default 15
+
+        config CRONUS_DISPLAY_TEST_ON_START
+            bool "Perform display test on start"
+            default n
     endmenu
 
     menu "External RTC (DS3231)"
