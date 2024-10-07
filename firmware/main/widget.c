@@ -285,7 +285,7 @@ static void test_display() {
         return;
     }
 
-    for (int i = 0; i < CONFIG_CRONUS_DISPLAY_BRIGHTNESS_HARD_LIMIT; i++) {
+    for (int i = 0; i < CONFIG_CRONUS_DISPLAY_0_BRIGHTNESS_HARD_LIMIT; i++) {
         err = dy_display_set_brightness(0, i);
         if (dy_is_err(err)) {
             ESP_LOGE(LTAG, "display test: dy_display_set_brightness: %s", dy_err_str(err));
@@ -295,7 +295,7 @@ static void test_display() {
         vTaskDelay(pdMS_TO_TICKS(100));
     }
 
-    for (int i = CONFIG_CRONUS_DISPLAY_BRIGHTNESS_HARD_LIMIT; i > 0; i--) {
+    for (int i = CONFIG_CRONUS_DISPLAY_0_BRIGHTNESS_HARD_LIMIT; i > 0; i--) {
         err = dy_display_set_brightness(0, i);
         if (dy_is_err(err)) {
             ESP_LOGE(LTAG, "display test: dy_display_set_brightness: %s", dy_err_str(err));
@@ -316,8 +316,8 @@ _Noreturn static void render_task() {
     cronus_cfg_display_type_t dt = dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_TYPE, 0);
     dy_gfx_buf_t *buf = dy_gfx_make_buf(32, 16, DY_GFX_COLOR_MONO);
 
-    err = dy_display_set_brightness(0, CONFIG_CRONUS_DISPLAY_INITIAL_BRIGHTNESS);
-    if (dy_is_err(err)) {
+    // Initial brightness
+    if (dy_is_err(err = dy_display_set_brightness(0, 0))) {
         ESP_LOGE(LTAG, "dy_display_set_brightness: %s", dy_err_str(err));
     }
 

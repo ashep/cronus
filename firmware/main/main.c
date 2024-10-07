@@ -50,27 +50,27 @@ static dy_err_t init_nvs() {
 }
 
 dy_err_t init_config() {
-    // Set hardware revision-related settings BEFORE calling cronus_cfg_init().
+    // Set hardware revision-related settings BEFORE calling dy_cfg_init().
     // This is important because it prevents pin number settings changes during OTA firmware updates.
     // This values are initially writen to NVS on first firmware upload and must not be changed afterwards.
-#ifdef CONFIG_CRONUS_DISPLAY_DRIVER_MAX7219_32X16_ENABLED
+#ifdef CONFIG_CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16
     dy_cfg_must_set_initial(CRONUS_CFG_ID_DISPLAY_0_TYPE, CRONUS_CFG_DISPLAY_TYPE_MAX7219_32X16);
-    dy_cfg_must_set_initial(CRONUS_CFG_ID_DISPLAY_0_PIN_CS, CONFIG_CRONUS_DISPLAY_DRIVER_MAX7219_32X16_PIN_CS);
-    dy_cfg_must_set_initial(CRONUS_CFG_ID_DISPLAY_0_PIN_CLK, CONFIG_CRONUS_DISPLAY_DRIVER_MAX7219_32X16_PIN_CLK);
-    dy_cfg_must_set_initial(CRONUS_CFG_ID_DISPLAY_0_PIN_D0, CONFIG_CRONUS_DISPLAY_DRIVER_MAX7219_32X16_PIN_DATA);
-    dy_cfg_must_set_initial(CRONUS_CFG_ID_USER_BRIGHTNESS_MAX, CONFIG_CRONUS_DISPLAY_BRIGHTNESS_HARD_LIMIT);
+    dy_cfg_must_set_initial(CRONUS_CFG_ID_DISPLAY_0_PIN_CS, CONFIG_CRONUS_DISPLAY_0_PIN_CS);
+    dy_cfg_must_set_initial(CRONUS_CFG_ID_DISPLAY_0_PIN_CLK, CONFIG_CRONUS_DISPLAY_0_PIN_CLK);
+    dy_cfg_must_set_initial(CRONUS_CFG_ID_DISPLAY_0_PIN_D0, CONFIG_CRONUS_DISPLAY_0_PIN_D0);
+    dy_cfg_must_set_initial(CRONUS_CFG_ID_USER_BRIGHTNESS_MAX, CONFIG_CRONUS_DISPLAY_0_BRIGHTNESS_HARD_LIMIT);
 
-#ifdef CONFIG_CRONUS_DISPLAY_DRIVER_MAX7219_32X16_RX
+#ifdef CONFIG_CRONUS_DISPLAY_0_RX
     dy_cfg_must_set_initial(
         CRONUS_CFG_ID_DISPLAY_0_FLAGS,
         dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_FLAGS, 0) | 1 << CRONUS_CFG_FLAG_DISPLAY_0_REV_X
     );
 #endif
 
-#ifdef CONFIG_CRONUS_DISPLAY_DRIVER_MAX7219_32X16_RY
-    cronus_cfg_set(
+#ifdef CONFIG_CRONUS_DISPLAY_0_RY
+    dy_cfg_must_set_initial(
         CRONUS_CFG_ID_DISPLAY_0_FLAGS,
-        cronus_cfg_get(CRONUS_CFG_ID_DISPLAY_0_FLAGS) | 1 << CRONUS_CFG_FLAG_DISPLAY_REV_Y
+        dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_FLAGS, 0) | 1 << CRONUS_CFG_FLAG_DISPLAY_0_REV_Y
     );
 #endif
 
@@ -147,11 +147,11 @@ static dy_err_t init_display_max7219(gpio_num_t cs, gpio_num_t clk, gpio_num_t d
 
 static dy_err_t init_display() {
     dy_err_t err;
-#ifdef CONFIG_CRONUS_DISPLAY_DRIVER_MAX7219_32X16_ENABLED
+#ifdef CONFIG_CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16
     err = init_display_max7219(
-        dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_PIN_CS, 0),
-        dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_PIN_CLK, 0),
-        dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_PIN_D0, 0),
+        dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_PIN_CS, CONFIG_CRONUS_DISPLAY_0_PIN_CS),
+        dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_PIN_CLK, CONFIG_CRONUS_DISPLAY_0_PIN_CLK),
+        dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_PIN_D0, CONFIG_CRONUS_DISPLAY_0_PIN_D0),
         dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_FLAGS, 0) & 1 << CRONUS_CFG_FLAG_DISPLAY_0_REV_X,
         dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_FLAGS, 0) & 1 << CRONUS_CFG_FLAG_DISPLAY_0_REV_Y
     );
@@ -165,6 +165,31 @@ static dy_err_t init_display() {
 void app_main(void) {
     esp_err_t esp_err;
     dy_err_t err;
+
+    // App version
+    int v_maj, v_min, v_patch, v_alpha;
+    int sn = sscanf(APP_VERSION, "%d.%d.%d.%d", &v_maj, &v_min, &v_patch, &v_alpha);
+    if (sn == 3) {
+        v_alpha = 0;
+    } else if (sn != 4) {
+        v_maj = 0;
+        v_min = 0;
+        v_patch = 0;
+    }
+
+    // App info, MUST be set before any other operations
+    dy_appinfo_info_t app_info = {
+        .owner = APP_OWNER,
+        .name = APP_NAME,
+        .ver = {
+            .major = v_maj,
+            .minor = v_min,
+            .patch = v_patch,
+            .alpha = v_alpha,
+        },
+        .auth = "TODO",
+    };
+    dy_appinfo_set(&app_info);
 
     // Event loop
     if ((esp_err = esp_event_loop_create_default()) != ESP_OK) {
@@ -201,20 +226,6 @@ void app_main(void) {
         ESP_LOGE(LTAG, "init_rtc: %s", dy_err_str(err));
         abort();
     }
-
-    // App info
-    dy_appinfo_info_t app_info = {
-        .owner = APP_OWNER,
-        .name = APP_NAME,
-        .ver = {
-            .major = 0, // TODO
-            .minor = 0, // TODO
-            .patch = 1, // TODO
-            .alpha = 1, // TODO
-        },
-        .auth = "TODO",
-    };
-    dy_appinfo_set(&app_info);
 
     // Network
     if (dy_is_err(err = dy_net_init())) {
