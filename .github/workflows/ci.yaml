@@ -6,16 +6,17 @@ jobs:
       contents: write # for creating releases
     with:
       app_name: cronus
+      app_target: esp32s3_max7219v32x16
       workdir: firmware
 
-  build-frontend:
-    uses: ashep/ci/.github/workflows/js-build.yaml@v1
-    with:
-      workdir: frontend
-      app_name: ${{ github.event.repository.name }}-gui
-      registry_user: ${{ vars.REGISTRY_USER }}
-    secrets:
-      registry_password: ${{ secrets.REGISTRY_PASSWORD }}
+  # build-frontend:
+  #   uses: ashep/ci/.github/workflows/js-build.yaml@v1
+  #   with:
+  #     workdir: frontend
+  #     app_name: ${{ github.event.repository.name }}-gui
+  #     registry_user: ${{ vars.REGISTRY_USER }}
+  #   secrets:
+  #     registry_password: ${{ secrets.REGISTRY_PASSWORD }}
 
   # deploy-frontend:
   #   uses: ashep/ci/.github/workflows/deploy-docker.yaml@v1
