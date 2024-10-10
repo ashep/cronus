@@ -52,15 +52,15 @@
 #define CRONUS_CFG_ID_USER_START 127
 
 // Various user settings
-#define CRONUS_CFG_ID_USER_SHOW_MODE            128 // widget show mode, see CRONUS_CFG_USER_SHOW_MODE_XXX
-#define CRONUS_CFG_ID_USER_BRIGHTNESS_MIN       129 // minimum brightness
-#define CRONUS_CFG_ID_USER_BRIGHTNESS_MAX       130 // maximum brightness
-#define CRONUS_CFG_ID_USER_SHOW_DUR_TIME        131 // current time show duration
-#define CRONUS_CFG_ID_USER_SHOW_DUR_DATE        132 // current date show duration
-#define CRONUS_CFG_ID_USER_SHOW_DUR_DOW         133 // day of week show duration
-#define CRONUS_CFG_ID_USER_SHOW_DUR_AMB_TEMP    134 // ambient temperature show duration
-#define CRONUS_CFG_ID_USER_SHOW_DUR_ODR_TEMP    135 // outdoor temperature show duration
-#define CRONUS_CFG_ID_USER_ALLOW_ALPHA_VERSIONS 136 // allow firmware upgrades to alpha versions
+#define CRONUS_CFG_ID_USER_SHOW_MODE         128 // widget show mode, see CRONUS_CFG_USER_SHOW_MODE_XXX
+#define CRONUS_CFG_ID_USER_BRIGHTNESS_MIN    129 // minimum brightness
+#define CRONUS_CFG_ID_USER_BRIGHTNESS_MAX    130 // maximum brightness
+#define CRONUS_CFG_ID_USER_SHOW_DUR_TIME     131 // current time show duration
+#define CRONUS_CFG_ID_USER_SHOW_DUR_DATE     132 // current date show duration
+#define CRONUS_CFG_ID_USER_SHOW_DUR_DOW      133 // day of week show duration
+#define CRONUS_CFG_ID_USER_SHOW_DUR_AMB_TEMP 134 // ambient temperature show duration
+#define CRONUS_CFG_ID_USER_SHOW_DUR_ODR_TEMP 135 // outdoor temperature show duration
+#define CRONUS_CFG_ID_USER_ALLOW_ALPHA_UPD   136 // allow firmware upgrades to alpha versions
 
 #define CRONUS_CFG_USER_SHOW_MODE_SINGLE_LINE 0
 #define CRONUS_CFG_USER_SHOW_MODE_MULTI_LINE  1

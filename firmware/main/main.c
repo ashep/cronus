@@ -162,6 +162,24 @@ static dy_err_t init_display() {
     return err;
 }
 
+static char *hwid() {
+#ifdef CONFIG_CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16
+    return "max7219v32x16";
+#else
+    return "unknown";
+#endif
+}
+
+static void bt_ready_handler(void *arg, esp_event_base_t base, int32_t id, void *data) {
+    dy_bt_evt_ready_t *evt = (dy_bt_evt_ready_t *) data;
+
+    char addr[13];
+    snprintf(addr, 13, "%x%x%x%x%x%x",
+             evt->address[0], evt->address[1], evt->address[2], evt->address[3], evt->address[4], evt->address[5]);
+
+    dy_appinfo_set_auth(addr);
+}
+
 void app_main(void) {
     esp_err_t esp_err;
     dy_err_t err;
@@ -181,13 +199,14 @@ void app_main(void) {
     dy_appinfo_info_t app_info = {
         .owner = APP_OWNER,
         .name = APP_NAME,
+        .hwid = hwid(),
         .ver = {
             .major = v_maj,
             .minor = v_min,
             .patch = v_patch,
             .alpha = v_alpha,
         },
-        .auth = "TODO",
+        .auth = "", // will set later
     };
     dy_appinfo_set(&app_info);
 
@@ -239,6 +258,13 @@ void app_main(void) {
         abort();
     }
 
+    // Bluetooth event handler
+    esp_err = esp_event_handler_register(DY_BT_EVENT_BASE, DY_BT_EVENT_READY, bt_ready_handler, NULL);
+    if (esp_err != ESP_OK) {
+        ESP_LOGE(LTAG, "esp_event_handler_register(DY_BT_EVENT_BASE): %s", esp_err_to_name(esp_err));
+        abort();
+    }
+
     // Bluetooth
     if (dy_is_err(err = dy_bt_set_device_name_prefix("Cronus"))) {
         ESP_LOGE(LTAG, "dy_bt_set_device_name_prefix: %s", dy_err_str(err));
@@ -262,7 +288,7 @@ void app_main(void) {
     }
 
     // Firmware update
-    if (dy_is_err(err = dy_cloud_update_start_scheduler(dy_cfg_get(CRONUS_CFG_ID_USER_ALLOW_ALPHA_VERSIONS, false)))) {
+    if (dy_is_err(err = dy_cloud_update_start_scheduler(dy_cfg_get(CRONUS_CFG_ID_USER_ALLOW_ALPHA_UPD, false)))) {
         ESP_LOGE(LTAG, "dy_cloud_update_start_scheduler: %s", dy_err_str(err));
         abort();
     }
