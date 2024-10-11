@@ -203,5 +203,6 @@ export class Service {
         this.showDOWDuration.value = data.getInt8(cfgID.showDOWDuration);
         this.showAmbTempDuration.value = data.getInt8(cfgID.showAmbTempDuration);
         this.showOdrTempDuration.value = data.getInt8(cfgID.showOdrTempDuration);
+        this.allowUnstableFirmware.value = Boolean(data.getInt8(cfgID.allowUnstableFirmware));
     }
 }
