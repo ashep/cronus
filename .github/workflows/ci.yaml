@@ -10,27 +10,27 @@ jobs:
       app_target: esp32s3_max7219v32x16
       workdir: firmware
 
-  # build-frontend:
-  #   uses: ashep/ci/.github/workflows/js-build.yaml@v1
-  #   with:
-  #     workdir: frontend
-  #     app_name: ${{ github.event.repository.name }}-gui
-  #     registry_user: ${{ vars.REGISTRY_USER }}
-  #   secrets:
-  #     registry_password: ${{ secrets.REGISTRY_PASSWORD }}
+  build-frontend:
+    uses: ashep/ci/.github/workflows/js-build.yaml@v1
+    with:
+      workdir: frontend
+      app_name: ${{ github.event.repository.name }}-gui
+      registry_user: ${{ vars.REGISTRY_USER }}
+    secrets:
+      registry_password: ${{ secrets.REGISTRY_PASSWORD }}
 
-  # deploy-frontend:
-  #   uses: ashep/ci/.github/workflows/deploy-docker.yaml@v1
-  #   needs:
-  #     - build-frontend
-  #   with:
-  #     workdir: frontend
-  #     app_name: ${{ github.event.repository.name }}-gui
-  #     ssh_host: ${{ inputs.DEPLOY_SSH_HOST }}
-  #     ssh_port: ${{ inputs.DEPLOY_SSH_PORT }}
-  #     ssh_user: ${{ inputs.DEPLOY_SSH_USER }}
+  deploy-frontend:
+    uses: ashep/ci/.github/workflows/deploy-docker.yaml@v1
+    needs:
+      - build-frontend
+    with:
+      workdir: frontend
+      app_name: ${{ github.event.repository.name }}-gui
+      ssh_host: ${{ inputs.DEPLOY_SSH_HOST }}
+      ssh_port: ${{ inputs.DEPLOY_SSH_PORT }}
+      ssh_user: ${{ inputs.DEPLOY_SSH_USER }}
 
-  #   secrets:
-  #     ssh_key: ${{ secrets.DEPLOY_SSH_KEY }}
-  #     dotenv: |
-  #       HTTP_PORT=${{ vars.FRONTEND_SVC_LOCAL_HTTP_PORT }}
+    secrets:
+      ssh_key: ${{ secrets.DEPLOY_SSH_KEY }}
+      dotenv: |
+        HTTP_PORT=${{ vars.FRONTEND_SVC_LOCAL_HTTP_PORT }}
