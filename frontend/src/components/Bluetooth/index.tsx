@@ -16,22 +16,28 @@ export default class Home extends React.Component<Props, {}> {
         const {t} = useTranslation();
 
         return <React.Fragment>
-                {this.props.btSvc.connStatus != BTConnStatus.CONNECTED
-                    ?
-                    <Button
-                        variant={"contained"}
-                        onClick={() => this.props.btSvc.connect()}
-                        disabled={this.props.btSvc.connStatus == BTConnStatus.CONNECTING}
-                        startIcon={<BluetoothIcon/>}
-                    >
-                        {this.props.btSvc.connStatus == BTConnStatus.CONNECTING ? t("connecting") : t("connect")}
-                    </Button>
-                    :
-                    <Typography variant={"body1"}>
+            {this.props.btSvc.connStatus != BTConnStatus.CONNECTED
+                ?
+                <Button
+                    variant={"contained"}
+                    onClick={() => this.props.btSvc.connect()}
+                    disabled={this.props.btSvc.connStatus == BTConnStatus.CONNECTING}
+                    startIcon={<BluetoothIcon/>}
+                >
+                    {this.props.btSvc.connStatus == BTConnStatus.CONNECTING ? t("connecting") : t("connect")}
+                </Button>
+                :
+                <React.Fragment>
+                    <Typography align={"center"} variant={"body1"}>
                         <BluetoothIcon sx={{verticalAlign: "middle"}}/>
-                        <b>{this.props.btSvc.connectedDeviceName}</b> (v{this.props.cfgSvc.FirmwareVersionString})
+                        <b>{this.props.btSvc.connectedDeviceName}</b>
                     </Typography>
-                }
-            </React.Fragment>
+                    <Typography align={"center"} variant={"body2"}>
+                        (v{this.props.cfgSvc.FirmwareVersionString})
+                    </Typography>
+                </React.Fragment>
+
+            }
+        </React.Fragment>
     }
 }

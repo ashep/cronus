@@ -17,7 +17,7 @@ export class Service {
     private onConnect?: () => void;
     private onDisconnect?: () => void;
 
-    get connectedDeviceName(): string|null {
+    get connectedDeviceName(): string | null {
         return this.server?.device?.name
     }
 

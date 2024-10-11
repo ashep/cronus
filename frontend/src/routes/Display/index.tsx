@@ -1,10 +1,10 @@
 import * as React from "react";
 import * as BTSvc from "../../service/Bluetooth";
 import * as ConfigSvc from "../../service/Config";
-import Grid from "@mui/material/Grid";
-import CssBaseline from "@mui/material/CssBaseline";
 import {Link, route} from "preact-router";
 
+import Grid from "@mui/material/Grid";
+import CssBaseline from "@mui/material/CssBaseline";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -35,22 +35,11 @@ const durationValues = [
 ];
 
 const brightnessValues = [
-    {value: 0, label: "1"},
-    {value: 1, label: "2"},
-    {value: 2, label: "3"},
-    {value: 3, label: "4"},
-    {value: 4, label: "5"},
-    {value: 5, label: "6"},
-    {value: 6, label: "7"},
-    {value: 7, label: "8"},
-    {value: 8, label: "9"},
-    {value: 9, label: "10"},
-    {value: 10, label: "11"},
-    {value: 11, label: "12"},
-    {value: 12, label: "13"},
-    {value: 13, label: "14"},
-    {value: 14, label: "15"},
-    {value: 15, label: "16"},
+    {value: 0, label: "1%"},
+    {value: 3, label: "25%"},
+    {value: 7, label: "50%"},
+    {value: 11, label: "75%"},
+    {value: 15, label: "100%"},
 ]
 
 export default class Display extends React.Component<Props, State> {
@@ -68,7 +57,7 @@ export default class Display extends React.Component<Props, State> {
                 ?
                 <Box>
                     You're not connected to your Cronus device.
-                    Click <Link href={"/device/"}>here</Link> to connect.
+                    Click <Link href={"/device"}>here</Link> to connect.
                 </Box>
                 :
                 <Stack direction={"column"} spacing={3}>
@@ -160,6 +149,7 @@ export default class Display extends React.Component<Props, State> {
                             ))}
                         </Select>
                     </FormControl>
+
                     <Button variant={"outlined"} startIcon={<ArrowBackIcon/>} onClick={() => route("/device")}>
                         Back
                     </Button>

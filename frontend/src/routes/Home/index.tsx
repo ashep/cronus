@@ -8,6 +8,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import WiFiIcon from "@mui/icons-material/Wifi";
 import DisplaySettingsIcon from '@mui/icons-material/DisplaySettings';
+import EngineeringIcon from '@mui/icons-material/Engineering';
 
 import {Service as BTSvc, ConnStatus as BTConnStatus} from "../../service/Bluetooth";
 import {Service as ConfigSvc} from '../../service/Config';
@@ -39,12 +40,18 @@ export default class Home extends React.Component<Props, State> {
             <Stack direction={"column"} spacing={1}>
                     {this.props.btSvc.connStatus == BTConnStatus.CONNECTED &&
                         <Button variant={"contained"} startIcon={<WiFiIcon/>} onClick={() => route("/device/wifi")}>
-                            WiFi settings
+                            WiFi
                         </Button>
                     }
                     {this.props.btSvc.connStatus == BTConnStatus.CONNECTED &&
                         <Button variant={"contained"} startIcon={<DisplaySettingsIcon/>} onClick={() => route("/device/display")}>
-                            Display settings
+                            Display
+                        </Button>
+                    }
+
+                    {this.props.btSvc.connStatus == BTConnStatus.CONNECTED && window.location.hash.indexOf("__dev") >= 0 &&
+                        <Button variant={"contained"} startIcon={<EngineeringIcon/>} onClick={() => route("/device/developer")}>
+                            Dev area
                         </Button>
                     }
             </Stack>

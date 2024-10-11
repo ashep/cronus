@@ -8,6 +8,7 @@ import * as ConfigSvc from './service/Config';
 import Home from './routes/Home';
 import WiFi from './routes/WiFi';
 import Display from './routes/Display';
+import Developer from './routes/Developer';
 
 export default class App extends React.Component <{}, {}> {
     private readonly btSvc: BTSvc.Service;
@@ -28,6 +29,7 @@ export default class App extends React.Component <{}, {}> {
                 <Home path={"/device"} btSvc={this.btSvc} cfgSvc={this.cfgSvc}/>
                 <WiFi path={"/device/wifi"} btConnStatus={this.btSvc.connStatus} wifiSvc={this.wifiSvc}/>
                 <Display path={"/device/display"} btConnStatus={this.btSvc.connStatus} cfgSvc={this.cfgSvc}/>
+                <Developer path={"/device/developer"} btConnStatus={this.btSvc.connStatus} cfgSvc={this.cfgSvc}/>
             </Router>
         );
     }
