@@ -26,11 +26,11 @@ jobs:
     with:
       workdir: frontend
       app_name: ${{ github.event.repository.name }}-gui
-      ssh_host: ${{ inputs.DEPLOY_SSH_HOST }}
-      ssh_port: ${{ inputs.DEPLOY_SSH_PORT }}
-      ssh_user: ${{ inputs.DEPLOY_SSH_USER }}
+      ssh_host: ${{ vars.DEPLOY_SSH_HOST }}
+      ssh_port: ${{ vars.DEPLOY_SSH_PORT }}
+      ssh_user: ${{ vars.DEPLOY_SSH_USER }}
+      dotenv: |
+        HTTP_PORT=${{ vars.FRONTEND_SVC_LOCAL_HTTP_PORT }}
 
     secrets:
       ssh_key: ${{ secrets.DEPLOY_SSH_KEY }}
-      dotenv: |
-        HTTP_PORT=${{ vars.FRONTEND_SVC_LOCAL_HTTP_PORT }}
