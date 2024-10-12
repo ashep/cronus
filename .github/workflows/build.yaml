@@ -5,6 +5,6 @@ jobs:
     permissions:
       contents: write # for creating releases
     with:
-      workdir: firmware
+      workdir: src
       app_name: cronus
       app_target: esp32s3_max7219v32x16
