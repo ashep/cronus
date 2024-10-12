@@ -1,8 +1,0 @@
-name: cronus-gui
-services:
-  app:
-    image: ${APP_OWNER}/${APP_NAME}:${APP_VERSION}
-    restart: unless-stopped
-    pull_policy: always
-    ports:
-      - 127.0.0.1:${HTTP_PORT}:80
