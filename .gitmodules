@@ -1,0 +1,4 @@
+[submodule "d5y"]
+	path = src/vendor/d5y
+	url = git@github.com:ashep/d5y.git
+	branch = main
