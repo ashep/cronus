@@ -76,6 +76,11 @@ dy_err_t init_config() {
 
 #endif
 
+#ifdef CONFIG_CRONUS_DS3231_ENABLED
+    dy_cfg_must_set_initial(CRONUS_CFG_ID_PRP_RTC_PIN_SCL, CONFIG_CRONUS_DS3231_PIN_SCL);
+    dy_cfg_must_set_initial(CRONUS_CFG_ID_PRP_RTC_PIN_SDA, CONFIG_CRONUS_DS3231_PIN_SDA);
+#endif
+
     // Call this only after hardware revision-related settings are set
     dy_err_t err;
     if (dy_is_err(err = dy_cfg_init(DY_BT_CHRC_2))) {
@@ -99,7 +104,11 @@ static dy_err_t init_tls() {
 static dy_err_t init_rtc() {
     dy_err_t err;
 #ifdef CONFIG_CRONUS_DS3231_ENABLED
-    err = dy_ds3231_init(CONFIG_CRONUS_DS3231_PIN_SCL, CONFIG_CRONUS_DS3231_PIN_SDA, &ds3231);
+    err = dy_ds3231_init(
+        dy_cfg_get(CRONUS_CFG_ID_PRP_RTC_PIN_SCL, CONFIG_CRONUS_DS3231_PIN_SCL),
+        dy_cfg_get(CRONUS_CFG_ID_PRP_RTC_PIN_SDA, CONFIG_CRONUS_DS3231_PIN_SDA),
+        &ds3231
+    );
     if (dy_is_err(err)) {
         return err;
     }
