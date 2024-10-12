@@ -1,7 +1,6 @@
 on: push
 jobs:
   firmware-esp32s3_max7219v32x16:
-    name: Firmware (ESP32S3, MAX7219, 32x16)
     uses: ashep/ci/.github/workflows/esp-idf-build.yaml@v1
     permissions:
       contents: write # for creating releases
@@ -9,13 +8,3 @@ jobs:
       workdir: firmware
       app_name: cronus
       app_target: esp32s3_max7219v32x16
-
-  frontend:
-    name: Frontend
-    uses: ashep/ci/.github/workflows/js-build.yaml@v1
-    with:
-      workdir: frontend
-      app_name: cronus-gui
-      registry_user: ${{ vars.REGISTRY_USER }}
-    secrets:
-      registry_password: ${{ secrets.REGISTRY_PASSWORD }}
