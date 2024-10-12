@@ -8,3 +8,4 @@ jobs:
       workdir: src
       app_name: cronus
       app_target: esp32s3_max7219v32x16
+      pre_script: ./get-certs.sh
