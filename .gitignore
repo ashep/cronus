@@ -1,4 +1,8 @@
+*.bak
+*-backups
+*.lck
 .idea
 build
 cmake-build-debug
 sdkconfig.old
+fp-info-cache
