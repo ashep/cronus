@@ -6,8 +6,9 @@
 	(paper "A4")
 	(title_block
 		(title "Cronus")
-		(date "2024-10-13")
-		(rev "0.0.1")
+		(date "2024-10-24")
+		(rev "0.1")
+		(company "Oleksandr Shepetko")
 	)
 	(lib_symbols
 		(symbol "Connector:Conn_01x01_Pin"
@@ -1289,6 +1290,88 @@
 				)
 			)
 		)
+		(symbol "Mechanical:MountingHole"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim yes)
+			(in_bom no)
+			(on_board yes)
+			(property "Reference" "H"
+				(at 0 5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "MountingHole"
+				(at 0 3.175 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Mounting Hole without connection"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "mounting hole"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "MountingHole*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "MountingHole_0_1"
+				(circle
+					(center 0 0)
+					(radius 1.27)
+					(stroke
+						(width 1.27)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+		)
 		(symbol "power:+5V"
 			(power)
 			(pin_numbers hide)
@@ -1567,12 +1650,20 @@
 		(uuid "1c119a67-9e5d-4d55-9e1e-33be9071379b")
 	)
 	(no_connect
+		(at 83.82 95.25)
+		(uuid "21daa763-095f-4b19-a1e5-11ce5b24fab1")
+	)
+	(no_connect
+		(at 83.82 105.41)
+		(uuid "2a610b76-a215-41f5-bf3e-64ce1061504a")
+	)
+	(no_connect
 		(at 114.3 97.79)
 		(uuid "307b1daa-4f97-4098-8ef5-ada3290de2ef")
 	)
 	(no_connect
-		(at 83.82 102.87)
-		(uuid "35455e10-b7e8-4ada-9936-783edefbc443")
+		(at 83.82 92.71)
+		(uuid "33820db9-5440-47ae-beb1-82b8db480d11")
 	)
 	(no_connect
 		(at 114.3 105.41)
@@ -1597,6 +1688,14 @@
 	(no_connect
 		(at 83.82 90.17)
 		(uuid "5712cf17-a47c-4552-86b3-793828d38056")
+	)
+	(no_connect
+		(at 83.82 74.93)
+		(uuid "5c98a59f-5645-4ff7-8e99-179ccb4eee04")
+	)
+	(no_connect
+		(at 83.82 97.79)
+		(uuid "5cb84438-2f5c-4f28-b0fe-4ad788625a8c")
 	)
 	(no_connect
 		(at 114.3 82.55)
@@ -1624,7 +1723,7 @@
 	)
 	(no_connect
 		(at 83.82 100.33)
-		(uuid "9f823293-0337-4708-bfcf-53c775f471f7")
+		(uuid "8e79942e-0869-463f-9953-58b33a0418ae")
 	)
 	(no_connect
 		(at 176.53 77.47)
@@ -1635,16 +1734,8 @@
 		(uuid "a9bd062b-cf46-4be6-9c14-4e5c19f30a35")
 	)
 	(no_connect
-		(at 83.82 105.41)
-		(uuid "b6013dfa-9f88-43bd-b7b8-6a37a8bf0d21")
-	)
-	(no_connect
-		(at 83.82 92.71)
-		(uuid "bc3e18f9-2fae-438e-9ccc-2fa39a50e7cf")
-	)
-	(no_connect
-		(at 83.82 97.79)
-		(uuid "bc66137c-6538-4b31-8095-d1c2c40439de")
+		(at 83.82 102.87)
+		(uuid "bbceb83e-707e-4200-9f07-a6d7a0940214")
 	)
 	(no_connect
 		(at 83.82 64.77)
@@ -1663,10 +1754,6 @@
 		(uuid "d10b7e09-57a6-48c7-818d-40013971b2df")
 	)
 	(no_connect
-		(at 83.82 74.93)
-		(uuid "d6567eea-38d3-4d5d-8f78-097b6730b965")
-	)
-	(no_connect
 		(at 114.3 72.39)
 		(uuid "ded8b0f7-becb-45de-9dbd-05de5b633bbe")
 	)
@@ -1677,10 +1764,6 @@
 	(no_connect
 		(at 114.3 69.85)
 		(uuid "e3ee2a71-b0ff-4977-b0a9-7ba1d58f09fe")
-	)
-	(no_connect
-		(at 83.82 95.25)
-		(uuid "e429bb7d-e5d1-404c-968b-89ff5a561e85")
 	)
 	(no_connect
 		(at 114.3 102.87)
@@ -1716,7 +1799,7 @@
 	)
 	(wire
 		(pts
-			(xy 100.33 46.99) (xy 102.87 46.99)
+			(xy 82.55 46.99) (xy 102.87 46.99)
 		)
 		(stroke
 			(width 0)
@@ -1746,7 +1829,7 @@
 	)
 	(wire
 		(pts
-			(xy 93.98 115.57) (xy 99.06 115.57)
+			(xy 82.55 115.57) (xy 99.06 115.57)
 		)
 		(stroke
 			(width 0)
@@ -2075,15 +2158,16 @@
 	)
 	(symbol
 		(lib_id "Connector:Conn_01x01_Pin")
-		(at 95.25 46.99 0)
+		(at 77.47 46.99 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
+		(fields_autoplaced yes)
 		(uuid "0f0361d4-6ce8-43c5-a19f-dd89f9e00d59")
-		(property "Reference" "J1"
-			(at 87.122 46.99 0)
+		(property "Reference" "J2"
+			(at 78.105 41.91 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2091,15 +2175,15 @@
 			)
 		)
 		(property "Value" "5V_In"
-			(at 91.44 46.99 0)
+			(at 78.105 44.45 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Footprint" "Connector_PinHeader_1.00mm:PinHeader_1x01_P1.00mm_Vertical"
-			(at 95.25 46.99 0)
+		(property "Footprint" "Connector_Pin:Pin_D0.9mm_L10.0mm_W2.4mm_FlatFork"
+			(at 77.47 46.99 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2108,7 +2192,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 95.25 46.99 0)
+			(at 77.47 46.99 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2117,7 +2201,7 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x01, script generated"
-			(at 95.25 46.99 0)
+			(at 77.47 46.99 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2131,7 +2215,7 @@
 		(instances
 			(project "Cronus"
 				(path "/4c973cd3-de62-4d41-b784-6255b612382d"
-					(reference "J1")
+					(reference "J2")
 					(unit 1)
 				)
 			)
@@ -2154,7 +2238,7 @@
 				)
 			)
 		)
-		(property "Value" "ESP32"
+		(property "Value" "ESP32-S3"
 			(at 99.06 83.312 0)
 			(effects
 				(font
@@ -2319,6 +2403,70 @@
 		)
 	)
 	(symbol
+		(lib_id "Mechanical:MountingHole")
+		(at 15.24 15.24 0)
+		(unit 1)
+		(exclude_from_sim yes)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "2d340a30-016c-4007-844a-a99440d39c74")
+		(property "Reference" "H1"
+			(at 17.78 13.9699 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "MountingHole"
+			(at 17.78 16.5099 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "MountingHole:MountingHole_2.2mm_M2"
+			(at 15.24 15.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 15.24 15.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Mounting Hole without connection"
+			(at 15.24 15.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project ""
+				(path "/4c973cd3-de62-4d41-b784-6255b612382d"
+					(reference "H1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Connector:Conn_01x01_Pin")
 		(at 119.38 57.15 0)
 		(unit 1)
@@ -2327,7 +2475,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "2f103aaf-c372-4238-a1b5-fa0f12d2ce8b")
-		(property "Reference" "J6"
+		(property "Reference" "J7"
 			(at 119.634 53.594 0)
 			(effects
 				(font
@@ -2343,7 +2491,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_PinHeader_1.00mm:PinHeader_1x01_P1.00mm_Vertical"
+		(property "Footprint" "Connector_Pin:Pin_D0.9mm_L10.0mm_W2.4mm_FlatFork"
 			(at 119.38 57.15 0)
 			(effects
 				(font
@@ -2376,7 +2524,7 @@
 		(instances
 			(project "Cronus"
 				(path "/4c973cd3-de62-4d41-b784-6255b612382d"
-					(reference "J6")
+					(reference "J7")
 					(unit 1)
 				)
 			)
@@ -2391,8 +2539,8 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "3cd1da25-cba0-4bea-b289-0dde76b5790c")
-		(property "Reference" "J2"
-			(at 70.358 77.47 0)
+		(property "Reference" "J3"
+			(at 69.85 77.47 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2400,14 +2548,14 @@
 			)
 		)
 		(property "Value" "DCL"
-			(at 73.914 77.47 0)
+			(at 73.66 77.47 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Footprint" "Connector_PinHeader_1.00mm:PinHeader_1x01_P1.00mm_Vertical"
+		(property "Footprint" "Connector_Pin:Pin_D0.9mm_L10.0mm_W2.4mm_FlatFork"
 			(at 77.47 77.47 0)
 			(effects
 				(font
@@ -2440,7 +2588,7 @@
 		(instances
 			(project ""
 				(path "/4c973cd3-de62-4d41-b784-6255b612382d"
-					(reference "J2")
+					(reference "J3")
 					(unit 1)
 				)
 			)
@@ -2612,8 +2760,8 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "77feeeeb-3ae8-45d4-8149-d779436f7bba")
-		(property "Reference" "J4"
-			(at 70.104 82.55 0)
+		(property "Reference" "J5"
+			(at 69.85 82.55 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2621,14 +2769,14 @@
 			)
 		)
 		(property "Value" "DD0"
-			(at 73.914 82.55 0)
+			(at 73.66 82.55 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Footprint" "Connector_PinHeader_1.00mm:PinHeader_1x01_P1.00mm_Vertical"
+		(property "Footprint" "Connector_Pin:Pin_D0.9mm_L10.0mm_W2.4mm_FlatFork"
 			(at 77.47 82.55 0)
 			(effects
 				(font
@@ -2661,7 +2809,7 @@
 		(instances
 			(project "Cronus"
 				(path "/4c973cd3-de62-4d41-b784-6255b612382d"
-					(reference "J4")
+					(reference "J5")
 					(unit 1)
 				)
 			)
@@ -2735,15 +2883,15 @@
 	)
 	(symbol
 		(lib_id "Connector:Conn_01x01_Pin")
-		(at 88.9 115.57 0)
+		(at 77.47 115.57 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(uuid "9addeac9-e95e-4488-bafd-911e4e903307")
-		(property "Reference" "J7"
-			(at 80.772 115.57 0)
+		(property "Reference" "J1"
+			(at 69.342 115.57 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2751,15 +2899,15 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 85.09 115.57 0)
+			(at 73.66 115.57 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Footprint" "Connector_PinHeader_1.00mm:PinHeader_1x01_P1.00mm_Vertical"
-			(at 88.9 115.57 0)
+		(property "Footprint" "Connector_Pin:Pin_D0.9mm_L10.0mm_W2.4mm_FlatFork"
+			(at 77.47 115.57 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2768,7 +2916,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 88.9 115.57 0)
+			(at 77.47 115.57 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2777,7 +2925,7 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x01, script generated"
-			(at 88.9 115.57 0)
+			(at 77.47 115.57 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2791,7 +2939,7 @@
 		(instances
 			(project "Cronus"
 				(path "/4c973cd3-de62-4d41-b784-6255b612382d"
-					(reference "J7")
+					(reference "J1")
 					(unit 1)
 				)
 			)
@@ -2858,6 +3006,134 @@
 			(project "Cronus"
 				(path "/4c973cd3-de62-4d41-b784-6255b612382d"
 					(reference "#PWR03")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Mechanical:MountingHole")
+		(at 15.24 25.4 0)
+		(unit 1)
+		(exclude_from_sim yes)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "a6a6d372-219e-4588-93f1-e5ff1f5bcceb")
+		(property "Reference" "H3"
+			(at 17.78 24.1299 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "MountingHole"
+			(at 17.78 26.6699 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "MountingHole:MountingHole_2.2mm_M2"
+			(at 15.24 25.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 15.24 25.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Mounting Hole without connection"
+			(at 15.24 25.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "Cronus"
+				(path "/4c973cd3-de62-4d41-b784-6255b612382d"
+					(reference "H3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Mechanical:MountingHole")
+		(at 15.24 30.48 0)
+		(unit 1)
+		(exclude_from_sim yes)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "ae9650e9-6481-4b23-8144-9d489fb137e0")
+		(property "Reference" "H4"
+			(at 17.78 29.2099 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "MountingHole"
+			(at 17.78 31.7499 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "MountingHole:MountingHole_2.2mm_M2"
+			(at 15.24 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 15.24 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Mounting Hole without connection"
+			(at 15.24 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "Cronus"
+				(path "/4c973cd3-de62-4d41-b784-6255b612382d"
+					(reference "H4")
 					(unit 1)
 				)
 			)
@@ -2938,7 +3214,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "bdbb3355-cf57-4e28-825b-bf1f83733abd")
-		(property "Reference" "J5"
+		(property "Reference" "J6"
 			(at 119.634 61.722 0)
 			(effects
 				(font
@@ -2954,7 +3230,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_PinHeader_1.00mm:PinHeader_1x01_P1.00mm_Vertical"
+		(property "Footprint" "Connector_Pin:Pin_D0.9mm_L10.0mm_W2.4mm_FlatFork"
 			(at 124.46 64.77 0)
 			(effects
 				(font
@@ -2987,7 +3263,7 @@
 		(instances
 			(project "Cronus"
 				(path "/4c973cd3-de62-4d41-b784-6255b612382d"
-					(reference "J5")
+					(reference "J6")
 					(unit 1)
 				)
 			)
@@ -3063,6 +3339,70 @@
 		)
 	)
 	(symbol
+		(lib_id "Mechanical:MountingHole")
+		(at 15.24 20.32 0)
+		(unit 1)
+		(exclude_from_sim yes)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "df2b3c0c-2e5d-4388-8b4e-d24653ed18a4")
+		(property "Reference" "H2"
+			(at 17.78 19.0499 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "MountingHole"
+			(at 17.78 21.5899 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "MountingHole:MountingHole_2.2mm_M2"
+			(at 15.24 20.32 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 15.24 20.32 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Mounting Hole without connection"
+			(at 15.24 20.32 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "Cronus"
+				(path "/4c973cd3-de62-4d41-b784-6255b612382d"
+					(reference "H2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Connector:Conn_01x01_Pin")
 		(at 77.47 80.01 0)
 		(unit 1)
@@ -3071,8 +3411,8 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "f19e15fa-029d-43da-b6d6-840e18394226")
-		(property "Reference" "J3"
-			(at 70.104 80.01 0)
+		(property "Reference" "J4"
+			(at 69.85 80.01 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3080,14 +3420,14 @@
 			)
 		)
 		(property "Value" "DCS"
-			(at 73.914 80.01 0)
+			(at 73.66 80.01 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Footprint" "Connector_PinHeader_1.00mm:PinHeader_1x01_P1.00mm_Vertical"
+		(property "Footprint" "Connector_Pin:Pin_D0.9mm_L10.0mm_W2.4mm_FlatFork"
 			(at 77.47 80.01 0)
 			(effects
 				(font
@@ -3120,7 +3460,7 @@
 		(instances
 			(project "Cronus"
 				(path "/4c973cd3-de62-4d41-b784-6255b612382d"
-					(reference "J3")
+					(reference "J4")
 					(unit 1)
 				)
 			)

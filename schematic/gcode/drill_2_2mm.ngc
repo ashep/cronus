@@ -1,7 +1,8 @@
 ( pcb2gcode 2.5.0 )
 ( Software-independent Gcode )
 
-( This file uses only one drill bit. Forced by 'onedrill' option )
+( This file uses 1 drill bit sizes. )
+( Bit sizes: [2.2mm] )
 
 G94       (Millimeters per minute feed rate.)
 G21       (Units == Millimeters.)
@@ -19,18 +20,18 @@ M3      (Spindle on clockwise.)
 G0 Z5.00000
 G04 P1.00000
 
-G1 F200.00000
-G0 X3.00000 Y48.50000
-G1 Z-1.80000
+G1 F50.00000
+G0 X3.00000 Y49.00000
+G1 Z-1.90000
 G1 Z5.00000
-G0 X3.00000 Y2.50000
-G1 Z-1.80000
+G0 X3.00000 Y3.00000
+G1 Z-1.90000
 G1 Z5.00000
-G0 X69.00000 Y48.50000
-G1 Z-1.80000
+G0 X69.00000 Y49.00000
+G1 Z-1.90000
 G1 Z5.00000
-G0 X69.00000 Y2.50000
-G1 Z-1.80000
+G0 X69.00000 Y3.00000
+G1 Z-1.90000
 G1 Z5.00000
 
 G00 Z40.000 ( All done -- retract )
