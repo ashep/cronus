@@ -157,7 +157,7 @@
 		(remove_unused_layers no)
 		(uuid "e6d81b8a-4a73-4ece-a56d-50067d2b0a81")
 	)
-	(pad "1" thru_hole rect
+	(pad "2" thru_hole rect
 		(at -12.7 -25.4)
 		(size 1.6 1.6)
 		(drill 1)
@@ -325,29 +325,21 @@
 		(remove_unused_layers no)
 		(uuid "97b0f155-7c5d-4bb9-adcf-720616ede547")
 	)
-	(pad "22" thru_hole rect
-		(at 12.7 -27.94)
-		(size 1.6 1.6)
-		(drill 1)
-		(layers "*.Cu" "*.Mask")
-		(remove_unused_layers no)
-		(uuid "99b7cb7d-9400-4abc-9da6-c1725c3a5388")
-	)
-	(pad "22" thru_hole rect
-		(at 12.7 22.86)
-		(size 1.6 1.6)
-		(drill 1)
-		(layers "*.Cu" "*.Mask")
-		(remove_unused_layers no)
-		(uuid "c17d0ff6-9081-43b5-82a2-9eb0a41371d3")
-	)
-	(pad "22" thru_hole rect
+	(pad "23" thru_hole rect
 		(at 12.7 25.4)
 		(size 1.6 1.6)
 		(drill 1)
 		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
 		(uuid "4ee772bc-7e95-45d0-826c-735055fbf8c2")
+	)
+	(pad "24" thru_hole rect
+		(at 12.7 22.86)
+		(size 1.6 1.6)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "c17d0ff6-9081-43b5-82a2-9eb0a41371d3")
 	)
 	(pad "25" thru_hole rect
 		(at 12.7 20.32)
@@ -500,5 +492,13 @@
 		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
 		(uuid "9a7d39ad-9591-494f-a9ad-2ed6dca9f31a")
+	)
+	(pad "44" thru_hole rect
+		(at 12.7 -27.94)
+		(size 1.6 1.6)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "99b7cb7d-9400-4abc-9da6-c1725c3a5388")
 	)
 )

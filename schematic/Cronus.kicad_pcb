@@ -122,7 +122,7 @@
 	(net 12 "+5V")
 	(net 13 "unconnected-(U1-GPIO3-Pad13)")
 	(net 14 "unconnected-(U1-GPIO2-Pad40)")
-	(net 15 "unconnected-(U1-GPIO15-Pad30)")
+	(net 15 "unconnected-(U1-GPIO45-Pad30)")
 	(net 16 "unconnected-(U1-RX-Pad42)")
 	(net 17 "unconnected-(U1-GPIO41-Pad38)")
 	(net 18 "unconnected-(U1-GPIO8-Pad12)")
@@ -616,7 +616,7 @@
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.SilkS")
-			(uuid "7d5fcfd6-e54b-4bc3-8579-b22dea7973a8")
+			(uuid "3e1a9847-3373-4137-88b9-35e4eae879fa")
 			(effects
 				(font
 					(size 1 1)
@@ -628,7 +628,7 @@
 			(at 2.152 0 0)
 			(unlocked yes)
 			(layer "F.SilkS")
-			(uuid "671bd7bd-23c1-4a0b-af8b-9f1a18a20786")
+			(uuid "f7ec0178-9b44-40c1-8ce0-ad26acf3e33e")
 			(effects
 				(font
 					(size 1 1)
@@ -641,7 +641,7 @@
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "cd80504e-7d2c-41ab-a069-627c1b6ced3a")
+			(uuid "7f33dce6-cc5f-46ed-a143-dc8f0e015ded")
 			(effects
 				(font
 					(size 1 1)
@@ -654,7 +654,7 @@
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "775fc51f-f0ed-49b1-9924-2aa100683e1f")
+			(uuid "645dbb2c-8701-4de4-94da-fb2d87aa6914")
 			(effects
 				(font
 					(size 1 1)
@@ -667,7 +667,7 @@
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "3a0f194d-d3ec-40b8-a4d9-77ab605415e8")
+			(uuid "82f64292-78f8-4e05-b929-88d4bd7c11c9")
 			(effects
 				(font
 					(size 1 1)
@@ -687,7 +687,7 @@
 				(type default)
 			)
 			(layer "F.SilkS")
-			(uuid "0ee8dee9-bc9c-4b0a-840f-7c82b018ceec")
+			(uuid "7322da03-7e1e-47bb-9b75-c04c18ed1825")
 		)
 		(fp_line
 			(start 13.97 26.67)
@@ -697,7 +697,7 @@
 				(type default)
 			)
 			(layer "F.SilkS")
-			(uuid "a6df9c49-5d5b-4dff-b7f8-ae95896121ba")
+			(uuid "b538bcf1-c084-4735-a4e5-2bce2b9e141b")
 		)
 		(fp_line
 			(start -13.97 -29.21)
@@ -707,7 +707,7 @@
 				(type default)
 			)
 			(layer "F.SilkS")
-			(uuid "57d000e1-8575-49db-bca5-596d0b759923")
+			(uuid "8f18cf16-23b1-49a9-9a23-fc979f5d74d3")
 		)
 		(fp_line
 			(start -7.62 -29.21)
@@ -717,7 +717,7 @@
 				(type default)
 			)
 			(layer "F.SilkS")
-			(uuid "74fa894b-227a-4bf7-a4f6-cffe9b882144")
+			(uuid "69540b31-54b9-4ffc-b018-573d71e24326")
 		)
 		(fp_line
 			(start 13.97 -29.21)
@@ -727,7 +727,7 @@
 				(type default)
 			)
 			(layer "F.SilkS")
-			(uuid "e4444942-1724-4349-bfcf-9f1e37c0862c")
+			(uuid "4c12bc40-a5fa-4772-956a-3df073e48d48")
 		)
 		(fp_line
 			(start -7.62 -35.56)
@@ -737,7 +737,7 @@
 				(type default)
 			)
 			(layer "F.SilkS")
-			(uuid "79a2189c-df3e-4993-a668-39376b6d0489")
+			(uuid "66c41c85-7c6d-4a31-baae-de112a6603ea")
 		)
 		(fp_line
 			(start 7.62 -35.56)
@@ -747,7 +747,19 @@
 				(type default)
 			)
 			(layer "F.SilkS")
-			(uuid "1cfdda08-5a2d-4b67-abb1-e778441b35cc")
+			(uuid "25eb996e-b2b5-490f-8233-7113bfeb9ef3")
+		)
+		(fp_text user "${REFERENCE}"
+			(at 0 2.5 -90)
+			(unlocked yes)
+			(layer "F.Fab")
+			(uuid "f0bcbc52-0d55-48a2-b4f6-cb4a02537968")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
 		)
 		(pad "1" thru_hole rect
 			(at -12.7 -27.94 270)
@@ -758,9 +770,9 @@
 			(net 37 "Net-(J7-Pin_1)")
 			(pinfunction "3V3_Out")
 			(pintype "power_out")
-			(uuid "638b6b6b-37fb-424f-9e86-e12126745bf0")
+			(uuid "b97bde34-0bd8-4d4c-8682-677b62ef66b1")
 		)
-		(pad "1" thru_hole rect
+		(pad "2" thru_hole rect
 			(at -12.7 -25.4 270)
 			(size 1.6 1.6)
 			(drill 1)
@@ -769,7 +781,7 @@
 			(net 37 "Net-(J7-Pin_1)")
 			(pinfunction "3V3_Out")
 			(pintype "power_out")
-			(uuid "74ae3a81-8b23-4378-942f-86ae5b2197ca")
+			(uuid "01583e46-bbe2-4756-87cb-1f8da5b00883")
 		)
 		(pad "3" thru_hole rect
 			(at -12.7 -22.86 270)
@@ -780,7 +792,7 @@
 			(net 24 "unconnected-(U1-RST-Pad3)")
 			(pinfunction "RST")
 			(pintype "input+no_connect")
-			(uuid "afb72bed-be50-41e0-94f6-695d402a65f6")
+			(uuid "6284227b-782f-48c0-be4c-e262fd1f3b79")
 		)
 		(pad "4" thru_hole rect
 			(at -12.7 -20.32 270)
@@ -791,7 +803,7 @@
 			(net 10 "unconnected-(U1-GPIO4-Pad4)")
 			(pinfunction "GPIO4")
 			(pintype "bidirectional+no_connect")
-			(uuid "2262c4b6-d39e-41e1-8d92-891378d6c75b")
+			(uuid "5fc3cc5b-452f-4060-b5a2-e7f93406a1e8")
 		)
 		(pad "5" thru_hole rect
 			(at -12.7 -17.78 270)
@@ -802,7 +814,7 @@
 			(net 19 "unconnected-(U1-GPIO5-Pad5)")
 			(pinfunction "GPIO5")
 			(pintype "bidirectional+no_connect")
-			(uuid "5d52c5c8-813d-419c-9f4f-fdf91714b399")
+			(uuid "decfb76e-acfd-48c5-8f47-4a6ba7414c93")
 		)
 		(pad "6" thru_hole rect
 			(at -12.7 -15.24 270)
@@ -813,7 +825,7 @@
 			(net 11 "unconnected-(U1-GPIO6-Pad6)")
 			(pinfunction "GPIO6")
 			(pintype "bidirectional+no_connect")
-			(uuid "2b6f8c38-c7c6-4917-8eec-c02fd1b2dc1a")
+			(uuid "df306035-95d4-4670-a3aa-40d6b812721c")
 		)
 		(pad "7" thru_hole rect
 			(at -12.7 -12.7 270)
@@ -824,7 +836,7 @@
 			(net 25 "unconnected-(U1-GPIO7-Pad7)")
 			(pinfunction "GPIO7")
 			(pintype "bidirectional+no_connect")
-			(uuid "b2ebd3f6-35f4-407b-a175-5ed86ec60b24")
+			(uuid "2382b437-c829-447a-9c3b-9d357da5ea7f")
 		)
 		(pad "8" thru_hole rect
 			(at -12.7 -10.16 270)
@@ -835,7 +847,7 @@
 			(net 38 "unconnected-(U1-GPIO15-Pad8)")
 			(pinfunction "GPIO15")
 			(pintype "bidirectional+no_connect")
-			(uuid "05be3d5d-2cdb-4d4f-be5b-b688af19aed0")
+			(uuid "9259f918-bef5-456e-9f14-c810303285b2")
 		)
 		(pad "9" thru_hole rect
 			(at -12.7 -7.62 270)
@@ -846,7 +858,7 @@
 			(net 2 "Net-(J3-Pin_1)")
 			(pinfunction "GPIO16")
 			(pintype "bidirectional")
-			(uuid "cb4c35d1-e50b-4256-ad8e-5009a7394251")
+			(uuid "d73df75b-1a4f-42bb-8c96-20a2e0e347db")
 		)
 		(pad "10" thru_hole rect
 			(at -12.7 -5.08 270)
@@ -857,7 +869,7 @@
 			(net 1 "Net-(J4-Pin_1)")
 			(pinfunction "GPIO17")
 			(pintype "bidirectional")
-			(uuid "688cabcf-4929-4ed8-9c4d-c1a7bf479686")
+			(uuid "fc5a8431-8b91-431b-843b-e05da5707688")
 		)
 		(pad "11" thru_hole rect
 			(at -12.7 -2.54 270)
@@ -868,7 +880,7 @@
 			(net 3 "Net-(J5-Pin_1)")
 			(pinfunction "GPIO18")
 			(pintype "bidirectional")
-			(uuid "a1ea963a-3dde-4080-9616-018818cb5013")
+			(uuid "278109a8-e0e5-473a-97da-0900c61c66fb")
 		)
 		(pad "12" thru_hole rect
 			(at -12.7 0 270)
@@ -879,7 +891,7 @@
 			(net 18 "unconnected-(U1-GPIO8-Pad12)")
 			(pinfunction "GPIO8")
 			(pintype "bidirectional+no_connect")
-			(uuid "589c52dd-9c21-43a3-a77e-b3d92fec0859")
+			(uuid "a54d15a0-b438-4723-aa00-860f92578736")
 		)
 		(pad "13" thru_hole rect
 			(at -12.7 2.54 270)
@@ -890,7 +902,7 @@
 			(net 13 "unconnected-(U1-GPIO3-Pad13)")
 			(pinfunction "GPIO3")
 			(pintype "bidirectional+no_connect")
-			(uuid "3b8e620b-4e88-42ff-ad46-cf96099f2246")
+			(uuid "3e37bb99-3411-4389-a46e-2429181ad553")
 		)
 		(pad "14" thru_hole rect
 			(at -12.7 5.08 270)
@@ -901,7 +913,7 @@
 			(net 26 "unconnected-(U1-GPIO46-Pad14)")
 			(pinfunction "GPIO46")
 			(pintype "bidirectional+no_connect")
-			(uuid "b535916a-03ef-4240-9451-08b9e94c4c50")
+			(uuid "089479ff-7413-4605-94c2-1062077f4881")
 		)
 		(pad "15" thru_hole rect
 			(at -12.7 7.62 270)
@@ -912,7 +924,7 @@
 			(net 41 "unconnected-(U1-GPIO9-Pad15)")
 			(pinfunction "GPIO9")
 			(pintype "bidirectional+no_connect")
-			(uuid "89f52aa2-b940-417f-adaa-cded9e013a98")
+			(uuid "66de11f7-c284-45b7-9e8a-d750fe2d007c")
 		)
 		(pad "16" thru_hole rect
 			(at -12.7 10.16 270)
@@ -923,7 +935,7 @@
 			(net 44 "unconnected-(U1-GPIO10-Pad16)")
 			(pinfunction "GPIO10")
 			(pintype "bidirectional+no_connect")
-			(uuid "a3b2b30a-13c9-4812-ad29-4a52b2250e3d")
+			(uuid "92bcc48b-32c5-470e-801d-bad1995a2b83")
 		)
 		(pad "17" thru_hole rect
 			(at -12.7 12.7 270)
@@ -934,7 +946,7 @@
 			(net 40 "unconnected-(U1-GPIO11-Pad17)")
 			(pinfunction "GPIO11")
 			(pintype "bidirectional+no_connect")
-			(uuid "6f8df926-8778-441d-83ef-009b3cdd0ca8")
+			(uuid "0ac6da47-050a-44f6-8587-cceadfd9f431")
 		)
 		(pad "18" thru_hole rect
 			(at -12.7 15.24 270)
@@ -945,7 +957,7 @@
 			(net 42 "unconnected-(U1-GPIO12-Pad18)")
 			(pinfunction "GPIO12")
 			(pintype "bidirectional+no_connect")
-			(uuid "9086a2d1-aa7a-453d-bf22-f70a162fb37c")
+			(uuid "18d4ae8d-965c-4b13-8f71-a89eb3727a94")
 		)
 		(pad "19" thru_hole rect
 			(at -12.7 17.78 270)
@@ -956,7 +968,7 @@
 			(net 39 "unconnected-(U1-GPIO13-Pad19)")
 			(pinfunction "GPIO13")
 			(pintype "bidirectional+no_connect")
-			(uuid "44568dfa-4224-444f-86d5-074ffbb6c324")
+			(uuid "16d63225-d72f-44f5-ad1c-060ed688179c")
 		)
 		(pad "20" thru_hole rect
 			(at -12.7 20.32 270)
@@ -967,7 +979,7 @@
 			(net 43 "unconnected-(U1-GPIO14-Pad20)")
 			(pinfunction "GPIO14")
 			(pintype "bidirectional+no_connect")
-			(uuid "98ca8fe5-aa70-4cee-bd2c-5ef9ca314567")
+			(uuid "39ab5fca-5577-480d-928c-5312e30b449b")
 		)
 		(pad "21" thru_hole rect
 			(at -12.7 22.86 270)
@@ -978,7 +990,7 @@
 			(net 12 "+5V")
 			(pinfunction "5V_In")
 			(pintype "power_in")
-			(uuid "2c84c51d-29e8-4bd1-a665-0f83baf6d733")
+			(uuid "2982baf5-583b-4001-8c3f-c5a7cbca8a5e")
 		)
 		(pad "22" thru_hole rect
 			(at -12.7 25.4 270)
@@ -989,31 +1001,9 @@
 			(net 21 "GND")
 			(pinfunction "GND")
 			(pintype "passive")
-			(uuid "62bbee65-ccb1-4b27-a929-e3350ab73f87")
+			(uuid "77eb9469-a757-49a5-b04e-b3a87e219211")
 		)
-		(pad "22" thru_hole rect
-			(at 12.7 -27.94 270)
-			(size 1.6 1.6)
-			(drill 1)
-			(layers "*.Cu" "*.Mask")
-			(remove_unused_layers no)
-			(net 21 "GND")
-			(pinfunction "GND")
-			(pintype "passive")
-			(uuid "72ed3803-fef5-4251-a7f3-e4d9b3fa2d14")
-		)
-		(pad "22" thru_hole rect
-			(at 12.7 22.86 270)
-			(size 1.6 1.6)
-			(drill 1)
-			(layers "*.Cu" "*.Mask")
-			(remove_unused_layers no)
-			(net 21 "GND")
-			(pinfunction "GND")
-			(pintype "passive")
-			(uuid "b5617fde-92c7-4bb3-bed2-328d148c6566")
-		)
-		(pad "22" thru_hole rect
+		(pad "23" thru_hole rect
 			(at 12.7 25.4 270)
 			(size 1.6 1.6)
 			(drill 1)
@@ -1022,7 +1012,18 @@
 			(net 21 "GND")
 			(pinfunction "GND")
 			(pintype "passive")
-			(uuid "def43886-49e1-4276-8f8e-367722be6210")
+			(uuid "c96b0b27-b7a3-44ff-a42e-01a2e36c867a")
+		)
+		(pad "24" thru_hole rect
+			(at 12.7 22.86 270)
+			(size 1.6 1.6)
+			(drill 1)
+			(layers "*.Cu" "*.Mask")
+			(remove_unused_layers no)
+			(net 21 "GND")
+			(pinfunction "GND")
+			(pintype "passive")
+			(uuid "5cb50c13-5d36-44fe-9766-38096565f913")
 		)
 		(pad "25" thru_hole rect
 			(at 12.7 20.32 270)
@@ -1033,7 +1034,7 @@
 			(net 28 "unconnected-(U1-GPIO19-Pad25)")
 			(pinfunction "GPIO19")
 			(pintype "bidirectional+no_connect")
-			(uuid "cf488e47-9734-4bd9-8577-45562b973bac")
+			(uuid "cec3c4f0-84de-4067-9250-eca7e3fecb9c")
 		)
 		(pad "26" thru_hole rect
 			(at 12.7 17.78 270)
@@ -1044,7 +1045,7 @@
 			(net 29 "unconnected-(U1-GPIO20-Pad26)")
 			(pinfunction "GPIO20")
 			(pintype "bidirectional+no_connect")
-			(uuid "d00a7fed-679d-4fa4-96fe-19ffa50ce70e")
+			(uuid "55837460-66d3-4371-bc7f-70b472a6eb2b")
 		)
 		(pad "27" thru_hole rect
 			(at 12.7 15.24 270)
@@ -1055,7 +1056,7 @@
 			(net 9 "unconnected-(U1-GPIO21-Pad27)")
 			(pinfunction "GPIO21")
 			(pintype "bidirectional+no_connect")
-			(uuid "17e54a75-6325-4a87-8a9f-3e8f50c864d8")
+			(uuid "d14e8f75-e316-4831-8fd5-b8e1cc6be9b1")
 		)
 		(pad "28" thru_hole rect
 			(at 12.7 12.7 270)
@@ -1066,7 +1067,7 @@
 			(net 23 "unconnected-(U1-GPIO47-Pad28)")
 			(pinfunction "GPIO47")
 			(pintype "bidirectional+no_connect")
-			(uuid "78fb6a59-3165-4abd-b4f4-4338900a15d2")
+			(uuid "55cb4e15-23b5-40a2-9017-46689dd6698b")
 		)
 		(pad "29" thru_hole rect
 			(at 12.7 10.16 270)
@@ -1077,7 +1078,7 @@
 			(net 6 "unconnected-(U1-GPIO48-Pad29)")
 			(pinfunction "GPIO48")
 			(pintype "bidirectional+no_connect")
-			(uuid "04ad9db9-5348-47ec-ab8d-cfce68f9aaa3")
+			(uuid "09d0703d-d0e5-4fda-8bf3-8c61e5302c2f")
 		)
 		(pad "30" thru_hole rect
 			(at 12.7 7.62 270)
@@ -1085,10 +1086,10 @@
 			(drill 1)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net 15 "unconnected-(U1-GPIO15-Pad30)")
-			(pinfunction "GPIO15")
+			(net 15 "unconnected-(U1-GPIO45-Pad30)")
+			(pinfunction "GPIO45")
 			(pintype "bidirectional+no_connect")
-			(uuid "42f16920-bea6-442f-927c-b1bdbda969b9")
+			(uuid "60c38f73-47ac-49de-bd94-4c7a51ff73da")
 		)
 		(pad "31" thru_hole rect
 			(at 12.7 5.08 270)
@@ -1099,7 +1100,7 @@
 			(net 7 "unconnected-(U1-GPIO0-Pad31)")
 			(pinfunction "GPIO0")
 			(pintype "bidirectional+no_connect")
-			(uuid "09888cef-b2e1-4965-a38e-9c0e98753802")
+			(uuid "ba5b8d33-02dd-4396-a2b9-29108ff7690f")
 		)
 		(pad "32" thru_hole rect
 			(at 12.7 2.54 270)
@@ -1110,7 +1111,7 @@
 			(net 32 "unconnected-(U1-GPIO35-Pad32)")
 			(pinfunction "GPIO35")
 			(pintype "bidirectional+no_connect")
-			(uuid "fd0db907-0952-4274-bec3-9e7b8aedaa72")
+			(uuid "7cad1093-f9c4-42b3-8d7a-7ea49c6c08d7")
 		)
 		(pad "33" thru_hole rect
 			(at 12.7 0 270)
@@ -1121,7 +1122,7 @@
 			(net 31 "unconnected-(U1-GPIO36-Pad33)")
 			(pinfunction "GPIO36")
 			(pintype "bidirectional+no_connect")
-			(uuid "e2311036-0e1f-44df-9af2-7bd938f3f82b")
+			(uuid "74e46835-6f27-408f-9346-7bf8ac942ace")
 		)
 		(pad "34" thru_hole rect
 			(at 12.7 -2.54 270)
@@ -1132,7 +1133,7 @@
 			(net 8 "unconnected-(U1-GPIO37-Pad34)")
 			(pinfunction "GPIO37")
 			(pintype "bidirectional+no_connect")
-			(uuid "13667a0a-5357-49f4-8546-86add5cf080b")
+			(uuid "692a4e48-b28f-47d1-87ec-a8c0ed12046c")
 		)
 		(pad "35" thru_hole rect
 			(at 12.7 -5.08 270)
@@ -1143,7 +1144,7 @@
 			(net 5 "Net-(U1-GPIO38)")
 			(pinfunction "GPIO38")
 			(pintype "bidirectional")
-			(uuid "d1f1a1a7-abc7-4dcd-a9b8-99117b9d9e05")
+			(uuid "daa3c02e-aac2-4120-9828-adadd83d67f2")
 		)
 		(pad "36" thru_hole rect
 			(at 12.7 -7.62 270)
@@ -1154,7 +1155,7 @@
 			(net 4 "Net-(U1-GPIO39)")
 			(pinfunction "GPIO39")
 			(pintype "bidirectional")
-			(uuid "15b3d763-217f-4e64-b892-473df12e4ef2")
+			(uuid "5811803d-1d50-4e5b-9391-8a6c9991a869")
 		)
 		(pad "37" thru_hole rect
 			(at 12.7 -10.16 270)
@@ -1165,7 +1166,7 @@
 			(net 20 "unconnected-(U1-GPIO40-Pad37)")
 			(pinfunction "GPIO40")
 			(pintype "bidirectional+no_connect")
-			(uuid "605bcb88-5c81-4b28-a947-279027f0947d")
+			(uuid "f6219cbb-4fcf-4827-be69-dd3fea66238b")
 		)
 		(pad "38" thru_hole rect
 			(at 12.7 -12.7 270)
@@ -1176,7 +1177,7 @@
 			(net 17 "unconnected-(U1-GPIO41-Pad38)")
 			(pinfunction "GPIO41")
 			(pintype "bidirectional+no_connect")
-			(uuid "4eae0c6a-dcce-4659-8391-3b2f6aa21a05")
+			(uuid "0a27f55e-e76d-4430-924e-1a354ab1918b")
 		)
 		(pad "39" thru_hole rect
 			(at 12.7 -15.24 270)
@@ -1187,7 +1188,7 @@
 			(net 27 "unconnected-(U1-GPIO42-Pad39)")
 			(pinfunction "GPIO42")
 			(pintype "bidirectional+no_connect")
-			(uuid "ce6796d9-1189-4d6b-9963-88b6595d53cb")
+			(uuid "6eb53bcc-9517-42c6-bd9f-abef3befab8b")
 		)
 		(pad "40" thru_hole rect
 			(at 12.7 -17.78 270)
@@ -1198,7 +1199,7 @@
 			(net 14 "unconnected-(U1-GPIO2-Pad40)")
 			(pinfunction "GPIO2")
 			(pintype "bidirectional+no_connect")
-			(uuid "42eb5a7d-2639-4161-81fa-879784a4c7af")
+			(uuid "226badc5-5252-4f61-b86a-ecf53c269be7")
 		)
 		(pad "41" thru_hole rect
 			(at 12.7 -20.32 270)
@@ -1209,7 +1210,7 @@
 			(net 22 "Net-(J6-Pin_1)")
 			(pinfunction "GPIO1")
 			(pintype "bidirectional")
-			(uuid "6689275f-0aa3-4b2c-8a98-93b0153d5a96")
+			(uuid "8448434f-47a4-469b-a68d-8c36829c981d")
 		)
 		(pad "42" thru_hole rect
 			(at 12.7 -22.86 270)
@@ -1220,7 +1221,7 @@
 			(net 16 "unconnected-(U1-RX-Pad42)")
 			(pinfunction "RX")
 			(pintype "input+no_connect")
-			(uuid "48266f4c-6486-4385-bb83-1b26a257bdc5")
+			(uuid "28a59457-c7f1-4694-82fc-010079f02a63")
 		)
 		(pad "43" thru_hole rect
 			(at 12.7 -25.4 270)
@@ -1231,7 +1232,18 @@
 			(net 30 "unconnected-(U1-TX-Pad43)")
 			(pinfunction "TX")
 			(pintype "bidirectional+no_connect")
-			(uuid "da79d91b-4f57-44f9-994f-644d3a4ffd32")
+			(uuid "a0292014-f153-4c19-9cdf-bbeed9c5043b")
+		)
+		(pad "44" thru_hole rect
+			(at 12.7 -27.94 270)
+			(size 1.6 1.6)
+			(drill 1)
+			(layers "*.Cu" "*.Mask")
+			(remove_unused_layers no)
+			(net 21 "GND")
+			(pinfunction "GND")
+			(pintype "passive")
+			(uuid "c50d06d1-03a4-476c-90c1-0b11632d4c6d")
 		)
 	)
 	(footprint "Connector_Pin:Pin_D0.9mm_L10.0mm_W2.4mm_FlatFork"
@@ -1468,7 +1480,7 @@
 			(at 0.704 0.304 0)
 			(unlocked yes)
 			(layer "F.SilkS")
-			(uuid "3922f3d5-4db6-44e4-bfae-70ff3fb804a7")
+			(uuid "3999fa74-12c6-413f-afc3-86cf3dd15d39")
 			(effects
 				(font
 					(size 1 1)
@@ -1480,7 +1492,7 @@
 			(at -1.574 0.304 0)
 			(unlocked yes)
 			(layer "F.SilkS")
-			(uuid "0093fd95-a9fd-44ed-bd1f-ff3ccbdd36b6")
+			(uuid "b52846a9-1d5a-4ac1-9fc2-cdefe64ed64d")
 			(effects
 				(font
 					(size 1 1)
@@ -1493,7 +1505,7 @@
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "87e557a1-de3f-4f2d-92e5-2affe0f13888")
+			(uuid "59f019ac-4e5e-4a64-9239-80d76632d1af")
 			(effects
 				(font
 					(size 1 1)
@@ -1506,7 +1518,7 @@
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "137dd7d1-4600-43cf-8669-ff6213d4f8d3")
+			(uuid "faafc9e7-4913-44f6-b731-f664ece7812f")
 			(effects
 				(font
 					(size 1 1)
@@ -1519,7 +1531,7 @@
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "1fc9bd18-09a6-4064-a607-ebfc500e0811")
+			(uuid "5f6f8e98-7ca8-4d57-b85f-f5713f426c22")
 			(effects
 				(font
 					(size 1 1)
@@ -1539,7 +1551,7 @@
 				(type default)
 			)
 			(layer "F.SilkS")
-			(uuid "40c599cb-50c8-4bf2-8dff-c393013bd450")
+			(uuid "af85a8b0-e55c-4a0a-949d-c97ce3273a8c")
 		)
 		(fp_line
 			(start -11.43 -17.78)
@@ -1549,7 +1561,7 @@
 				(type default)
 			)
 			(layer "F.SilkS")
-			(uuid "43d55141-4623-4150-aef8-4a26e12c794d")
+			(uuid "faaaf66f-4304-4ef0-a3c0-d659ab7bcc2a")
 		)
 		(fp_line
 			(start 11.43 20.32)
@@ -1559,7 +1571,7 @@
 				(type default)
 			)
 			(layer "F.SilkS")
-			(uuid "d0c3fb03-4398-45de-b8e3-5fd2ff83fc23")
+			(uuid "2a6c41eb-75e6-4f0e-8308-b8e32f69a1ec")
 		)
 		(fp_line
 			(start -11.43 20.32)
@@ -1569,18 +1581,19 @@
 				(type default)
 			)
 			(layer "F.SilkS")
-			(uuid "b7897747-6a27-4b33-8ffd-4e5f2657d5df")
+			(uuid "8a68a120-e5d8-453f-b416-ce8eb0541abb")
 		)
-		(pad "1" thru_hole rect
-			(at 3.81 19.05 90)
-			(size 1.6 1.6)
-			(drill 1)
-			(layers "*.Cu" "*.Mask")
-			(remove_unused_layers no)
-			(net 21 "GND")
-			(pinfunction "GND")
-			(pintype "passive")
-			(uuid "4c77f75c-6564-49b0-b6c8-b975de1121ad")
+		(fp_text user "${REFERENCE}"
+			(at 0 2.5 90)
+			(unlocked yes)
+			(layer "F.Fab")
+			(uuid "734dd835-44a7-4dde-87d7-4896805a534d")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
 		)
 		(pad "1" thru_hole rect
 			(at 6.35 -16.51 90)
@@ -1591,18 +1604,7 @@
 			(net 21 "GND")
 			(pinfunction "GND")
 			(pintype "passive")
-			(uuid "f978529d-f9d5-42b1-a0d9-3a26bedc87f9")
-		)
-		(pad "2" thru_hole rect
-			(at 1.27 19.05 90)
-			(size 1.6 1.6)
-			(drill 1)
-			(layers "*.Cu" "*.Mask")
-			(remove_unused_layers no)
-			(net 37 "Net-(J7-Pin_1)")
-			(pinfunction "VCC")
-			(pintype "power_in")
-			(uuid "6a8a0c4d-d4e0-4728-97af-ce7e35204a31")
+			(uuid "47ea3e2d-e6cd-4669-b98a-7d34b4096e1a")
 		)
 		(pad "2" thru_hole rect
 			(at 3.81 -16.51 90)
@@ -1613,7 +1615,7 @@
 			(net 37 "Net-(J7-Pin_1)")
 			(pinfunction "VCC")
 			(pintype "power_in")
-			(uuid "5ba72733-821e-4caa-a651-145e8c6e8713")
+			(uuid "6998fe49-6197-4b56-82b3-19225a2f6579")
 		)
 		(pad "3" thru_hole rect
 			(at 1.27 -16.51 90)
@@ -1624,7 +1626,7 @@
 			(net 5 "Net-(U1-GPIO38)")
 			(pinfunction "RTC_SDA")
 			(pintype "bidirectional")
-			(uuid "22a23473-4421-4c78-8272-12307f54e131")
+			(uuid "e61aba3e-6bae-419a-baaa-3d8d2f107101")
 		)
 		(pad "4" thru_hole rect
 			(at -1.27 -16.51 90)
@@ -1635,7 +1637,7 @@
 			(net 4 "Net-(U1-GPIO39)")
 			(pinfunction "RTC_SCL")
 			(pintype "input")
-			(uuid "720fac46-84c0-412b-88ce-779ef177f35c")
+			(uuid "ad759079-0cdf-4dec-910b-9b659cd4ec2e")
 		)
 		(pad "5" thru_hole rect
 			(at -3.81 -16.51 90)
@@ -1646,7 +1648,7 @@
 			(net 35 "unconnected-(U2-SQW-Pad5)")
 			(pinfunction "SQW")
 			(pintype "output+no_connect")
-			(uuid "8539cf03-333b-45e2-b9b4-2b361524dfa3")
+			(uuid "b6fb4d17-aba2-412b-97ee-5730398c9016")
 		)
 		(pad "6" thru_hole rect
 			(at -6.35 -16.51 90)
@@ -1657,7 +1659,7 @@
 			(net 36 "unconnected-(U2-32K-Pad6)")
 			(pinfunction "32K")
 			(pintype "output+no_connect")
-			(uuid "4a857c13-9314-41c7-b3c3-ad7824b1bb9a")
+			(uuid "88b33613-f186-4967-90d2-016c6a1a8e72")
 		)
 		(pad "7" thru_hole rect
 			(at -3.81 19.05 90)
@@ -1668,7 +1670,7 @@
 			(net 34 "unconnected-(U2-ROM_SCL-Pad7)")
 			(pinfunction "ROM_SCL")
 			(pintype "input+no_connect")
-			(uuid "5f3c9204-582e-4898-8ac4-58988ea154b8")
+			(uuid "963bdd73-681d-46e1-a626-9666cf655721")
 		)
 		(pad "8" thru_hole rect
 			(at -1.27 19.05 90)
@@ -1679,7 +1681,29 @@
 			(net 33 "unconnected-(U2-ROM_SDA-Pad8)")
 			(pinfunction "ROM_SDA")
 			(pintype "bidirectional+no_connect")
-			(uuid "3b8f1a2f-bf4c-4501-8fbf-0ed09cc43b7f")
+			(uuid "e70f3528-94e2-47d9-b580-a590ce1f35c5")
+		)
+		(pad "9" thru_hole rect
+			(at 1.27 19.05 90)
+			(size 1.6 1.6)
+			(drill 1)
+			(layers "*.Cu" "*.Mask")
+			(remove_unused_layers no)
+			(net 37 "Net-(J7-Pin_1)")
+			(pinfunction "VCC")
+			(pintype "power_in")
+			(uuid "a0608dae-6709-4114-9e21-501d202a4310")
+		)
+		(pad "10" thru_hole rect
+			(at 3.81 19.05 90)
+			(size 1.6 1.6)
+			(drill 1)
+			(layers "*.Cu" "*.Mask")
+			(remove_unused_layers no)
+			(net 21 "GND")
+			(pinfunction "GND")
+			(pintype "passive")
+			(uuid "a9914ded-c6a8-494c-bc81-610de568917e")
 		)
 	)
 	(footprint "MountingHole:MountingHole_2.2mm_M2"
@@ -3711,7 +3735,7 @@
 		(uuid "41a1c814-69fb-42b3-9aaf-c9c69256615c")
 	)
 	(gr_text "rev 0.1"
-		(at 114.644 110.956 0)
+		(at 118.835 106.892 0)
 		(layer "F.SilkS")
 		(uuid "1f6478e5-fd07-4058-94a3-228dac1ddb96")
 		(effects
