@@ -1,8 +1,7 @@
 idf_component_register(
         SRCS main.c widget.c
         INCLUDE_DIRS include
-        REQUIRES nvs_flash esp-tls esp_adc dy_error dy_cfg dy_appinfo dy_display dy_net dy_bt dy_net_cfg dy_rtc dy_ds3231 dy_cloud
-        EMBED_TXTFILES ca.pem
+        REQUIRES nvs_flash esp_adc dy_error dy_cfg dy_appinfo dy_display dy_net dy_bt dy_net_cfg dy_rtc dy_ds3231 dy_cloud
 )
 
 idf_build_get_property(APP_NAME PROJECT_NAME)

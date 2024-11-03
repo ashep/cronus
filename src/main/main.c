@@ -2,7 +2,6 @@
 
 #include "esp_log.h"
 #include "esp_event.h"
-#include "esp_tls.h"
 
 #include "nvs.h"
 #include "nvs_flash.h"
@@ -24,9 +23,6 @@
 #define LTAG "CRONUS"
 
 static dy_ds3231_handle_t ds3231;
-
-extern const uint8_t ca_crt_start[] asm("_binary_ca_pem_start");
-extern const uint8_t ca_crt_end[]   asm("_binary_ca_pem_end");
 
 extern dy_err_t cronus_widget_init();
 
@@ -90,17 +86,6 @@ dy_err_t init_config() {
     return dy_ok();
 }
 
-static dy_err_t init_tls() {
-    esp_err_t esp_err;
-
-    esp_err = esp_tls_set_global_ca_store(ca_crt_start, ca_crt_end - ca_crt_start);
-    if (esp_err != ESP_OK) {
-        return dy_err(DY_ERR_FAILED, "esp_tls_set_global_ca_store: %s", esp_err_to_name(esp_err));
-    }
-
-    return dy_ok();
-}
-
 static dy_err_t init_rtc() {
     dy_err_t err;
 #ifdef CONFIG_CRONUS_DS3231_ENABLED
@@ -119,7 +104,7 @@ static dy_err_t init_rtc() {
         return err;
     }
 #else
-        if (dy_nok(err = dy_rtc_init(NULL))) {
+        if (dy_is_err(err = dy_rtc_init(NULL))) {
             return err;
         }
 #endif
@@ -234,12 +219,6 @@ void app_main(void) {
     // Config, MUST be called right AFTER init_nvs(), but BEFORE other initializations
     if (dy_is_err(err = init_config())) {
         ESP_LOGE(LTAG, "init_config: %s", dy_err_str(err));
-        abort();
-    }
-
-    // TLS certificates
-    if (dy_is_err(err = init_tls())) {
-        ESP_LOGE(LTAG, "init_tls: %s", dy_err_str(err));
         abort();
     }
 
