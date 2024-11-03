@@ -6,7 +6,7 @@
 	(paper "A4")
 	(title_block
 		(title "Cronus")
-		(date "2024-10-24")
+		(date "2024-11-03")
 		(rev "0.1")
 		(company "Oleksandr Shepetko")
 	)
@@ -2105,7 +2105,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "1K"
+		(property "Value" "3K"
 			(at 119.888 88.9 0)
 			(effects
 				(font
