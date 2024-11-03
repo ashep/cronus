@@ -150,7 +150,7 @@
 					)
 				)
 			)
-			(property "Footprint" "Cronus:DS3232-Dev-Board"
+			(property "Footprint" "Cronus:DS3231-Dev-Board"
 				(at 19.05 -7.62 0)
 				(effects
 					(font
@@ -2878,7 +2878,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Cronus:DS3232-Dev-Board"
+		(property "Footprint" "Cronus:DS3231-Dev-Board"
 			(at 206.502 101.346 0)
 			(effects
 				(font
