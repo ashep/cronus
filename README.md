@@ -13,31 +13,39 @@
 ![showcase-05](img/showcase/05.jpg)
 </details>
 
-## Schematic diagram
+## Circuit Diagram
 
-Look at the [schematic/pdf/Cronus.pdf](schematic/pdf/Cronus.pdf).
+- KiKad sources are in the [schematic](schematic) directory.
+- A PDF version is in the [schematic/pdf/Cronus.pdf](schematic/pdf/Cronus.pdf) file.
 
-## Printed circuit board
+## Printed Circuit Board
 
-### The factory method
+### Manufacturing at the Factory
 
-To do.
+In the [schematic/gerber](schematic/gerber) directory you can find ready to use Gerber files that you could send to you
+favourite PCB manufacturer like JLC PCB or PCB Way.
 
-### The CNC method
+### Manufacturing at Home
 
-The PCB is single-sided, so the manufacturing process is relatively easy. In the [schematic/gcode](schematic/gcode)
-directory, you can find G-code files suitable for producing homemade PCBs.
+The PCB is simple and single-sided, so the manufacturing process is easy. In the [schematic/gcode](schematic/gcode)
+directory, you can find G-code files suitable for producing homemade PCBs using a CNC router..
 
 The files are generated from the [gerber](schematic/gerber) sources by [genpcb.sh](schematic/genpcb.sh) script, which
 uses the famous [pcb2gcode](https://github.com/pcb2gcode/pcb2gcode) tool
 
-## Set up
+## Flashing Firmware
+
+To do.
+
+## Development
+
+Clone the repo:
 
 ```shell
 git clone --recurse-submodules https://github.com/ashep/cronus.git
 ```
 
-## Update
+Or update an already cloned one to the latest version:
 
 ```shell
 git pull
