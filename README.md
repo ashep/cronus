@@ -1,14 +1,21 @@
 # Cronus
 
-**Cronus** is a minimalistic digital clock built on ESP32 MCU.
+**Cronus** is a minimalistic digital clock built on the top of ESP32 MCU with the following features in mind.
 
-![showcase-03](img/showcase/03.jpg)
+- Display the current time, date, and weather conditions.
+- Simple, bright display.
+- Display brightness auto-adjustment depending on the ambient light level.
+- Simple. No buttons or any other controls.
+- Automatic firmware update.
+
+![showcase-03](img/showcase/00.jpg)
 
 <details>
-<summary>See more samples</summary>
+<summary>See more</summary>
 
 ![showcase-01](img/showcase/01.jpg)
 ![showcase-02](img/showcase/02.jpg)
+![showcase-02](img/showcase/03.jpg)
 ![showcase-04](img/showcase/04.jpg)
 ![showcase-05](img/showcase/05.jpg)
 </details>
@@ -25,7 +32,7 @@
 You can use any other ESP32 dev board with enough flash memory to hold the firmware and OTA updates.
 
 I used a 44-pin double type-C ESP32-S3 board since I had it in my storage.
-You can [find](https://www.aliexpress.com/w/wholesale-ESP32-Dual-Type-C-Development-Board.html) it on AliExpress.
+You can [find it on AliExpress](https://www.aliexpress.com/w/wholesale-ESP32-Dual-Type-C-Development-Board.html).
 
 ![ESP32 Board](img/components/esp32board-01.jpg)
 
@@ -66,14 +73,32 @@ uses the [pcb2gcode](https://github.com/pcb2gcode/pcb2gcode) tool.
 
 ![Motherboard](img/components/mboard-02.jpg)
 
+### USB Type C Connector Board
+
+![USB Type C Connector Board](img/components/usbconnector-01.jpg)
+
+### Electronic Components
+
+- 2 x 10K 1206 SMD resistors.
+- 1 x 3K 1206 SMD resistor.
+- 1 x photoresistor (TODO: specify the type).
+
+### Nuts and bolts
+
+- 8 x M3 screws and nuts.
+- 4 x M2 screws and threaded inserts.
+
+![Nuts and bolts](img/components/nutsbolts-01.jpg)
+
 ### Enclosure
 
 3D models and the front-glass cutout CNC program are in the [enclosure](enclosure) directory. 
+
 The CNC program is made for cutting 2mm acrylic glass with a 1mm flute bit.
 
 ## Building
 
-### Display
+### Display Assembly
 
 Use two display boards, 3D-printed mounting brackets, and M3 screws and nuts to assemble the entire display.
 
@@ -118,15 +143,55 @@ Flash firmware, connect power to the USB connector, and check whether everything
 ![Motherboard assembly](img/assembly/motherboard-06.jpg)
 ![Motherboard assembly](img/assembly/motherboard-07.jpg)
 
-### Enclosure
+### Front Glass
 
 To do.
+
+### Enclosure
+
+Mount the USB power connector board.
+
+![Enclosure assembly](img/assembly/enclosure-01.jpg)
+
+Put the assembled display and motherboard into the enclosure.
+
+![Enclosure assembly](img/assembly/enclosure-02.jpg)
+
+Connect the photoresistor to the motherboard.
+
+![Enclosure assembly](img/assembly/enclosure-03.jpg)
+![Enclosure assembly](img/assembly/enclosure-04.jpg)
+
+Check if everything is okay. 
+
+![Enclosure assembly](img/assembly/enclosure-05.jpg)
+
+Using a soldering iron, put threaded inserts into placeholders.
+
+![Enclosure assembly](img/assembly/enclosure-06.jpg)
+![Enclosure assembly](img/assembly/enclosure-07.jpg)
+
+Insert the battery into the RTC board.
+
+![Enclosure assembly](img/assembly/enclosure-08.jpg)
+
+Mount the back cover and fix it with M2 screws.
+
+![Enclosure assembly](img/assembly/enclosure-09.jpg)
+
+Mount the front glass.
+
+![Enclosure assembly](img/assembly/enclosure-10.jpg)
+
+Connect power and check the result.
+
+![Enclosure assembly](img/assembly/enclosure-11.jpg)
 
 ## Flashing Firmware
 
 To do.
 
-## Development
+## Contributing
 
 Clone the repo:
 
