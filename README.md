@@ -20,7 +20,7 @@
 ![showcase-05](img/showcase/05.jpg)
 </details>
 
-### Building
+## Building
 
 See [Wiki](https://github.com/ashep/cronus/wiki).
 
