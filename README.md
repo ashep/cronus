@@ -8,16 +8,17 @@
 - Automatic Over-the-Air firmware upgrades.
 - No bloody Arduino.
 
-![showcase-03](img/showcase/00.jpg)
+![showcase](img/showcase/00-1.jpg)
+![showcase](img/showcase/00-2.jpg)
 
 <details>
 <summary>See more</summary>
 
-![showcase-01](img/showcase/01.jpg)
-![showcase-02](img/showcase/02.jpg)
-![showcase-02](img/showcase/03.jpg)
-![showcase-04](img/showcase/04.jpg)
-![showcase-05](img/showcase/05.jpg)
+![showcase](img/showcase/01.jpg)
+![showcase](img/showcase/02.jpg)
+![showcase](img/showcase/03.jpg)
+![showcase](img/showcase/04.jpg)
+![showcase](img/showcase/05.jpg)
 </details>
 
 ## Building
