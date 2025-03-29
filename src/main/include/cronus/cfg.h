@@ -19,8 +19,7 @@
 #define CRONUS_CFG_ID_DISPLAY_0_BRI_MAX 45 // brightness hard limit
 
 // Display 1 flags
-#define CRONUS_CFG_FLAG_DISPLAY_0_REV_X 0
-#define CRONUS_CFG_FLAG_DISPLAY_0_REV_Y 1
+#define CRONUS_CFG_FLAG_DISPLAY_0_REVERSE 0 // is multi-device display input connected to the last device
 
 // Display 2
 #define CRONUS_CFG_ID_DISPLAY_1_TYPE    50
@@ -41,8 +40,7 @@
 #define CRONUS_CFG_ID_DISPLAY_1_BRI_MAX 65 // brightness hard limit
 
 // Display 2 flags
-#define CRONUS_CFG_FLAG_DISPLAY_1_REV_X 0
-#define CRONUS_CFG_FLAG_DISPLAY_1_REV_Y 1
+#define CRONUS_CFG_FLAG_DISPLAY_1_REVERSE 0 // is multi-device display input connected to the last device
 
 // Peripheral devices
 #define CRONUS_CFG_ID_PRP_RTC_PIN_SCL 70 // RTC clock

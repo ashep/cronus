@@ -10,8 +10,7 @@
 #include "dy/appinfo.h"
 #include "dy/cfg.h"
 #include "dy/rtc.h"
-#include "dy/max7219.h"
-#include "dy/display.h"
+#include "dy/display_driver_max7219.h"
 #include "dy/bt.h"
 #include "dy/net.h"
 #include "dy/net_cfg.h"
@@ -59,7 +58,7 @@ dy_err_t init_config() {
 #ifdef CONFIG_CRONUS_DISPLAY_0_RX
     dy_cfg_must_set_initial(
         CRONUS_CFG_ID_DISPLAY_0_FLAGS,
-        dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_FLAGS, 0) | 1 << CRONUS_CFG_FLAG_DISPLAY_0_REV_X
+        dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_FLAGS, 0) | 1 << CRONUS_CFG_FLAG_DISPLAY_0_REVERSE
     );
 #endif
 
@@ -114,26 +113,14 @@ static dy_err_t init_rtc() {
     return dy_ok();
 }
 
-static dy_err_t init_display_max7219(gpio_num_t cs, gpio_num_t clk, gpio_num_t data, bool rx, bool ry) {
-    dy_err_t err;
-
-    dy_max7219_config_t *cfg = malloc(sizeof(dy_max7219_config_t));
-    if (cfg == NULL) {
-        return dy_err(DY_ERR_NO_MEM, "dy_max7219_config_t malloc failed");
-    }
-
-    err = dy_max7219_init(cfg, cs, clk, data, 4, 2, rx, ry);
+static dy_err_t init_display_max7219(gpio_num_t cs, gpio_num_t clk, gpio_num_t data, bool reverse) {
+    dy_err_t err = dy_display_driver_max7219_init(0, cs, clk, data, 4, 2, reverse);
     if (dy_is_err(err)) {
         return err;
     }
 
-    err = dy_display_init_driver_max7219(0, cfg);
-    if (dy_is_err(err)) {
-        return err;
-    }
-
-    ESP_LOGI(LTAG, "MAX7219 display driver initialized; cs=%d; clk=%d; data=%d; nx=%d; ny=%d; rx=%d; ry=%d",
-             cfg->pin_cs, cfg->pin_clk, cfg->pin_data, cfg->nx, cfg->ny, cfg->rx, cfg->ry
+    ESP_LOGI(LTAG, "MAX7219 display driver initialized; cs=%d; clk=%d; data=%d; nx=%d; ny=%d; reverse=%d",
+             cs, clk, data, 8, 2, reverse
     );
 
     return dy_ok();
@@ -146,8 +133,7 @@ static dy_err_t init_display() {
         dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_PIN_CS, CONFIG_CRONUS_DISPLAY_0_PIN_CS),
         dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_PIN_CLK, CONFIG_CRONUS_DISPLAY_0_PIN_CLK),
         dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_PIN_D0, CONFIG_CRONUS_DISPLAY_0_PIN_D0),
-        dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_FLAGS, 0) & 1 << CRONUS_CFG_FLAG_DISPLAY_0_REV_X,
-        dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_FLAGS, 0) & 1 << CRONUS_CFG_FLAG_DISPLAY_0_REV_Y
+        dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_FLAGS, 0) & 1 << CRONUS_CFG_FLAG_DISPLAY_0_REVERSE
     );
 #else
     err = dy_err(DY_ERR_NOT_CONFIGURED, "no display driver set");

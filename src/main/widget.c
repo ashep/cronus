@@ -188,10 +188,10 @@ static void render_max7219_32x16_single_line(
 
     switch (sc) {
         case SHOW_CYCLE_TIME:
-            dy_gfx_puts(buf, &dy_gfx_font_6x12v1, (dy_gfx_point_t) {1, 2}, time_str, 1, 1);
+            dy_gfx_puts(buf, &dy_gfx_font_6x12v1, (dy_gfx_point_t) {1, 2}, time_str, DY_GFX_C_WHITE, 1);
             break;
         case SHOW_CYCLE_DATE:
-            dy_gfx_puts(buf, &dy_gfx_font_6x12v1, (dy_gfx_point_t) {1, 2}, date_str, 1, 1);
+            dy_gfx_puts(buf, &dy_gfx_font_6x12v1, (dy_gfx_point_t) {1, 2}, date_str, DY_GFX_C_WHITE, 1);
             break;
         case SHOW_CYCLE_DOW:
             // Not implemented
@@ -206,7 +206,7 @@ static void render_max7219_32x16_single_line(
             } else if (weather.feels > 0 || weather.feels < 0) {
                 x = 7;
             }
-            dy_gfx_puts(buf, &dy_gfx_font_6x12v1, (dy_gfx_point_t) {x, 2}, odr_temp_str, 1, 1);
+            dy_gfx_puts(buf, &dy_gfx_font_6x12v1, (dy_gfx_point_t) {x, 2}, odr_temp_str, DY_GFX_C_WHITE, 1);
             break;
         default:
             break;
@@ -229,11 +229,11 @@ static void render_max7219_32x16_multi_line(
     sc = cur_cycle;
     xSemaphoreGive(mux);
 
-    dy_gfx_puts(buf, &dy_gfx_font_6x8v1, (dy_gfx_point_t) {1, 0}, time_str, 1, 1);
+    dy_gfx_puts(buf, &dy_gfx_font_6x8v1, (dy_gfx_point_t) {1, 0}, time_str, DY_GFX_C_WHITE, 1);
 
     switch (sc) {
         case SHOW_CYCLE_DATE:
-            dy_gfx_puts(buf, &dy_gfx_font_6x7v1, (dy_gfx_point_t) {1, 9}, date_str, 1, 1);
+            dy_gfx_puts(buf, &dy_gfx_font_6x7v1, (dy_gfx_point_t) {1, 9}, date_str, DY_GFX_C_WHITE, 1);
             break;
         case SHOW_CYCLE_ODR_TEMP:
             x = 13;
@@ -242,7 +242,7 @@ static void render_max7219_32x16_multi_line(
             } else if (weather.feels > 0 || weather.feels < 0) {
                 x = 7;
             }
-            dy_gfx_puts(buf, &dy_gfx_font_6x7v1, (dy_gfx_point_t) {x, 9}, odr_temp_str, 1, 1);
+            dy_gfx_puts(buf, &dy_gfx_font_6x7v1, (dy_gfx_point_t) {x, 9}, odr_temp_str, DY_GFX_C_WHITE, 1);
             break;
         default:
             break;
@@ -268,45 +268,43 @@ static void render_max7219_32x16(dy_gfx_buf_t *buf, struct tm *ti) {
     }
 }
 
-static void test_display() {
-    dy_err_t err;
-
-    dy_gfx_buf_t *buf = dy_gfx_make_buf(32, 16, DY_GFX_COLOR_MONO);
-
-    err = dy_gfx_fill_buf(buf, 1);
-    if (dy_is_err(err)) {
-        ESP_LOGE(LTAG, "display test: dy_gfx_fill_buf failed: %s", dy_err_str(err));
-        return;
-    }
-
-    err = dy_display_write(0, buf);
-    if (dy_is_err(err)) {
-        ESP_LOGE(LTAG, "display test: dy_display_write failed: %s", dy_err_str(err));
-        return;
-    }
-
-    for (int i = 0; i < CONFIG_CRONUS_DISPLAY_0_BRIGHTNESS_HARD_LIMIT; i++) {
-        err = dy_display_set_brightness(0, i);
-        if (dy_is_err(err)) {
-            ESP_LOGE(LTAG, "display test: dy_display_set_brightness: %s", dy_err_str(err));
-            return;
-        }
-
-        vTaskDelay(pdMS_TO_TICKS(100));
-    }
-
-    for (int i = CONFIG_CRONUS_DISPLAY_0_BRIGHTNESS_HARD_LIMIT; i > 0; i--) {
-        err = dy_display_set_brightness(0, i);
-        if (dy_is_err(err)) {
-            ESP_LOGE(LTAG, "display test: dy_display_set_brightness: %s", dy_err_str(err));
-            return;
-        }
-
-        vTaskDelay(pdMS_TO_TICKS(100));
-    }
-
-    dy_gfx_free_buf(buf);
-}
+//static void test_display() {
+//    dy_gfx_buf_t *buf = dy_gfx_new_buf(32, 16);
+//
+//    dy_err_t err = dy_gfx_fill_buf(buf, 1);
+//    if (dy_is_err(err)) {
+//        ESP_LOGE(LTAG, "display test: dy_gfx_fill_buf failed: %s", dy_err_str(err));
+//        return;
+//    }
+//
+//    err = dy_display_write(0, buf);
+//    if (dy_is_err(err)) {
+//        ESP_LOGE(LTAG, "display test: dy_display_write failed: %s", dy_err_str(err));
+//        return;
+//    }
+//
+//    for (int i = 0; i < CONFIG_CRONUS_DISPLAY_0_BRIGHTNESS_HARD_LIMIT; i++) {
+//        err = dy_display_set_brightness(0, i);
+//        if (dy_is_err(err)) {
+//            ESP_LOGE(LTAG, "display test: dy_display_set_brightness: %s", dy_err_str(err));
+//            return;
+//        }
+//
+//        vTaskDelay(pdMS_TO_TICKS(100));
+//    }
+//
+//    for (int i = CONFIG_CRONUS_DISPLAY_0_BRIGHTNESS_HARD_LIMIT; i > 0; i--) {
+//        err = dy_display_set_brightness(0, i);
+//        if (dy_is_err(err)) {
+//            ESP_LOGE(LTAG, "display test: dy_display_set_brightness: %s", dy_err_str(err));
+//            return;
+//        }
+//
+//        vTaskDelay(pdMS_TO_TICKS(100));
+//    }
+//
+//    dy_gfx_free_buf(buf);
+//}
 
 _Noreturn static void render_task() {
     dy_err_t err;
@@ -314,7 +312,7 @@ _Noreturn static void render_task() {
     struct tm ti;
 
     cronus_cfg_display_type_t dt = dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_TYPE, 0);
-    dy_gfx_buf_t *buf = dy_gfx_make_buf(32, 16, DY_GFX_COLOR_MONO);
+    dy_gfx_buf_t *buf = dy_gfx_new_buf(32, 16);
 
     // Initial brightness
     if (dy_is_err(err = dy_display_set_brightness(0, 0))) {
