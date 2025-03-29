@@ -22,9 +22,9 @@
 ![Showcase](img/showcase/05.jpg)
 </details>
 
-## Building
+## How to make it
 
-See [Wiki](https://github.com/ashep/cronus/wiki).
+See the [Wiki](https://github.com/ashep/cronus/wiki).
 
 ## Contributing
 
