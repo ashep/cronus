@@ -1,5 +1,7 @@
 # Cronus
 
+![Banner](img/artwork/CronusBannerGitHub.jpg)
+
 **Cronus** is a minimalistic digital clock built on the top of ESP32 MCU with the following features in mind.
 
 - Display the current time, date, and weather conditions.
@@ -8,17 +10,16 @@
 - Automatic Over-the-Air firmware upgrades.
 - No bloody Arduino.
 
-![showcase](img/showcase/00-1.jpg)
-![showcase](img/showcase/00-2.jpg)
-
+![Showcase](img/showcase/00-1.jpg)
 <details>
 <summary>See more</summary>
 
-![showcase](img/showcase/01.jpg)
-![showcase](img/showcase/02.jpg)
-![showcase](img/showcase/03.jpg)
-![showcase](img/showcase/04.jpg)
-![showcase](img/showcase/05.jpg)
+![Showcase](img/showcase/00-2.jpg)
+![Showcase](img/showcase/01.jpg)
+![Showcase](img/showcase/02.jpg)
+![Showcase](img/showcase/03.jpg)
+![Showcase](img/showcase/04.jpg)
+![Showcase](img/showcase/05.jpg)
 </details>
 
 ## Building
