@@ -19,7 +19,7 @@
 #define CRONUS_CFG_ID_DISPLAY_0_BRI_MAX 45 // brightness hard limit
 
 // Display 1 flags
-#define CRONUS_CFG_FLAG_DISPLAY_0_REVERSE 0 // is multi-device display input connected to the last device
+#define CRONUS_CFG_FLAG_DISPLAY_0_REVERSE 0 // is display input connected to the MCU via last segment
 
 // Display 2
 #define CRONUS_CFG_ID_DISPLAY_1_TYPE    50
@@ -59,6 +59,7 @@
 #define CRONUS_CFG_ID_USER_SHOW_DUR_AMB_TEMP 134 // ambient temperature show duration
 #define CRONUS_CFG_ID_USER_SHOW_DUR_ODR_TEMP 135 // outdoor temperature show duration
 #define CRONUS_CFG_ID_USER_ALLOW_ALPHA_UPD   136 // allow firmware upgrades to alpha versions
+#define CRONUS_CFG_ID_USER_SHOW_DUR_WTH_ICON 137 // weather icon show duration
 
 #define CRONUS_CFG_USER_SHOW_MODE_SINGLE_LINE 0
 #define CRONUS_CFG_USER_SHOW_MODE_MULTI_LINE  1
@@ -66,4 +67,5 @@
 typedef enum {
     CRONUS_CFG_DISPLAY_TYPE_NONE,
     CRONUS_CFG_DISPLAY_TYPE_MAX7219_32X16,
+    CRONUS_CFG_DISPLAY_TYPE_WS2812_32X16,
 } cronus_cfg_display_type_t;

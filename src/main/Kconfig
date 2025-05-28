@@ -6,30 +6,40 @@ menu "Cronus"
 
             config CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16
                 bool "MAX7219 (32x16)"
+            config CRONUS_DISPLAY_0_DRIVER_WS2812_32X16
+                bool "WS2812 (32x16)"
         endchoice
 
-        config CRONUS_DISPLAY_0_PIN_CLK
+        config CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16_PIN_CLK
+            depends on CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16
             int "CLK pin"
             range 0 48
             default 16
 
-        config CRONUS_DISPLAY_0_PIN_CS
+        config CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16_PIN_CS
+            depends on CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16
             int "CS pin"
             range 0 48
             default 17
 
-        config CRONUS_DISPLAY_0_PIN_D0
-            int "D0 pin"
+        config CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16_PIN_DATA
+            depends on CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16
+            int "DATA pin"
             range 0 48
             default 18
 
-        config CRONUS_DISPLAY_0_RX
-            bool "Reverse X"
+        config CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16_REVERSE
+            depends on CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16
+            bool "DATA pin is connected to the bottom right matrix"
+            help
+                Uncheck, if data DATA pin is connected to the top left matrix.
             default y
 
-        config CRONUS_DISPLAY_0_RY
-            bool "Reverse Y"
-            default n
+        config CRONUS_DISPLAY_0_DRIVER_WS2812_32X16_PIN_DATA
+            depends on CRONUS_DISPLAY_0_DRIVER_WS2812_32X16
+            int "DATA pin"
+            range 0 48
+            default 18
 
         config CRONUS_DISPLAY_0_BRIGHTNESS_HARD_LIMIT
             int "Brightness hard limit"
@@ -37,10 +47,6 @@ menu "Cronus"
                 May be useful if the PSU isn't capable of providing enough current.
             range 0 15
             default 15
-
-        config CRONUS_DISPLAY_0_TEST_ON_START
-            bool "Perform display test on start"
-            default n
     endmenu
 
     menu "External RTC (DS3231)"

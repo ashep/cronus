@@ -11,6 +11,7 @@
 #include "dy/cfg.h"
 #include "dy/rtc.h"
 #include "dy/display_driver_max7219.h"
+#include "dy/display_driver_ws2812.h"
 #include "dy/bt.h"
 #include "dy/net.h"
 #include "dy/net_cfg.h"
@@ -18,12 +19,13 @@
 #include "dy/cloud.h"
 
 #include "cronus/cfg.h"
+#include "cronus/weather.h"
+#include "cronus/screen.h"
+#include "cronus/brightness.h"
 
-#define LTAG "CRONUS"
+#define LTAG "MAIN"
 
 static dy_ds3231_handle_t ds3231;
-
-extern dy_err_t cronus_widget_init();
 
 static dy_err_t init_nvs() {
     esp_err_t esp_err;
@@ -50,25 +52,22 @@ dy_err_t init_config() {
     // This values are initially writen to NVS on first firmware upload and must not be changed afterwards.
 #ifdef CONFIG_CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16
     dy_cfg_must_set_initial(CRONUS_CFG_ID_DISPLAY_0_TYPE, CRONUS_CFG_DISPLAY_TYPE_MAX7219_32X16);
-    dy_cfg_must_set_initial(CRONUS_CFG_ID_DISPLAY_0_PIN_CS, CONFIG_CRONUS_DISPLAY_0_PIN_CS);
-    dy_cfg_must_set_initial(CRONUS_CFG_ID_DISPLAY_0_PIN_CLK, CONFIG_CRONUS_DISPLAY_0_PIN_CLK);
-    dy_cfg_must_set_initial(CRONUS_CFG_ID_DISPLAY_0_PIN_D0, CONFIG_CRONUS_DISPLAY_0_PIN_D0);
+    dy_cfg_must_set_initial(CRONUS_CFG_ID_DISPLAY_0_PIN_CS, CONFIG_CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16_PIN_CS);
+    dy_cfg_must_set_initial(CRONUS_CFG_ID_DISPLAY_0_PIN_CLK, CONFIG_CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16_PIN_CLK);
+    dy_cfg_must_set_initial(CRONUS_CFG_ID_DISPLAY_0_PIN_D0, CONFIG_CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16_PIN_DATA);
     dy_cfg_must_set_initial(CRONUS_CFG_ID_USER_BRIGHTNESS_MAX, CONFIG_CRONUS_DISPLAY_0_BRIGHTNESS_HARD_LIMIT);
-
-#ifdef CONFIG_CRONUS_DISPLAY_0_RX
+#ifdef CONFIG_CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16_REVERSE
     dy_cfg_must_set_initial(
-        CRONUS_CFG_ID_DISPLAY_0_FLAGS,
-        dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_FLAGS, 0) | 1 << CRONUS_CFG_FLAG_DISPLAY_0_REVERSE
+            CRONUS_CFG_ID_DISPLAY_0_FLAGS,
+            dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_FLAGS, 0) | 1 << CRONUS_CFG_FLAG_DISPLAY_0_REVERSE
     );
 #endif
-
-#ifdef CONFIG_CRONUS_DISPLAY_0_RY
-    dy_cfg_must_set_initial(
-        CRONUS_CFG_ID_DISPLAY_0_FLAGS,
-        dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_FLAGS, 0) | 1 << CRONUS_CFG_FLAG_DISPLAY_0_REV_Y
-    );
 #endif
 
+#ifdef CONFIG_CRONUS_DISPLAY_0_DRIVER_WS2812_32X16
+    dy_cfg_must_set_initial(CRONUS_CFG_ID_DISPLAY_0_TYPE, CRONUS_CFG_DISPLAY_TYPE_WS2812_32X16);
+    dy_cfg_must_set_initial(CRONUS_CFG_ID_DISPLAY_0_PIN_D0, CONFIG_CRONUS_DISPLAY_0_DRIVER_WS2812_32X16_PIN_DATA);
+    dy_cfg_must_set_initial(CRONUS_CFG_ID_USER_BRIGHTNESS_MAX, CONFIG_CRONUS_DISPLAY_0_BRIGHTNESS_HARD_LIMIT);
 #endif
 
 #ifdef CONFIG_CRONUS_DS3231_ENABLED
@@ -89,9 +88,9 @@ static dy_err_t init_rtc() {
     dy_err_t err;
 #ifdef CONFIG_CRONUS_DS3231_ENABLED
     err = dy_ds3231_init(
-        dy_cfg_get(CRONUS_CFG_ID_PRP_RTC_PIN_SCL, CONFIG_CRONUS_DS3231_PIN_SCL),
-        dy_cfg_get(CRONUS_CFG_ID_PRP_RTC_PIN_SDA, CONFIG_CRONUS_DS3231_PIN_SDA),
-        &ds3231
+            dy_cfg_get(CRONUS_CFG_ID_PRP_RTC_PIN_SCL, CONFIG_CRONUS_DS3231_PIN_SCL),
+            dy_cfg_get(CRONUS_CFG_ID_PRP_RTC_PIN_SDA, CONFIG_CRONUS_DS3231_PIN_SDA),
+            &ds3231
     );
     if (dy_is_err(err)) {
         return err;
@@ -113,6 +112,8 @@ static dy_err_t init_rtc() {
     return dy_ok();
 }
 
+#ifdef CONFIG_CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16
+
 static dy_err_t init_display_max7219(gpio_num_t cs, gpio_num_t clk, gpio_num_t data, bool reverse) {
     dy_err_t err = dy_display_driver_max7219_init(0, cs, clk, data, 4, 2, reverse);
     if (dy_is_err(err)) {
@@ -126,14 +127,38 @@ static dy_err_t init_display_max7219(gpio_num_t cs, gpio_num_t clk, gpio_num_t d
     return dy_ok();
 }
 
+#endif // CONFIG_CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16
+
+#ifdef CONFIG_CRONUS_DISPLAY_0_DRIVER_WS2812_32X16
+static dy_err_t init_display_ws2812(gpio_num_t data) {
+    dy_err_t err = dy_display_driver_ws2812_init(0, 18, (dy_display_driver_ws2812_segments_config_t) {
+            .ppx = 8,
+            .ppy = 8,
+            .cols = 4,
+            .rows = 2,
+    });
+    if (dy_is_err(err)) {
+        return err;
+    }
+
+    ESP_LOGI(LTAG, "WS2812 display driver initialized; data=%d; nx=%d; ny=%d", data, 4, 2);
+
+    return dy_ok();
+}
+#endif // CONFIG_CRONUS_DISPLAY_0_DRIVER_WS2812_32X16
+
 static dy_err_t init_display() {
     dy_err_t err;
 #ifdef CONFIG_CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16
     err = init_display_max7219(
-        dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_PIN_CS, CONFIG_CRONUS_DISPLAY_0_PIN_CS),
-        dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_PIN_CLK, CONFIG_CRONUS_DISPLAY_0_PIN_CLK),
-        dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_PIN_D0, CONFIG_CRONUS_DISPLAY_0_PIN_D0),
-        dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_FLAGS, 0) & 1 << CRONUS_CFG_FLAG_DISPLAY_0_REVERSE
+            dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_PIN_CS, CONFIG_CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16_PIN_CS),
+            dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_PIN_CLK, CONFIG_CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16_PIN_CLK),
+            dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_PIN_D0, CONFIG_CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16_PIN_DATA),
+            dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_FLAGS, 0) & 1 << CRONUS_CFG_FLAG_DISPLAY_0_REVERSE
+    );
+#elifdef CONFIG_CRONUS_DISPLAY_0_DRIVER_WS2812_32X16
+    err = init_display_ws2812(
+            dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_PIN_D0, CONFIG_CRONUS_DISPLAY_0_DRIVER_WS2812_32X16_PIN_DATA)
     );
 #else
     err = dy_err(DY_ERR_NOT_CONFIGURED, "no display driver set");
@@ -145,6 +170,8 @@ static dy_err_t init_display() {
 static char *hwid() {
 #ifdef CONFIG_CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16
     return "max7219v32x16";
+#elif defined CONFIG_CRONUS_DISPLAY_0_DRIVER_WS2812_32X16
+    return "ws2812v32x16";
 #else
     return "unknown";
 #endif
@@ -177,16 +204,16 @@ void app_main(void) {
 
     // App info, MUST be set before any other operations
     dy_appinfo_info_t app_info = {
-        .owner = APP_OWNER,
-        .name = APP_NAME,
-        .hwid = hwid(),
-        .ver = {
-            .major = v_maj,
-            .minor = v_min,
-            .patch = v_patch,
-            .alpha = v_alpha,
-        },
-        .auth = "", // will set later
+            .owner = APP_OWNER,
+            .name = APP_NAME,
+            .hwid = hwid(),
+            .ver = {
+                    .major = v_maj,
+                    .minor = v_min,
+                    .patch = v_patch,
+                    .alpha = v_alpha,
+            },
+            .auth = "", // will be set later
     };
     dy_appinfo_set(&app_info);
 
@@ -255,9 +282,9 @@ void app_main(void) {
         abort();
     }
 
-    // Weather sync
-    if (dy_is_err(err = dy_cloud_weather_start_scheduler())) {
-        ESP_LOGE(LTAG, "dy_cloud_weather_start_scheduler: %s", dy_err_str(err));
+    // Weather
+    if (dy_is_err(err = cronus_weather_init())) {
+        ESP_LOGE(LTAG, "dy_cloud_time_start_scheduler: %s", dy_err_str(err));
         abort();
     }
 
@@ -267,9 +294,15 @@ void app_main(void) {
         abort();
     }
 
-    // Widget
-    if (dy_is_err(err = cronus_widget_init())) {
-        ESP_LOGE(LTAG, "cronus_widget_init: %s", dy_err_str(err));
+    // Screen
+    if (dy_is_err(err = cronus_screen_init())) {
+        ESP_LOGE(LTAG, "cronus_screen_init: %s", dy_err_str(err));
+        abort();
+    }
+
+    // Brightness monitor
+    if (dy_is_err(err = cronus_brightness_monitor_init())) {
+        ESP_LOGE(LTAG, "cronus_brightness_monitor_init: %s", dy_err_str(err));
         abort();
     }
 }

@@ -1,7 +1,7 @@
 idf_component_register(
-        SRCS main.c widget.c
+        SRCS main.c brightness.c weather.c screen/screen.c screen/screen_32x16.c
         INCLUDE_DIRS include
-        REQUIRES nvs_flash esp_adc dy_error dy_cfg dy_appinfo dy_display dy_display_driver_max7219 dy_net dy_bt dy_net_cfg dy_rtc dy_ds3231 dy_cloud
+        REQUIRES nvs_flash esp_adc dy_error dy_cfg dy_appinfo dy_display dy_display_driver_max7219 dy_display_driver_ws2812 dy_net dy_bt dy_net_cfg dy_rtc dy_ds3231 dy_cloud
 )
 
 idf_build_get_property(APP_NAME PROJECT_NAME)
