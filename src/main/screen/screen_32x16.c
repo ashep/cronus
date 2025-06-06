@@ -11,16 +11,16 @@
 #include "cronus/cfg.h"
 #include "cronus/weather.h"
 #include "cronus/screen.h"
-#include "cronus/icon/colorful/clear_day.h"
-#include "cronus/icon/colorful/clear_night.h"
+#include "cronus/icon/monochrome/clear_day.h"
+#include "cronus/icon/monochrome/clear_night.h"
 #include "cronus/icon/colorful/partly_cloudy_day.h"
 #include "cronus/icon/colorful/partly_cloudy_night.h"
 #include "cronus/icon/colorful/cloudy.h"
 #include "cronus/icon/colorful/mist.h"
-#include "cronus/icon/colorful/light_rain.h"
-#include "cronus/icon/colorful/medium_rain.h"
-#include "cronus/icon/colorful/heavy_rain.h"
-#include "cronus/icon/colorful/question.h"
+#include "cronus/icon/monochrome/light_rain.h"
+#include "cronus/icon/monochrome/medium_rain.h"
+#include "cronus/icon/monochrome/heavy_rain.h"
+#include "cronus/icon/monochrome/question.h"
 
 #define LTAG "WIDGET_32X16"
 
@@ -70,9 +70,9 @@ static void render_single_line(
             weather = cronus_weather_get();
             switch (weather.id) {
                 case DY_CLOUD_WEATHER_ID_CLEAR:
-                    weather_icon = &cronus_icon_cf_clear_day;
+                    weather_icon = &cronus_icon_mc_clear_day;
                     if (!weather.is_day) {
-                        weather_icon = &cronus_icon_cf_clear_night;
+                        weather_icon = &cronus_icon_mc_clear_night;
                     }
                     break;
                 case DY_CLOUD_WEATHER_ID_PARTLY_CLOUDY:
@@ -89,16 +89,16 @@ static void render_single_line(
                     weather_icon = &cronus_icon_cf_mist;
                     break;
                 case DY_CLOUD_WEATHER_ID_LIGHT_RAIN:
-                    weather_icon = &cronus_icon_cf_light_rain;
+                    weather_icon = &cronus_icon_mc_light_rain;
                     break;
                 case DY_CLOUD_WEATHER_ID_MEDIUM_RAIN:
-                    weather_icon = &cronus_icon_cf_medium_rain;
+                    weather_icon = &cronus_icon_mc_medium_rain;
                     break;
                 case DY_CLOUD_WEATHER_ID_HEAVY_RAIN:
-                    weather_icon = &cronus_icon_cf_heavy_rain;
+                    weather_icon = &cronus_icon_mc_heavy_rain;
                     break;
                 default:
-                    weather_icon = &cronus_icon_cf_question;
+                    weather_icon = &cronus_icon_mc_question;
             }
 
             dy_gfx_write_sprite(buf, 9, 1, weather_icon);
