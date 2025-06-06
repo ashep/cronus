@@ -16,6 +16,9 @@
 #include "cronus/icon/colorful/partly_cloudy_day.h"
 #include "cronus/icon/colorful/partly_cloudy_night.h"
 #include "cronus/icon/colorful/cloudy.h"
+#include "cronus/icon/colorful/mist.h"
+#include "cronus/icon/colorful/light_rain.h"
+#include "cronus/icon/colorful/medium_rain.h"
 #include "cronus/icon/colorful/heavy_rain.h"
 #include "cronus/icon/colorful/question.h"
 
@@ -81,6 +84,15 @@ static void render_single_line(
                     break;
                 case DY_CLOUD_WEATHER_ID_CLOUDY:
                     weather_icon = &cronus_icon_cf_cloudy;
+                    break;
+                case DY_CLOUD_WEATHER_ID_MIST:
+                    weather_icon = &cronus_icon_cf_mist;
+                    break;
+                case DY_CLOUD_WEATHER_ID_LIGHT_RAIN:
+                    weather_icon = &cronus_icon_cf_light_rain;
+                    break;
+                case DY_CLOUD_WEATHER_ID_MEDIUM_RAIN:
+                    weather_icon = &cronus_icon_cf_medium_rain;
                     break;
                 case DY_CLOUD_WEATHER_ID_HEAVY_RAIN:
                     weather_icon = &cronus_icon_cf_heavy_rain;

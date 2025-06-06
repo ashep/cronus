@@ -49,4 +49,4 @@ First release.
 
 ## Authors
 
-- [Oleksandr Shepetko](https://shepetko.com) -- initial work.
+- [Oleksandr Shepetko](https://shepetko.com).
