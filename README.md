@@ -43,9 +43,9 @@ git submodule update --recursive --remote
 
 ## Changelog
 
-### 0.0.1
+### 0.0.1 (2025-06-21)
 
-First release.
+First stable release.
 
 ## Authors
 
