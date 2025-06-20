@@ -271,6 +271,10 @@ void app_main(void) {
         ESP_LOGE(LTAG, "dy_bt_set_device_name_prefix: %s", dy_err_str(err));
         abort();
     }
+    if (dy_is_err(err = dy_bt_set_device_appearance(0x0100))) { // Generic Clock
+        ESP_LOGE(LTAG, "dy_bt_set_device_appearance: %s", dy_err_str(err));
+        abort();
+    }
     if (dy_is_err(err = dy_bt_init())) {
         ESP_LOGE(LTAG, "dy_bt_init: %s", dy_err_str(err));
         abort();
