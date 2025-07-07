@@ -12,7 +12,7 @@
 
 #define LTAG "WIDGET"
 
-extern void render_32x16(show_cycle_num cycle, dy_gfx_buf_t *buf, struct tm *ti);
+extern void render_32x16(cronus_cfg_display_type_t dt, show_cycle_num cycle, dy_gfx_buf_t *buf, struct tm *ti);
 
 static QueueHandle_t cycle_queue;
 
@@ -86,7 +86,7 @@ _Noreturn static void render_task() {
     time_t now;
     struct tm ti;
 
-    cronus_cfg_display_type_t dt = dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_TYPE, 0);
+    cronus_cfg_display_type_t dt = dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_TYPE, CRONUS_CFG_DISPLAY_TYPE_NONE);
 
     dy_gfx_buf_t *buf;
     switch (dt) {
@@ -113,7 +113,7 @@ _Noreturn static void render_task() {
         switch (dt) {
             case CRONUS_CFG_DISPLAY_TYPE_MAX7219_32X16:
             case CRONUS_CFG_DISPLAY_TYPE_WS2812_32X16:
-                render_32x16(cycle, buf, &ti);
+                render_32x16(dt, cycle, buf, &ti);
                 break;
             default:
                 break;
