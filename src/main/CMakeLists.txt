@@ -32,10 +32,14 @@ idf_component_register(
         icon/universal/clear_day.c
         icon/universal/clear_night.c
         icon/universal/heavy_rain.c
+        icon/universal/heavy_snow.c
         icon/universal/light_rain.c
+        icon/universal/light_snow.c
         icon/universal/medium_rain.c
+        icon/universal/medium_snow.c
         icon/universal/mist.c
         icon/universal/question.c
+        icon/universal/thunderstorm.c
 )
 
 idf_build_get_property(APP_NAME PROJECT_NAME)

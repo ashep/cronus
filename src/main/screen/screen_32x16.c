@@ -84,6 +84,7 @@ static void render_single_line(
                     }
                     break;
                 case DY_CLOUD_WEATHER_ID_CLOUDY:
+                case DY_CLOUD_WEATHER_ID_OVERCAST:
                     if (dt == CRONUS_CFG_DISPLAY_TYPE_WS2812_32X16) {
                         weather_icon = &cronus_icon_c_cloudy;
                     } else {
@@ -91,17 +92,35 @@ static void render_single_line(
                     }
                     break;
                 case DY_CLOUD_WEATHER_ID_MIST:
+                case DY_CLOUD_WEATHER_ID_FOG:
                     weather_icon = &cronus_icon_u_mist;
                     break;
                 case DY_CLOUD_WEATHER_ID_LIGHT_RAIN:
+                case DY_CLOUD_WEATHER_ID_LIGHT_SLEET: // TODO: sleet icon
+                case DY_CLOUD_WEATHER_ID_LIGHT_HAIL: // TODO: hail icon
                     weather_icon = &cronus_icon_u_light_rain;
                     break;
                 case DY_CLOUD_WEATHER_ID_MEDIUM_RAIN:
                     weather_icon = &cronus_icon_u_medium_rain;
                     break;
                 case DY_CLOUD_WEATHER_ID_HEAVY_RAIN:
+                case DY_CLOUD_WEATHER_ID_HEAVY_SLEET: // TODO: sleet icon
+                case DY_CLOUD_WEATHER_ID_HEAVY_HAIL: // TODO: hail icon
                     weather_icon = &cronus_icon_u_heavy_rain;
                     break;
+                case DY_CLOUD_WEATHER_ID_LIGHT_SNOW:
+                    weather_icon = &cronus_icon_u_light_snow;
+                    break;
+                case DY_CLOUD_WEATHER_ID_MEDIUM_SNOW:
+                    weather_icon = &cronus_icon_u_medium_snow;
+                    break;
+                case DY_CLOUD_WEATHER_ID_HEAVY_SNOW:
+                    weather_icon = &cronus_icon_u_heavy_snow;
+                    break;
+                case DY_CLOUD_WEATHER_ID_THUNDERSTORM:
+                    weather_icon = &cronus_icon_u_thunderstorm;
+                    break;
+                case DY_CLOUD_WEATHER_ID_UNKNOWN:
                 default:
                     weather_icon = &cronus_icon_u_question;
             }

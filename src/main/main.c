@@ -113,7 +113,6 @@ static dy_err_t init_rtc() {
 }
 
 #ifdef CONFIG_CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16
-
 static dy_err_t init_display_max7219(gpio_num_t cs, gpio_num_t clk, gpio_num_t data, bool reverse) {
     dy_err_t err = dy_display_driver_max7219_init(0, cs, clk, data, 4, 2, reverse);
     if (dy_is_err(err)) {
@@ -126,7 +125,6 @@ static dy_err_t init_display_max7219(gpio_num_t cs, gpio_num_t clk, gpio_num_t d
 
     return dy_ok();
 }
-
 #endif // CONFIG_CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16
 
 #ifdef CONFIG_CRONUS_DISPLAY_0_DRIVER_WS2812_32X16
