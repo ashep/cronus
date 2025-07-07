@@ -1,6 +1,3 @@
-#pragma once
-
-#include <stdio.h>
 #include "dy/gfx/sprite.h"
 
 static const dy_gfx_px_t cronus_icon_c_partly_cloudy_night_d[] = {
@@ -34,7 +31,7 @@ static const dy_gfx_px_t cronus_icon_c_partly_cloudy_night_d[] = {
         {0x00,0x00,0xff},{0x00,0x00,0xff},{0x00,0x00,0xff},{0x00,0x00,0xff},{0x00,0x00,0xff},{0x00,0x00,0x00},{0x00,0x00,0x00},
 };
 
-static const dy_gfx_sprite_t cronus_icon_c_partly_cloudy_night = {
+const dy_gfx_sprite_t cronus_icon_c_partly_cloudy_night = {
         .width = 14,
         .height = 14,
         .data = cronus_icon_c_partly_cloudy_night_d,
