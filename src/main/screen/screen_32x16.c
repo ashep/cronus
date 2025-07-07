@@ -80,24 +80,24 @@ static void render_single_line(
                     break;
                 case DY_CLOUD_WEATHER_ID_PARTLY_CLOUDY:
                     if (weather.is_day) {
-#ifdef CONFIG_CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16
-                        weather_icon = &cronus_icon_m_partly_cloudy_day;
-#elifdef CONFIG_CRONUS_DISPLAY_0_DRIVER_WS2812_32X16
+#ifdef CONFIG_CRONUS_DISPLAY_0_DRIVER_WS2812_32X16
                         weather_icon = &cronus_icon_c_partly_cloudy_day;
+#else
+                        weather_icon = &cronus_icon_m_partly_cloudy_day;
 #endif
                     } else {
-#ifdef CONFIG_CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16
-                        weather_icon = &cronus_icon_m_partly_cloudy_night;
-#elifdef CONFIG_CRONUS_DISPLAY_0_DRIVER_WS2812_32X16
+#ifdef CONFIG_CRONUS_DISPLAY_0_DRIVER_WS2812_32X16
                         weather_icon = &cronus_icon_c_partly_cloudy_night;
+#else
+                        weather_icon = &cronus_icon_m_partly_cloudy_night;
 #endif
                     }
                     break;
                 case DY_CLOUD_WEATHER_ID_CLOUDY:
-#ifdef CONFIG_CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16
-                    weather_icon = &cronus_icon_m_cloudy;
-#elifdef CONFIG_CRONUS_DISPLAY_0_DRIVER_WS2812_32X16
+#ifdef CONFIG_CRONUS_DISPLAY_0_DRIVER_WS2812_32X16
                     weather_icon = &cronus_icon_c_cloudy;
+#else
+                    weather_icon = &cronus_icon_m_cloudy;
 #endif
                     break;
                 case DY_CLOUD_WEATHER_ID_MIST:
