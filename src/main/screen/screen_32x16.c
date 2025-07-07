@@ -11,16 +11,7 @@
 #include "cronus/cfg.h"
 #include "cronus/weather.h"
 #include "cronus/screen.h"
-#include "cronus/icon/monochrome/clear_day.h"
-#include "cronus/icon/monochrome/clear_night.h"
-#include "cronus/icon/colorful/partly_cloudy_day.h"
-#include "cronus/icon/colorful/partly_cloudy_night.h"
-#include "cronus/icon/colorful/cloudy.h"
-#include "cronus/icon/colorful/mist.h"
-#include "cronus/icon/monochrome/light_rain.h"
-#include "cronus/icon/monochrome/medium_rain.h"
-#include "cronus/icon/monochrome/heavy_rain.h"
-#include "cronus/icon/monochrome/question.h"
+#include "cronus/icon.h"
 
 #define LTAG "WIDGET_32X16"
 
@@ -28,6 +19,7 @@
 #define FMT_TEMP_NON_ZERO "%+d*"
 
 static void render_single_line(
+        cronus_cfg_display_type_t dt,
         show_cycle_num cycle,
         dy_gfx_buf_t *buf,
         const int time_hour,
@@ -36,7 +28,7 @@ static void render_single_line(
         const char *odr_temp_str
 ) {
     int32_t x;
-    dy_gfx_sprite_t *weather_icon;
+    const dy_gfx_sprite_t *weather_icon;
     dy_cloud_weather_t weather;
 
     dy_gfx_px_t color = DY_GFX_C_GREEN;
@@ -70,35 +62,67 @@ static void render_single_line(
             weather = cronus_weather_get();
             switch (weather.id) {
                 case DY_CLOUD_WEATHER_ID_CLEAR:
-                    weather_icon = &cronus_icon_mc_clear_day;
-                    if (!weather.is_day) {
-                        weather_icon = &cronus_icon_mc_clear_night;
+                    if (weather.is_day) {
+                        weather_icon = &cronus_icon_u_clear_day;
+                    } else {
+                        weather_icon = &cronus_icon_u_clear_night;
                     }
                     break;
                 case DY_CLOUD_WEATHER_ID_PARTLY_CLOUDY:
                     if (weather.is_day) {
-                        weather_icon = &cronus_icon_cf_partly_cloudy_day;
+                        if (dt == CRONUS_CFG_DISPLAY_TYPE_WS2812_32X16) {
+                            weather_icon = &cronus_icon_c_partly_cloudy_day;
+                        } else {
+                            weather_icon = &cronus_icon_m_partly_cloudy_day;
+                        }
                     } else {
-                        weather_icon = &cronus_icon_cf_partly_cloudy_night;
+                        if (dt == CRONUS_CFG_DISPLAY_TYPE_WS2812_32X16) {
+                            weather_icon = &cronus_icon_c_partly_cloudy_night;
+                        } else {
+                            weather_icon = &cronus_icon_m_partly_cloudy_night;
+                        }
                     }
                     break;
                 case DY_CLOUD_WEATHER_ID_CLOUDY:
-                    weather_icon = &cronus_icon_cf_cloudy;
+                case DY_CLOUD_WEATHER_ID_OVERCAST:
+                    if (dt == CRONUS_CFG_DISPLAY_TYPE_WS2812_32X16) {
+                        weather_icon = &cronus_icon_c_cloudy;
+                    } else {
+                        weather_icon = &cronus_icon_m_cloudy;
+                    }
                     break;
                 case DY_CLOUD_WEATHER_ID_MIST:
-                    weather_icon = &cronus_icon_cf_mist;
+                case DY_CLOUD_WEATHER_ID_FOG:
+                    weather_icon = &cronus_icon_u_mist;
                     break;
                 case DY_CLOUD_WEATHER_ID_LIGHT_RAIN:
-                    weather_icon = &cronus_icon_mc_light_rain;
+                case DY_CLOUD_WEATHER_ID_LIGHT_SLEET: // TODO: sleet icon
+                case DY_CLOUD_WEATHER_ID_LIGHT_HAIL: // TODO: hail icon
+                    weather_icon = &cronus_icon_u_light_rain;
                     break;
                 case DY_CLOUD_WEATHER_ID_MEDIUM_RAIN:
-                    weather_icon = &cronus_icon_mc_medium_rain;
+                    weather_icon = &cronus_icon_u_medium_rain;
                     break;
                 case DY_CLOUD_WEATHER_ID_HEAVY_RAIN:
-                    weather_icon = &cronus_icon_mc_heavy_rain;
+                case DY_CLOUD_WEATHER_ID_HEAVY_SLEET: // TODO: sleet icon
+                case DY_CLOUD_WEATHER_ID_HEAVY_HAIL: // TODO: hail icon
+                    weather_icon = &cronus_icon_u_heavy_rain;
                     break;
+                case DY_CLOUD_WEATHER_ID_LIGHT_SNOW:
+                    weather_icon = &cronus_icon_u_light_snow;
+                    break;
+                case DY_CLOUD_WEATHER_ID_MEDIUM_SNOW:
+                    weather_icon = &cronus_icon_u_medium_snow;
+                    break;
+                case DY_CLOUD_WEATHER_ID_HEAVY_SNOW:
+                    weather_icon = &cronus_icon_u_heavy_snow;
+                    break;
+                case DY_CLOUD_WEATHER_ID_THUNDERSTORM:
+                    weather_icon = &cronus_icon_u_thunderstorm;
+                    break;
+                case DY_CLOUD_WEATHER_ID_UNKNOWN:
                 default:
-                    weather_icon = &cronus_icon_mc_question;
+                    weather_icon = &cronus_icon_u_question;
             }
 
             dy_gfx_write_sprite(buf, 9, 1, weather_icon);
@@ -108,14 +132,8 @@ static void render_single_line(
     }
 }
 
-static void render_multi_line(
-        show_cycle_num cycle,
-        dy_gfx_buf_t *buf,
-        const int time_hour,
-        const char *time_str,
-        const char *date_str,
-        const char *odr_temp_str
-) {
+static void render_multi_line(show_cycle_num cycle, dy_gfx_buf_t *buf, const char *time_str, const char *date_str,
+                              const char *odr_temp_str) {
     int32_t x;
     dy_cloud_weather_t weather;
 
@@ -141,7 +159,7 @@ static void render_multi_line(
     }
 }
 
-void render_32x16(show_cycle_num cycle, dy_gfx_buf_t *buf, struct tm *ti) {
+void render_32x16(cronus_cfg_display_type_t dt, show_cycle_num cycle, dy_gfx_buf_t *buf, struct tm *ti) {
     uint8_t mode = dy_cfg_get(CRONUS_CFG_ID_USER_SHOW_MODE, CRONUS_CFG_USER_SHOW_MODE_SINGLE_LINE);
 
     char time_str[8], date_str[8], odr_temp_str[6];
@@ -155,8 +173,8 @@ void render_32x16(show_cycle_num cycle, dy_gfx_buf_t *buf, struct tm *ti) {
     snprintf(odr_temp_str, sizeof(odr_temp_str), fmt, weather.feels);
 
     if (mode == CRONUS_CFG_USER_SHOW_MODE_MULTI_LINE) {
-        render_multi_line(cycle, buf, ti->tm_hour, time_str, date_str, odr_temp_str);
+        render_multi_line(cycle, buf, time_str, date_str, odr_temp_str);
     } else {
-        render_single_line(cycle, buf, ti->tm_hour, time_str, date_str, odr_temp_str);
+        render_single_line(dt, cycle, buf, ti->tm_hour, time_str, date_str, odr_temp_str);
     }
 }
