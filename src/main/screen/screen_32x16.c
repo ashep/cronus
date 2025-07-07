@@ -39,7 +39,7 @@ static void render_single_line(
         const char *odr_temp_str
 ) {
     int32_t x;
-    dy_gfx_sprite_t *weather_icon;
+    const dy_gfx_sprite_t *weather_icon;
     dy_cloud_weather_t weather;
 
     dy_gfx_px_t color = DY_GFX_C_GREEN;

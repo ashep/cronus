@@ -34,7 +34,7 @@ static const dy_gfx_px_t cronus_icon_m_partly_cloudy_night_d[] = {
         {0xff,0xff,0xff},{0xff,0xff,0xff},{0xff,0xff,0xff},{0xff,0xff,0xff},{0xff,0xff,0xff},{0x00,0x00,0x00},{0x00,0x00,0x00},
 };
 
-dy_gfx_sprite_t cronus_icon_m_partly_cloudy_night = {
+static const dy_gfx_sprite_t cronus_icon_m_partly_cloudy_night = {
         .width = 14,
         .height = 14,
         .data = cronus_icon_m_partly_cloudy_night_d,
