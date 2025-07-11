@@ -6,6 +6,7 @@ idf_component_register(
         esp_adc
         dy_error
         dy_cfg
+        dy_cfg2
         dy_appinfo
         dy_display
         dy_display_driver_max7219
@@ -18,6 +19,7 @@ idf_component_register(
         dy_cloud
 
         SRCS
+        cfg.c
         main.c
         brightness.c
         weather.c

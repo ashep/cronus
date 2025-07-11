@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <string.h>
 #include <time.h>
 
@@ -20,7 +19,7 @@ static void weather_update_handler(void *arg, esp_event_base_t base, int32_t id,
         return;
     }
 
-    strncpy(weather.title, dt->title, DY_CLOUD_WEATHER_TITLE_LEN);
+    strlcpy(weather.title, dt->title, DY_CLOUD_WEATHER_TITLE_LEN);
     weather.id = dt->id;
     weather.is_day = dt->is_day;
     weather.temp = dt->temp;
@@ -41,8 +40,8 @@ dy_err_t cronus_weather_init() {
         return dy_err(DY_ERR_NO_MEM, "xSemaphoreCreateMutex returned null");
     }
 
-    if (dy_is_err(err = dy_cloud_weather_start_scheduler())) {
-        return dy_err_pfx("dy_cloud_weather_start_scheduler", err);
+    if (dy_is_err(err = dy_cloud_weather_scheduler_start(0, 0))) {
+        return dy_err_pfx("dy_cloud_weather_scheduler_start", err);
     }
 
     esp_err = esp_event_handler_register(DY_CLOUD_EV_BASE, DY_CLOUD_EV_WEATHER_UPDATED, weather_update_handler, NULL);

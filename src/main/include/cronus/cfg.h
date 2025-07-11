@@ -1,6 +1,6 @@
 #pragma once
 
-// Display 1
+// Display 0
 #define CRONUS_CFG_ID_DISPLAY_0_TYPE    30
 #define CRONUS_CFG_ID_DISPLAY_0_FLAGS   31
 #define CRONUS_CFG_ID_DISPLAY_0_PIN_CS  32 // chip select/enable
@@ -8,39 +8,17 @@
 #define CRONUS_CFG_ID_DISPLAY_0_PIN_RS  34 // data/instructions
 #define CRONUS_CFG_ID_DISPLAY_0_PIN_Rw  35 // read/write
 #define CRONUS_CFG_ID_DISPLAY_0_PIN_RST 36 // reset
-#define CRONUS_CFG_ID_DISPLAY_0_PIN_D0  37 // data
-#define CRONUS_CFG_ID_DISPLAY_0_PIN_D1  38 // data
-#define CRONUS_CFG_ID_DISPLAY_0_PIN_D2  39 // data
-#define CRONUS_CFG_ID_DISPLAY_0_PIN_D3  40 // data
-#define CRONUS_CFG_ID_DISPLAY_0_PIN_D4  41 // data
-#define CRONUS_CFG_ID_DISPLAY_0_PIN_D5  42 // data
-#define CRONUS_CFG_ID_DISPLAY_0_PIN_D6  43 // data
-#define CRONUS_CFG_ID_DISPLAY_0_PIN_D7  44 // data
-#define CRONUS_CFG_ID_DISPLAY_0_BRI_MAX 45 // brightness hard limit
+#define CRONUS_CFG_ID_DISPLAY_0_PIN_D0  37 // data pin 0
+#define CRONUS_CFG_ID_DISPLAY_0_PIN_D1  38 // data pin 1
+#define CRONUS_CFG_ID_DISPLAY_0_PIN_D2  39 // data pin 2
+#define CRONUS_CFG_ID_DISPLAY_0_PIN_D3  40 // data pin 3
+#define CRONUS_CFG_ID_DISPLAY_0_PIN_D4  41 // data pin 4
+#define CRONUS_CFG_ID_DISPLAY_0_PIN_D5  42 // data pin 5
+#define CRONUS_CFG_ID_DISPLAY_0_PIN_D6  43 // data pin 6
+#define CRONUS_CFG_ID_DISPLAY_0_PIN_D7  44 // data pin 7
 
-// Display 1 flags
-#define CRONUS_CFG_FLAG_DISPLAY_0_REVERSE 0 // is display input connected to the MCU via last segment
-
-// Display 2
-#define CRONUS_CFG_ID_DISPLAY_1_TYPE    50
-#define CRONUS_CFG_ID_DISPLAY_1_FLAGS   51
-#define CRONUS_CFG_ID_DISPLAY_1_PIN_CS  52 // chip select/enable
-#define CRONUS_CFG_ID_DISPLAY_1_PIN_CLK 53 // clock
-#define CRONUS_CFG_ID_DISPLAY_1_PIN_RS  54 // data/instructions
-#define CRONUS_CFG_ID_DISPLAY_1_PIN_Rw  55 // read/write
-#define CRONUS_CFG_ID_DISPLAY_1_PIN_RST 56 // reset
-#define CRONUS_CFG_ID_DISPLAY_1_PIN_D0  57 // data
-#define CRONUS_CFG_ID_DISPLAY_1_PIN_D1  58 // data
-#define CRONUS_CFG_ID_DISPLAY_1_PIN_D2  59 // data
-#define CRONUS_CFG_ID_DISPLAY_1_PIN_D3  60 // data
-#define CRONUS_CFG_ID_DISPLAY_1_PIN_D4  61 // data
-#define CRONUS_CFG_ID_DISPLAY_1_PIN_D5  62 // data
-#define CRONUS_CFG_ID_DISPLAY_1_PIN_D6  63 // data
-#define CRONUS_CFG_ID_DISPLAY_1_PIN_D7  64 // data
-#define CRONUS_CFG_ID_DISPLAY_1_BRI_MAX 65 // brightness hard limit
-
-// Display 2 flags
-#define CRONUS_CFG_FLAG_DISPLAY_1_REVERSE 0 // is multi-device display input connected to the last device
+// Display 0 flags
+#define CRONUS_CFG_FLAG_DISPLAY_0_REVERSE 0 // is segmented display connected to the MCU by its last segment
 
 // Peripheral devices
 #define CRONUS_CFG_ID_PRP_RTC_PIN_SCL 70 // RTC clock
