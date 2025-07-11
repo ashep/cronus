@@ -39,10 +39,6 @@ static dy_err_t init_v1() {
 
     // Call this only after hardware revision-related settings are set
     if (dy_is_err(err = dy_cfg_init(DY_BT_CHRC_2))) {
-        return err;
-    }
-
-    if (dy_is_err(err = dy_cfg2_init())) {
         return dy_err_pfx("dy_cfg_init", err);
     }
 
@@ -111,11 +107,11 @@ dy_err_t init_config() {
         return err;
     }
 
-    migrate_v1_to_v2();
-
     if (dy_is_err(err = init_v2())) {
         return err;
     }
+
+    migrate_v1_to_v2();
 
     return dy_ok();
 }
