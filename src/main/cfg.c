@@ -11,7 +11,7 @@ static dy_err_t init_v1() {
 
     // Set hardware revision-related settings BEFORE calling dy_cfg_init().
     // This is important because it prevents pin number settings changes during OTA firmware updates.
-    // This values are initially writen to NVS on first firmware upload and must not be changed afterwards.
+    // These values are initially written to NVS on first firmware upload and must not be changed afterwards.
 #ifdef CONFIG_CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16
     dy_cfg_must_set_initial(CRONUS_CFG_ID_DISPLAY_0_TYPE, CRONUS_CFG_DISPLAY_TYPE_MAX7219_32X16);
     dy_cfg_must_set_initial(CRONUS_CFG_ID_DISPLAY_0_PIN_CS, CONFIG_CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16_PIN_CS);

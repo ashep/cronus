@@ -25,7 +25,6 @@
 
 #define LTAG "MAIN"
 
-extern dy_err_t init_config();
 static dy_ds3231_handle_t ds3231;
 
 static dy_err_t init_nvs() {

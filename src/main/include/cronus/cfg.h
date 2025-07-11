@@ -47,3 +47,5 @@ typedef enum {
     CRONUS_CFG_DISPLAY_TYPE_MAX7219_32X16,
     CRONUS_CFG_DISPLAY_TYPE_WS2812_32X16,
 } cronus_cfg_display_type_t;
+
+dy_err_t init_config();
