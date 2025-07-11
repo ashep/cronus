@@ -250,7 +250,7 @@ void app_main(void) {
 
     // Weather sync
     if (dy_is_err(err = cronus_weather_init())) {
-        ESP_LOGE(LTAG, "dy_cloud_time_scheduler_start: %s", dy_err_str(err));
+        ESP_LOGE(LTAG, "cronus_weather_init: %s", dy_err_str(err));
         abort();
     }
 
