@@ -19,12 +19,6 @@ idf_component_register(
         dy_cloud
 
         SRCS
-        cfg.c
-        main.c
-        brightness.c
-        weather.c
-        screen/screen.c
-        screen/screen_32x16.c
         icon/color/cloudy.c
         icon/color/partly_cloudy_day.c
         icon/color/partly_cloudy_night.c
@@ -42,6 +36,13 @@ idf_component_register(
         icon/universal/mist.c
         icon/universal/question.c
         icon/universal/thunderstorm.c
+        screen/screen.c
+        screen/screen_32x16.c
+        brightness.c
+        bt.c
+        cfg.c
+        main.c
+        weather.c
 )
 
 idf_build_get_property(APP_NAME PROJECT_NAME)

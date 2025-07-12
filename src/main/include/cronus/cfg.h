@@ -38,6 +38,7 @@
 #define CRONUS_CFG_ID_USER_SHOW_DUR_ODR_TEMP 135 // outdoor temperature show duration
 #define CRONUS_CFG_ID_USER_ALLOW_ALPHA_UPD   136 // allow firmware upgrades to alpha versions
 #define CRONUS_CFG_ID_USER_SHOW_DUR_WTH_ICON 137 // weather icon show duration
+#define CRONUS_CFG_ID_USER_LOCATION_NAME     138 // location name
 
 #define CRONUS_CFG_USER_SHOW_MODE_SINGLE_LINE 0
 #define CRONUS_CFG_USER_SHOW_MODE_MULTI_LINE  1

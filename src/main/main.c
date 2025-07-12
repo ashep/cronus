@@ -19,6 +19,7 @@
 #include "dy/cloud.h"
 
 #include "cronus/cfg.h"
+#include "cronus/bt.h"
 #include "cronus/weather.h"
 #include "cronus/screen.h"
 #include "cronus/brightness.h"
@@ -139,15 +140,7 @@ static char *hwid() {
 #endif
 }
 
-static void bt_ready_handler(void *arg, esp_event_base_t base, int32_t id, void *data) {
-    dy_bt_evt_ready_t *evt = (dy_bt_evt_ready_t *) data;
 
-    char addr[13];
-    snprintf(addr, 13, "%x%x%x%x%x%x",
-             evt->address[0], evt->address[1], evt->address[2], evt->address[3], evt->address[4], evt->address[5]);
-
-    dy_appinfo_set_auth(addr);
-}
 
 void app_main(void) {
     esp_err_t esp_err;
@@ -216,29 +209,14 @@ void app_main(void) {
     }
 
     // Network config
-    if (dy_is_err(err = dy_net_cfg_init(DY_BT_CHRC_1))) {
+    if (dy_is_err(err = dy_net_cfg_init())) {
         ESP_LOGE(LTAG, "dy_net_cfg_init: %s", dy_err_str(err));
         abort();
     }
 
-    // Bluetooth event handler
-    esp_err = esp_event_handler_register(DY_BT_EVENT_BASE, DY_BT_EVENT_READY, bt_ready_handler, NULL);
-    if (esp_err != ESP_OK) {
-        ESP_LOGE(LTAG, "esp_event_handler_register(DY_BT_EVENT_BASE): %s", esp_err_to_name(esp_err));
-        abort();
-    }
-
     // Bluetooth
-    if (dy_is_err(err = dy_bt_set_device_name_prefix("Cronus"))) {
-        ESP_LOGE(LTAG, "dy_bt_set_device_name_prefix: %s", dy_err_str(err));
-        abort();
-    }
-    if (dy_is_err(err = dy_bt_set_device_appearance(0x0100))) { // Generic Clock
-        ESP_LOGE(LTAG, "dy_bt_set_device_appearance: %s", dy_err_str(err));
-        abort();
-    }
-    if (dy_is_err(err = dy_bt_init())) {
-        ESP_LOGE(LTAG, "dy_bt_init: %s", dy_err_str(err));
+    if (dy_is_err(err = cronus_bt_init())) {
+        ESP_LOGE(LTAG, "cronus_bt_init: %s", dy_err_str(err));
         abort();
     }
 
