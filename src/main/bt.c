@@ -14,7 +14,7 @@ static void on_bt_ready(void *arg, esp_event_base_t base, int32_t id, void *data
     dy_bt_evt_ready_t *evt = (dy_bt_evt_ready_t *) data;
 
     char addr[13];
-    snprintf(addr, 13, "%x%x%x%x%x%x",
+    snprintf(addr, 13, "%02x%02x%02x%02x%02x%02x",
              evt->address[0], evt->address[1], evt->address[2], evt->address[3], evt->address[4], evt->address[5]);
 
     dy_appinfo_set_auth(addr);
@@ -32,7 +32,7 @@ static dy_err_t on_location_name_read(uint8_t *val, size_t *len) {
 static dy_err_t on_location_name_write(const uint8_t *val, size_t len) {
     dy_err_t err = dy_cfg2_set_str(CRONUS_CFG_ID_USER_LOCATION_NAME, (const char *) val);
     if (dy_is_err(err)) {
-        ESP_LOGE(LTAG, "dy_cfg2_set_str failed: %s", dy_err_str(err));
+        ESP_LOGE(LTAG, "dy_cfg2_set_str: %s", dy_err_str(err));
         return err;
     }
 
