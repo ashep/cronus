@@ -30,7 +30,7 @@ _Noreturn static void switch_cycle_task() {
 
         err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_SHOW_MODE, &mode, CRONUS_CFG_USER_SHOW_MODE_SINGLE_LINE);
         if (dy_is_err(err)) {
-            ESP_LOGE(LTAG, "get CRONUS_CFG_ID_USER_SHOW_MODE: %s", dy_err_str(err));
+            ESP_LOGE(LTAG, "get CRONUS_CFG_ID_SHOW_MODE: %s", dy_err_str(err));
         }
 
         // Search for the next cycle having non-zero delay
@@ -49,36 +49,36 @@ _Noreturn static void switch_cycle_task() {
                         delay = 0;
                     } else {
                         if (dy_is_err(err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_SHOW_DUR_TIME, &delay, 5))) {
-                            ESP_LOGE(LTAG, "get CRONUS_CFG_ID_USER_SHOW_DUR_TIME: %s", dy_err_str(err));
+                            ESP_LOGE(LTAG, "get CRONUS_CFG_ID_SHOW_DUR_TIME: %s", dy_err_str(err));
                         }
                     }
                     break;
                 case SHOW_CYCLE_DATE:
                     if (dy_is_err(err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_SHOW_DUR_DATE, &delay, 5))) {
-                        ESP_LOGE(LTAG, "get CRONUS_CFG_ID_USER_SHOW_DUR_DATE: %s", dy_err_str(err));
+                        ESP_LOGE(LTAG, "get CRONUS_CFG_ID_SHOW_DUR_DATE: %s", dy_err_str(err));
                     }
                     break;
                 case SHOW_CYCLE_DOW:
                     if (dy_is_err(err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_SHOW_DUR_DOW, &delay, 5))) {
-                        ESP_LOGE(LTAG, "get CRONUS_CFG_ID_USER_SHOW_DUR_DOW: %s", dy_err_str(err));
+                        ESP_LOGE(LTAG, "get CRONUS_CFG_ID_SHOW_DUR_DOW: %s", dy_err_str(err));
                     }
                     break;
                 case SHOW_CYCLE_AMB_TEMP:
                     if (dy_is_err(err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_SHOW_DUR_AMB_TEMP, &delay, 5))) {
-                        ESP_LOGE(LTAG, "get CRONUS_CFG_ID_USER_SHOW_DUR_AMB_TEMP: %s", dy_err_str(err));
+                        ESP_LOGE(LTAG, "get CRONUS_CFG_ID_SHOW_DUR_AMB_TEMP: %s", dy_err_str(err));
                     }
                     break;
                 case SHOW_CYCLE_ODR_TEMP:
                     if (!cronus_is_weather_obsolete()) {
                         if (dy_is_err(err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_SHOW_DUR_ODR_TEMP, &delay, 5))) {
-                            ESP_LOGE(LTAG, "get CRONUS_CFG_ID_USER_SHOW_DUR_ODR_TEMP: %s", dy_err_str(err));
+                            ESP_LOGE(LTAG, "get CRONUS_CFG_ID_SHOW_DUR_ODR_TEMP: %s", dy_err_str(err));
                         }
                     }
                     break;
                 case SHOW_CYCLE_WEATHER_ICON:
                     if (!cronus_is_weather_obsolete()) {
                         if (dy_is_err(err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_SHOW_DUR_WEATHER_ICON, &delay, 5))) {
-                            ESP_LOGE(LTAG, "get CRONUS_CFG_ID_USER_SHOW_DUR_WTH_ICON: %s", dy_err_str(err));
+                            ESP_LOGE(LTAG, "get CRONUS_CFG_ID_SHOW_DUR_WTH_ICON: %s", dy_err_str(err));
                         }
                     }
                     break;

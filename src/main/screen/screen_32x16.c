@@ -166,7 +166,7 @@ void render_32x16(cronus_display_type_t dt, cronus_screen_cycle_num_t cycle, dy_
 
     dy_err_t err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_SHOW_MODE, &mode, CRONUS_CFG_USER_SHOW_MODE_SINGLE_LINE);
     if (dy_is_err(err)) {
-        ESP_LOGE(LTAG, "get CRONUS_CFG_ID_USER_SHOW_MODE: %s", dy_err_str(err));
+        ESP_LOGE(LTAG, "get CRONUS_CFG_ID_SHOW_MODE: %s", dy_err_str(err));
     }
 
     char time_str[8], date_str[8], odr_temp_str[6];
