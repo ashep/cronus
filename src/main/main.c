@@ -99,7 +99,7 @@ static dy_err_t init_display_max7219() {
 
 #ifdef CONFIG_CRONUS_DISPLAY_0_DRIVER_WS2812_32X16
 
-static dy_err_t init_display_ws2812(gpio_num_t data) {
+static dy_err_t init_display_ws2812() {
     dy_err_t err = dy_display_driver_ws2812_init(
         0,
         CONFIG_CRONUS_DISPLAY_0_DRIVER_WS2812_32X16_PIN_DATA,
