@@ -1,11 +1,12 @@
+#include "cronus/cfg.h"
+
 #include "freertos/FreeRTOS.h"
 #include "esp_err.h"
 #include "esp_log.h"
 #include "esp_adc/adc_oneshot.h"
 #include "dy/error.h"
-#include "dy/cfg.h"
+#include "dy/cfg2.h"
 #include "dy/display.h"
-#include "cronus/cfg.h"
 
 #define LTAG "BRIGHTNESS"
 #define LOG_LEN 4
@@ -23,8 +24,13 @@ _Noreturn static void fetch_light_data_task() {
     while (1) {
         vTaskDelay(pdMS_TO_TICKS(500));
 
-        min_v = dy_cfg_get(CRONUS_CFG_ID_USER_BRIGHTNESS_MIN, 0);
-        max_v = dy_cfg_get(CRONUS_CFG_ID_USER_BRIGHTNESS_MAX, 15);
+        if (dy_is_err(err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_BRIGHTNESS_MIN, &min_v, 0))) {
+            ESP_LOGW(LTAG, "get CRONUS_CFG_ID_BRIGHTNESS_MIN: %s", dy_err_str(err));
+        }
+
+        if (dy_is_err(err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_BRIGHTNESS_MAX, &max_v, 15))) {
+            ESP_LOGW(LTAG, "get CRONUS_CFG_ID_BRIGHTNESS_MAX: %s", dy_err_str(err));
+        }
 
         esp_err = adc_oneshot_read(adc_handle, CONFIG_CRONUS_LIGHT_SENSOR_ADC_CHANNEL, &adc_out);
         if (esp_err != ESP_OK) {

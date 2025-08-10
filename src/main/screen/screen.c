@@ -1,31 +1,37 @@
+#include "cronus/screen.h"
+#include "cronus/display.h"
+#include "cronus/cfg.h"
+#include "cronus/weather.h"
+
 #include <sys/cdefs.h>
 #include <time.h>
 #include "freertos/FreeRTOS.h"
 #include "esp_log.h"
 #include "dy/error.h"
-#include "dy/cfg.h"
+#include "dy/cfg2.h"
 #include "dy/display.h"
 #include "dy/gfx/gfx.h"
-#include "cronus/cfg.h"
-#include "cronus/weather.h"
-#include "cronus/screen.h"
 
-#define LTAG "WIDGET"
+#define LTAG "SCREEN"
 
-extern void render_32x16(cronus_cfg_display_type_t dt, show_cycle_num cycle, dy_gfx_buf_t *buf, struct tm *ti);
+extern void render_32x16(cronus_display_type_t dt, cronus_screen_cycle_num_t cycle, dy_gfx_buf_t *buf, struct tm *ti);
 
 static QueueHandle_t cycle_queue;
 
 _Noreturn static void switch_cycle_task() {
+    dy_err_t err;
     uint8_t cycle = SHOW_CYCLE_TIME;
-    uint8_t mode;
+    uint8_t mode = CRONUS_CFG_USER_SHOW_MODE_SINGLE_LINE;
     uint8_t delay = 0;
     uint8_t new_cycle;
 
     while (1) {
         vTaskDelay(pdMS_TO_TICKS(1000 * (delay ? delay : 1)));
 
-        mode = dy_cfg_get(CRONUS_CFG_ID_USER_SHOW_MODE, CRONUS_CFG_USER_SHOW_MODE_SINGLE_LINE);
+        err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_SHOW_MODE, &mode, CRONUS_CFG_USER_SHOW_MODE_SINGLE_LINE);
+        if (dy_is_err(err)) {
+            ESP_LOGE(LTAG, "get CRONUS_CFG_ID_SHOW_MODE: %s", dy_err_str(err));
+        }
 
         // Search for the next cycle having non-zero delay
         delay = 0;
@@ -42,26 +48,38 @@ _Noreturn static void switch_cycle_task() {
                         // Time string is always shown in multiline mode as a first line, so we just skip this cycle
                         delay = 0;
                     } else {
-                        delay = dy_cfg_get(CRONUS_CFG_ID_USER_SHOW_DUR_TIME, 0);
+                        if (dy_is_err(err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_SHOW_DUR_TIME, &delay, 5))) {
+                            ESP_LOGE(LTAG, "get CRONUS_CFG_ID_SHOW_DUR_TIME: %s", dy_err_str(err));
+                        }
                     }
                     break;
                 case SHOW_CYCLE_DATE:
-                    delay = dy_cfg_get(CRONUS_CFG_ID_USER_SHOW_DUR_DATE, 0);
+                    if (dy_is_err(err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_SHOW_DUR_DATE, &delay, 5))) {
+                        ESP_LOGE(LTAG, "get CRONUS_CFG_ID_SHOW_DUR_DATE: %s", dy_err_str(err));
+                    }
                     break;
                 case SHOW_CYCLE_DOW:
-                    delay = dy_cfg_get(CRONUS_CFG_ID_USER_SHOW_DUR_DOW, 0);
+                    if (dy_is_err(err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_SHOW_DUR_DOW, &delay, 5))) {
+                        ESP_LOGE(LTAG, "get CRONUS_CFG_ID_SHOW_DUR_DOW: %s", dy_err_str(err));
+                    }
                     break;
                 case SHOW_CYCLE_AMB_TEMP:
-                    delay = dy_cfg_get(CRONUS_CFG_ID_USER_SHOW_DUR_AMB_TEMP, 0);
+                    if (dy_is_err(err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_SHOW_DUR_AMB_TEMP, &delay, 5))) {
+                        ESP_LOGE(LTAG, "get CRONUS_CFG_ID_SHOW_DUR_AMB_TEMP: %s", dy_err_str(err));
+                    }
                     break;
                 case SHOW_CYCLE_ODR_TEMP:
                     if (!cronus_is_weather_obsolete()) {
-                        delay = dy_cfg_get(CRONUS_CFG_ID_USER_SHOW_DUR_ODR_TEMP, 0);
+                        if (dy_is_err(err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_SHOW_DUR_ODR_TEMP, &delay, 5))) {
+                            ESP_LOGE(LTAG, "get CRONUS_CFG_ID_SHOW_DUR_ODR_TEMP: %s", dy_err_str(err));
+                        }
                     }
                     break;
                 case SHOW_CYCLE_WEATHER_ICON:
                     if (!cronus_is_weather_obsolete()) {
-                        delay = dy_cfg_get(CRONUS_CFG_ID_USER_SHOW_DUR_WTH_ICON, 0);
+                        if (dy_is_err(err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_SHOW_DUR_WEATHER_ICON, &delay, 5))) {
+                            ESP_LOGE(LTAG, "get CRONUS_CFG_ID_SHOW_DUR_WEATHER_ICON: %s", dy_err_str(err));
+                        }
                     }
                     break;
                 default:
@@ -86,12 +104,18 @@ _Noreturn static void render_task() {
     time_t now;
     struct tm ti;
 
-    cronus_cfg_display_type_t dt = dy_cfg_get(CRONUS_CFG_ID_DISPLAY_0_TYPE, CRONUS_CFG_DISPLAY_TYPE_NONE);
+    cronus_display_type_t dt = CRONUS_DISPLAY_TYPE_NONE;
+#ifdef CONFIG_CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16
+    dt = CRONUS_DISPLAY_TYPE_MAX7219_32X16;
+#endif
+#ifdef CONFIG_CRONUS_DISPLAY_0_DRIVER_WS2812_32X16
+    dt = CRONUS_DISPLAY_TYPE_WS2812_32X16;
+#endif
 
     dy_gfx_buf_t *buf;
     switch (dt) {
-        case CRONUS_CFG_DISPLAY_TYPE_MAX7219_32X16:
-        case CRONUS_CFG_DISPLAY_TYPE_WS2812_32X16:
+        case CRONUS_DISPLAY_TYPE_MAX7219_32X16:
+        case CRONUS_DISPLAY_TYPE_WS2812_32X16:
             buf = dy_gfx_new_buf(32, 16);
             break;
         default:
@@ -111,8 +135,8 @@ _Noreturn static void render_task() {
         xQueueReceive(cycle_queue, &cycle, 0);
 
         switch (dt) {
-            case CRONUS_CFG_DISPLAY_TYPE_MAX7219_32X16:
-            case CRONUS_CFG_DISPLAY_TYPE_WS2812_32X16:
+            case CRONUS_DISPLAY_TYPE_MAX7219_32X16:
+            case CRONUS_DISPLAY_TYPE_WS2812_32X16:
                 render_32x16(dt, cycle, buf, &ti);
                 break;
             default:
