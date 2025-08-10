@@ -1,7 +1,6 @@
 #include "cronus/bt.h"
 #include "cronus/cfg.h"
 #include "cronus/display.h"
-
 #include <stdint.h>
 #include <string.h>
 #include "esp_event.h"
