@@ -78,7 +78,7 @@ _Noreturn static void switch_cycle_task() {
                 case SHOW_CYCLE_WEATHER_ICON:
                     if (!cronus_is_weather_obsolete()) {
                         if (dy_is_err(err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_SHOW_DUR_WEATHER_ICON, &delay, 5))) {
-                            ESP_LOGE(LTAG, "get CRONUS_CFG_ID_SHOW_DUR_WTH_ICON: %s", dy_err_str(err));
+                            ESP_LOGE(LTAG, "get CRONUS_CFG_ID_SHOW_DUR_WEATHER_ICON: %s", dy_err_str(err));
                         }
                     }
                     break;
