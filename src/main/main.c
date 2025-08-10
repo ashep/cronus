@@ -100,17 +100,21 @@ static dy_err_t init_display_max7219() {
 #ifdef CONFIG_CRONUS_DISPLAY_0_DRIVER_WS2812_32X16
 
 static dy_err_t init_display_ws2812(gpio_num_t data) {
-    dy_err_t err = dy_display_driver_ws2812_init(0, 18, (dy_display_driver_ws2812_segments_config_t) {
-        .ppx = 8,
-        .ppy = 8,
-        .cols = 4,
-        .rows = 2,
-    });
+    dy_err_t err = dy_display_driver_ws2812_init(
+        0,
+        CONFIG_CRONUS_DISPLAY_0_DRIVER_WS2812_32X16_PIN_DATA,
+        (dy_display_driver_ws2812_segments_config_t) {
+            .ppx = 8,
+            .ppy = 8,
+            .cols = 4,
+            .rows = 2,
+        });
     if (dy_is_err(err)) {
         return err;
     }
 
-    ESP_LOGI(LTAG, "WS2812 display driver initialized; data=%d; nx=%d; ny=%d", data, 4, 2);
+    ESP_LOGI(LTAG, "WS2812 display driver initialized; data=%d; nx=%d; ny=%d",
+             CONFIG_CRONUS_DISPLAY_0_DRIVER_WS2812_32X16_PIN_DATA, 4, 2);
 
     return dy_ok();
 }
@@ -120,14 +124,9 @@ static dy_err_t init_display_ws2812(gpio_num_t data) {
 static dy_err_t init_display() {
     dy_err_t err;
 #ifdef CONFIG_CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16
-    err = init_display_max7219(
-        CONFIG_CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16_PIN_CS,
-        CONFIG_CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16_PIN_CLK,
-        CONFIG_CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16_PIN_DATA,
-        true
-    );
+    err = init_display_max7219();
 #elifdef CONFIG_CRONUS_DISPLAY_0_DRIVER_WS2812_32X16
-    err = init_display_ws2812(CONFIG_CRONUS_DISPLAY_0_DRIVER_WS2812_32X16_PIN_DATA);
+    err = init_display_ws2812();
 #else
     err = dy_err(DY_ERR_NOT_CONFIGURED, "no display driver set");
 #endif
