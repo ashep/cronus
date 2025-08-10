@@ -1,31 +1,33 @@
+#include "cronus/screen.h"
+#include "cronus/display.h"
+#include "cronus/cfg.h"
+#include "cronus/weather.h"
+#include "cronus/icon.h"
+
 #include <stdio.h>
 #include <time.h>
 #include "esp_log.h"
-#include "dy/cfg.h"
+#include "dy/cfg2.h"
 #include "dy/gfx/gfx.h"
 #include "dy/gfx/text.h"
 #include "dy/gfx/sprite.h"
 #include "dy/gfx/font/clock/6x7v1.h"
 #include "dy/gfx/font/clock/6x8v1.h"
 #include "dy/gfx/font/clock/6x12v1.h"
-#include "cronus/cfg.h"
-#include "cronus/weather.h"
-#include "cronus/screen.h"
-#include "cronus/icon.h"
 
-#define LTAG "WIDGET_32X16"
+#define LTAG "SCREEN_32X16"
 
 #define FMT_TEMP_ZERO "%d*"
 #define FMT_TEMP_NON_ZERO "%+d*"
 
 static void render_single_line(
-        cronus_cfg_display_type_t dt,
-        show_cycle_num cycle,
-        dy_gfx_buf_t *buf,
-        const int time_hour,
-        const char *time_str,
-        const char *date_str,
-        const char *odr_temp_str
+    cronus_display_type_t dt,
+    cronus_screen_cycle_num_t cycle,
+    dy_gfx_buf_t *buf,
+    const int time_hour,
+    const char *time_str,
+    const char *date_str,
+    const char *odr_temp_str
 ) {
     int32_t x;
     const dy_gfx_sprite_t *weather_icon;
@@ -70,13 +72,13 @@ static void render_single_line(
                     break;
                 case DY_CLOUD_WEATHER_ID_PARTLY_CLOUDY:
                     if (weather.is_day) {
-                        if (dt == CRONUS_CFG_DISPLAY_TYPE_WS2812_32X16) {
+                        if (dt == CRONUS_DISPLAY_TYPE_WS2812_32X16) {
                             weather_icon = &cronus_icon_c_partly_cloudy_day;
                         } else {
                             weather_icon = &cronus_icon_m_partly_cloudy_day;
                         }
                     } else {
-                        if (dt == CRONUS_CFG_DISPLAY_TYPE_WS2812_32X16) {
+                        if (dt == CRONUS_DISPLAY_TYPE_WS2812_32X16) {
                             weather_icon = &cronus_icon_c_partly_cloudy_night;
                         } else {
                             weather_icon = &cronus_icon_m_partly_cloudy_night;
@@ -85,7 +87,7 @@ static void render_single_line(
                     break;
                 case DY_CLOUD_WEATHER_ID_CLOUDY:
                 case DY_CLOUD_WEATHER_ID_OVERCAST:
-                    if (dt == CRONUS_CFG_DISPLAY_TYPE_WS2812_32X16) {
+                    if (dt == CRONUS_DISPLAY_TYPE_WS2812_32X16) {
                         weather_icon = &cronus_icon_c_cloudy;
                     } else {
                         weather_icon = &cronus_icon_m_cloudy;
@@ -132,7 +134,7 @@ static void render_single_line(
     }
 }
 
-static void render_multi_line(show_cycle_num cycle, dy_gfx_buf_t *buf, const char *time_str, const char *date_str,
+static void render_multi_line(cronus_screen_cycle_num_t cycle, dy_gfx_buf_t *buf, const char *time_str, const char *date_str,
                               const char *odr_temp_str) {
     int32_t x;
     dy_cloud_weather_t weather;
@@ -159,8 +161,13 @@ static void render_multi_line(show_cycle_num cycle, dy_gfx_buf_t *buf, const cha
     }
 }
 
-void render_32x16(cronus_cfg_display_type_t dt, show_cycle_num cycle, dy_gfx_buf_t *buf, struct tm *ti) {
-    uint8_t mode = dy_cfg_get(CRONUS_CFG_ID_USER_SHOW_MODE, CRONUS_CFG_USER_SHOW_MODE_SINGLE_LINE);
+void render_32x16(cronus_display_type_t dt, cronus_screen_cycle_num_t cycle, dy_gfx_buf_t *buf, struct tm *ti) {
+    uint8_t mode;
+
+    dy_err_t err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_SHOW_MODE, &mode, CRONUS_CFG_USER_SHOW_MODE_SINGLE_LINE);
+    if (dy_is_err(err)) {
+        ESP_LOGE(LTAG, "get CRONUS_CFG_ID_USER_SHOW_MODE: %s", dy_err_str(err));
+    }
 
     char time_str[8], date_str[8], odr_temp_str[6];
     char sepa = ti->tm_sec % 2 ? ':' : ' ';

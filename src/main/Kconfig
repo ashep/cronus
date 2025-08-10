@@ -28,41 +28,27 @@ menu "Cronus"
             range 0 48
             default 18
 
-        config CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16_REVERSE
-            depends on CRONUS_DISPLAY_0_DRIVER_MAX7219_32X16
-            bool "DATA pin is connected to the bottom right matrix"
-            help
-                Uncheck, if data DATA pin is connected to the top left matrix.
-            default y
-
         config CRONUS_DISPLAY_0_DRIVER_WS2812_32X16_PIN_DATA
             depends on CRONUS_DISPLAY_0_DRIVER_WS2812_32X16
             int "DATA pin"
             range 0 48
             default 18
-
-        config CRONUS_DISPLAY_0_BRIGHTNESS_HARD_LIMIT
-            int "Brightness hard limit"
-            help
-                May be useful if the PSU isn't capable of providing enough current.
-            range 0 15
-            default 15
     endmenu
 
     menu "External RTC (DS3231)"
         config CRONUS_DS3231_ENABLED
             bool "Enabled"
             default y
-        config CRONUS_DS3231_PIN_SCL
-            depends on CRONUS_DS3231_ENABLED
-            int "SCL pin"
-            range 0 48
-            default 39
         config CRONUS_DS3231_PIN_SDA
             depends on CRONUS_DS3231_ENABLED
             int "SDA pin"
             range 0 48
             default 38
+        config CRONUS_DS3231_PIN_SCL
+            depends on CRONUS_DS3231_ENABLED
+            int "SCL pin"
+            range 0 48
+            default 39
     endmenu
 
     menu "Light sensor"
