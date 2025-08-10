@@ -87,7 +87,7 @@ static dy_err_t on_uint8_const_read(esp_bt_uuid_t uuid, uint8_t *val, size_t *le
 #elifdef CONFIG_CRONUS_DISPLAY_0_DRIVER_WS2812_32X16
             *val = CRONUS_DISPLAY_TYPE_WS2812_32X16;
 #else
-            *val = CRONUS_CFG_DISPLAY_TYPE_NONE;
+            *val = CRONUS_DISPLAY_TYPE_NONE;
 #endif
             break;
         default:
