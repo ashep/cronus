@@ -167,8 +167,12 @@ static dy_err_t on_string_write(esp_bt_uuid_t uuid, const uint8_t *val, size_t l
         return err;
     }
 
+    if (len >= DY_CFG2_STR_MAX_LEN) { // we need (DY_CFG2_STR_MAX_LEN - 1) to keep the terminator
+        return dy_err(DY_ERR_INVALID_ARG, "value is too long: %d", len);
+    }
+
     char buf[DY_CFG2_STR_MAX_LEN];
-    strlcpy(buf, (const char *) val, sizeof(buf));
+    strlcpy(buf, (const char *) val, len);
 
     if (dy_is_err(err = dy_cfg2_set_str(cfg_id, (const char *) buf))) {
         return err;
