@@ -25,11 +25,11 @@ _Noreturn static void fetch_light_data_task() {
         vTaskDelay(pdMS_TO_TICKS(500));
 
         if (dy_is_err(err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_BRIGHTNESS_MIN, &min_v, 0))) {
-            ESP_LOGW(LTAG, "get CRONUS_CFG_ID_USER_BRIGHTNESS_MIN: %s", dy_err_str(err));
+            ESP_LOGW(LTAG, "get CRONUS_CFG_ID_BRIGHTNESS_MIN: %s", dy_err_str(err));
         }
 
         if (dy_is_err(err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_BRIGHTNESS_MAX, &max_v, 15))) {
-            ESP_LOGW(LTAG, "get CRONUS_CFG_ID_USER_BRIGHTNESS_MAX: %s", dy_err_str(err));
+            ESP_LOGW(LTAG, "get CRONUS_CFG_ID_BRIGHTNESS_MAX: %s", dy_err_str(err));
         }
 
         esp_err = adc_oneshot_read(adc_handle, CONFIG_CRONUS_LIGHT_SENSOR_ADC_CHANNEL, &adc_out);
