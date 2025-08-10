@@ -237,7 +237,7 @@ void app_main(void) {
     // Firmware update scheduler
     uint8_t allow_alpha = 0;
     if (dy_is_err(err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_ALLOW_UNSTABLE_FW, &allow_alpha, 0))) {
-        ESP_LOGE(LTAG, "get CRONUS_CFG_ID_USER_ALLOW_ALPHA_UPD: %s", dy_err_str(err));
+        ESP_LOGE(LTAG, "get CRONUS_CFG_ID_ALLOW_UNSTABLE_FW: %s", dy_err_str(err));
         abort();
     }
     if (dy_is_err(err = dy_cloud_fwupdate_scheduler_start((bool) allow_alpha))) {
