@@ -101,7 +101,7 @@ static dy_err_t on_str_const_read(esp_bt_uuid_t uuid, uint8_t *val, size_t *len)
     switch (uuid.uuid.uuid16) {
         case CRONUS_BT_CHRC_UUID_FIRMWARE_VERSION:
             *len = strlen(APP_VERSION);
-            strncpy((char *) val, APP_VERSION, DY_CFG2_STR_MAX_LEN);
+            strlcpy((char *) val, APP_VERSION, DY_CFG2_STR_MAX_LEN);
             break;
         default:
             return dy_err(DY_ERR_INVALID_ARG, "unexpected characteristic uuid: 0x%04x", uuid.uuid.uuid16);
