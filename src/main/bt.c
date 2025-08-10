@@ -119,7 +119,7 @@ static dy_err_t on_uint8_read(esp_bt_uuid_t uuid, uint8_t *val, size_t *len) {
     }
 
     if (dy_is_err(err = dy_cfg2_get_u8(cfg_id, (uint8_t *) val))) {
-        return dy_err_pfx("dy_cfg2_get_str", err);
+        return dy_err_pfx("dy_cfg2_get_u8", err);
     }
 
     *len = sizeof(uint8_t);
