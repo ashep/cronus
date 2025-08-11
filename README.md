@@ -44,6 +44,12 @@ git submodule update --recursive --remote
 
 ## Changelog
 
+### 0.0.2 (2025-08-11)
+
+Added:
+- New Bluetooth configuration interface.
+- Weather icons.
+
 ### 0.0.1 (2025-06-21)
 
 First stable release.
