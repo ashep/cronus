@@ -5,7 +5,6 @@ idf_component_register(
         nvs_flash
         esp_adc
         dy_error
-        dy_cfg
         dy_cfg2
         dy_appinfo
         dy_display
