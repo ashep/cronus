@@ -23,7 +23,7 @@ _Noreturn static void switch_cycle_task() {
     uint8_t cycle = SHOW_CYCLE_TIME;
     uint8_t mode = CRONUS_CFG_USER_SHOW_MODE_SINGLE_LINE;
     uint8_t delay = 0;
-    uint8_t new_cycle;
+    uint8_t next_cycle;
 
     while (1) {
         vTaskDelay(pdMS_TO_TICKS(1000 * (delay ? delay : 1)));
@@ -33,16 +33,18 @@ _Noreturn static void switch_cycle_task() {
             ESP_LOGE(LTAG, "get CRONUS_CFG_ID_SHOW_MODE: %s", dy_err_str(err));
         }
 
-        // Search for the next cycle having non-zero delay
         delay = 0;
-        new_cycle = cycle;
+        next_cycle = cycle;
+
+        // Search for the next cycle in config.
+        // Any "show mode" config, that has a non-zero show delay, makes the cycle visible for a given period.
         for (int i = 0; i < SHOW_CYCLE_MAX && delay == 0; i++) {
-            ++new_cycle;
-            if (new_cycle >= SHOW_CYCLE_MAX) {
-                new_cycle = SHOW_CYCLE_TIME;
+            ++next_cycle;
+            if (next_cycle >= SHOW_CYCLE_MAX) {
+                next_cycle = SHOW_CYCLE_TIME;
             }
 
-            switch (new_cycle) {
+            switch (next_cycle) {
                 case SHOW_CYCLE_TIME:
                     if (mode == CRONUS_CFG_USER_SHOW_MODE_MULTI_LINE) {
                         // Time string is always shown in multiline mode as a first line, so we just skip this cycle
@@ -76,7 +78,7 @@ _Noreturn static void switch_cycle_task() {
                     }
                     break;
                 case SHOW_CYCLE_WEATHER_ICON:
-                    if (!cronus_is_weather_obsolete()) {
+                    if (!cronus_is_weather_obsolete() && mode == CRONUS_CFG_USER_SHOW_MODE_SINGLE_LINE) {
                         if (dy_is_err(err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_SHOW_DUR_WEATHER_ICON, &delay, 5))) {
                             ESP_LOGE(LTAG, "get CRONUS_CFG_ID_SHOW_DUR_WEATHER_ICON: %s", dy_err_str(err));
                         }
@@ -88,12 +90,13 @@ _Noreturn static void switch_cycle_task() {
             }
         }
 
-        // Switch to the next cycle
-        if (new_cycle == cycle) {
+        // No new cycle was found; most probably all the show mode delays are configured to zero.
+        if (next_cycle == cycle) {
             continue;
         }
 
-        cycle = new_cycle;
+        // Notify about cycle change
+        cycle = next_cycle;
         xQueueSend(cycle_queue, &cycle, 0);
     }
 }
@@ -144,8 +147,7 @@ _Noreturn static void render_task() {
         }
 
         dy_display_write(0, buf);
-
-        vTaskDelay(pdMS_TO_TICKS(1000));
+        vTaskDelay(pdMS_TO_TICKS(250)); // screen framerate: 4 FPS
     }
 }
 

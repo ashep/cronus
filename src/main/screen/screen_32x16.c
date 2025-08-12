@@ -8,6 +8,7 @@
 #include <time.h>
 #include "esp_log.h"
 #include "dy/cfg2.h"
+#include "dy/display.h"
 #include "dy/gfx/gfx.h"
 #include "dy/gfx/text.h"
 #include "dy/gfx/sprite.h"
@@ -24,7 +25,6 @@ static void render_single_line(
     cronus_display_type_t dt,
     cronus_screen_cycle_num_t cycle,
     dy_gfx_buf_t *buf,
-    const int time_hour,
     const char *time_str,
     const char *date_str,
     const char *odr_temp_str
@@ -33,8 +33,10 @@ static void render_single_line(
     const dy_gfx_sprite_t *weather_icon;
     dy_cloud_weather_t weather;
 
+    uint8_t bri = dy_display_get_brightness(0);
+
     dy_gfx_px_t color = DY_GFX_C_GREEN;
-    if (time_hour > 21 || time_hour < 6) {
+    if (bri == 0) {
         color = DY_GFX_C_RED;
     }
 
@@ -51,7 +53,7 @@ static void render_single_line(
             break;
         case SHOW_CYCLE_ODR_TEMP:
             weather = cronus_weather_get();
-            // Center the number depending of its width
+            // Center the number depending on its width
             x = 13;
             if (weather.feels > 9 || weather.feels < -9) {
                 x = 4;
@@ -128,33 +130,45 @@ static void render_single_line(
             }
 
             dy_gfx_write_sprite(buf, 9, 1, weather_icon);
+            if (bri == 0) {
+                dy_gfx_colorize(buf, color);
+            }
             break;
         default:
             break;
     }
 }
 
-static void render_multi_line(cronus_screen_cycle_num_t cycle, dy_gfx_buf_t *buf, const char *time_str, const char *date_str,
-                              const char *odr_temp_str) {
+static void render_multi_line(
+    cronus_screen_cycle_num_t cycle,
+    dy_gfx_buf_t *buf,
+    const char *time_str,
+    const char *date_str,
+    const char *odr_temp_str
+) {
     int32_t x;
     dy_cloud_weather_t weather;
 
-    dy_gfx_puts(buf, &dy_gfx_font_6x8v1, (dy_gfx_point_t) {1, 0}, time_str, DY_GFX_C_MAGENTA, 1);
+    dy_gfx_px_t color = DY_GFX_C_GREEN;
+    if (dy_display_get_brightness(0) == 0) {
+        color = DY_GFX_C_RED;
+    }
+
+    dy_gfx_puts(buf, &dy_gfx_font_6x8v1, (dy_gfx_point_t) {1, 0}, time_str, color, 1);
 
     switch (cycle) {
         case SHOW_CYCLE_DATE:
-            dy_gfx_puts(buf, &dy_gfx_font_6x7v1, (dy_gfx_point_t) {1, 9}, date_str, DY_GFX_C_ORANGE, 1);
+            dy_gfx_puts(buf, &dy_gfx_font_6x7v1, (dy_gfx_point_t) {1, 9}, date_str, color, 1);
             break;
         case SHOW_CYCLE_ODR_TEMP:
             weather = cronus_weather_get();
-
             x = 13;
             if (weather.feels > 9 || weather.feels < -9) {
                 x = 5;
             } else if (weather.feels > 0 || weather.feels < 0) {
                 x = 7;
             }
-            dy_gfx_puts(buf, &dy_gfx_font_6x7v1, (dy_gfx_point_t) {x, 9}, odr_temp_str, DY_GFX_C_BROWN, 1);
+            dy_gfx_puts(buf, &dy_gfx_font_6x7v1, (dy_gfx_point_t) {x, 9}, odr_temp_str, color, 1);
             break;
         default:
             break;
@@ -182,6 +196,6 @@ void render_32x16(cronus_display_type_t dt, cronus_screen_cycle_num_t cycle, dy_
     if (mode == CRONUS_CFG_USER_SHOW_MODE_MULTI_LINE) {
         render_multi_line(cycle, buf, time_str, date_str, odr_temp_str);
     } else {
-        render_single_line(dt, cycle, buf, ti->tm_hour, time_str, date_str, odr_temp_str);
+        render_single_line(dt, cycle, buf, time_str, date_str, odr_temp_str);
     }
 }

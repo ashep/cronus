@@ -44,11 +44,14 @@ git submodule update --recursive --remote
 
 ## Changelog
 
+### 0.0.3 (2025-XX-XX)
+
+- The [night mode](https://github.com/ashep/cronus/issues/21) for colorful screens added.
+
 ### 0.0.2 (2025-08-11)
 
-Added:
-- New Bluetooth configuration interface.
-- Weather icons.
+- New Bluetooth configuration interface added.
+- Weather icons added.
 
 ### 0.0.1 (2025-06-21)
 
