@@ -1,7 +1,7 @@
 (footprint "ESP32-Dev-Board"
-	(version 20240108)
+	(version 20241229)
 	(generator "pcbnew")
-	(generator_version "8.0")
+	(generator_version "9.0")
 	(layer "F.Cu")
 	(property "Reference" "REF**"
 		(at 0 -0.5 0)
@@ -20,19 +20,6 @@
 		(unlocked yes)
 		(layer "F.SilkS")
 		(uuid "2a2d1077-28c4-4ff5-aff5-bfb5f7d87484")
-		(effects
-			(font
-				(size 1 1)
-				(thickness 0.15)
-			)
-		)
-	)
-	(property "Footprint" ""
-		(at 0 0 0)
-		(unlocked yes)
-		(layer "F.Fab")
-		(hide yes)
-		(uuid "de3ba5d2-ca49-4ef9-a880-893c6368a0cc")
 		(effects
 			(font
 				(size 1 1)
@@ -88,8 +75,8 @@
 		(uuid "f76ccf59-acf5-4dc5-a313-960cb4e0e98c")
 	)
 	(fp_line
-		(start -7.62 -35.56)
-		(end 7.62 -35.56)
+		(start -7.62 -35)
+		(end 7.62 -35)
 		(stroke
 			(width 0.1)
 			(type default)
@@ -99,7 +86,7 @@
 	)
 	(fp_line
 		(start -7.62 -29.21)
-		(end -7.62 -35.56)
+		(end -7.62 -35)
 		(stroke
 			(width 0.1)
 			(type default)
@@ -108,7 +95,7 @@
 		(uuid "27d9b05c-f7d5-4996-9d95-ce2a0c27c200")
 	)
 	(fp_line
-		(start 7.62 -35.56)
+		(start 7.62 -35)
 		(end 7.62 -29.21)
 		(stroke
 			(width 0.1)
@@ -501,4 +488,5 @@
 		(remove_unused_layers no)
 		(uuid "99b7cb7d-9400-4abc-9da6-c1725c3a5388")
 	)
+	(embedded_fonts no)
 )

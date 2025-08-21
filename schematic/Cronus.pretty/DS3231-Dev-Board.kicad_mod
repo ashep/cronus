@@ -1,7 +1,7 @@
 (footprint "DS3231-Dev-Board"
-	(version 20240108)
+	(version 20241229)
 	(generator "pcbnew")
-	(generator_version "8.0")
+	(generator_version "9.0")
 	(layer "F.Cu")
 	(property "Reference" "REF**"
 		(at 0 -0.5 0)
@@ -20,19 +20,6 @@
 		(unlocked yes)
 		(layer "F.SilkS")
 		(uuid "81a24676-5a3f-4a6c-aa09-1d34035ad439")
-		(effects
-			(font
-				(size 1 1)
-				(thickness 0.15)
-			)
-		)
-	)
-	(property "Footprint" ""
-		(at 0 0 0)
-		(unlocked yes)
-		(layer "F.Fab")
-		(hide yes)
-		(uuid "5bb391b3-c167-4395-927e-6c7b08e633a4")
 		(effects
 			(font
 				(size 1 1)
@@ -68,8 +55,8 @@
 	)
 	(attr through_hole)
 	(fp_line
-		(start -11.43 -17.78)
-		(end -11.43 20.32)
+		(start -10.75 -17.78)
+		(end -10.75 19.8)
 		(stroke
 			(width 0.1)
 			(type default)
@@ -78,8 +65,8 @@
 		(uuid "dbd3220f-7400-4823-a7a1-cd6352119408")
 	)
 	(fp_line
-		(start -11.43 -17.78)
-		(end 11.43 -17.78)
+		(start -10.75 -17.78)
+		(end 10.75 -17.78)
 		(stroke
 			(width 0.1)
 			(type default)
@@ -88,8 +75,8 @@
 		(uuid "64d988fd-0592-4dcb-a257-2a5b6bed7c5f")
 	)
 	(fp_line
-		(start -11.43 20.32)
-		(end 11.43 20.32)
+		(start -10.75 19.8)
+		(end 10.75 19.8)
 		(stroke
 			(width 0.1)
 			(type default)
@@ -98,8 +85,8 @@
 		(uuid "26053e82-05e3-4822-a319-f14e3a6c4118")
 	)
 	(fp_line
-		(start 11.43 20.32)
-		(end 11.43 -17.78)
+		(start 10.75 19.8)
+		(end 10.75 -17.78)
 		(stroke
 			(width 0.1)
 			(type default)
@@ -168,7 +155,7 @@
 		(uuid "01f157b8-fdbc-4463-bd83-ea31ac539323")
 	)
 	(pad "7" thru_hole rect
-		(at -3.81 19.05)
+		(at -3.81 18.5)
 		(size 1.6 1.6)
 		(drill 1)
 		(layers "*.Cu" "*.Mask")
@@ -176,7 +163,7 @@
 		(uuid "8dce29e5-5940-456e-ba9a-baeaf2fb6ec4")
 	)
 	(pad "8" thru_hole rect
-		(at -1.27 19.05)
+		(at -1.27 18.5)
 		(size 1.6 1.6)
 		(drill 1)
 		(layers "*.Cu" "*.Mask")
@@ -184,7 +171,7 @@
 		(uuid "6a55e030-e9ce-48d3-92f8-b52aaf697d29")
 	)
 	(pad "9" thru_hole rect
-		(at 1.27 19.05)
+		(at 1.27 18.5)
 		(size 1.6 1.6)
 		(drill 1)
 		(layers "*.Cu" "*.Mask")
@@ -192,11 +179,12 @@
 		(uuid "f1087f50-793e-4c60-be6b-97d01d2cc263")
 	)
 	(pad "10" thru_hole rect
-		(at 3.81 19.05)
+		(at 3.81 18.5)
 		(size 1.6 1.6)
 		(drill 1)
 		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
 		(uuid "969ce7e1-4539-4b93-88ac-26a202e7f6a6")
 	)
+	(embedded_fonts no)
 )
