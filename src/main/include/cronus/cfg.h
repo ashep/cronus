@@ -16,6 +16,8 @@
 #define CRONUS_CFG_ID_SHOW_DUR_ODR_TEMP      135 // outdoor temperature show duration
 #define CRONUS_CFG_ID_ALLOW_UNSTABLE_FW      136 // allow firmware upgrades to alpha versions
 #define CRONUS_CFG_ID_SHOW_DUR_WEATHER_ICON  137 // weather icon show duration
-#define CRONUS_CFG_ID_GEO_LOCATION_NAME      138 // location name
+#define CRONUS_CFG_ID_LOCATION_NAME          138 // geolocation name
+#define CRONUS_CFG_ID_LOCATION_LAT           139 // geolocation latitude
+#define CRONUS_CFG_ID_LOCATION_LNG           140 // geolocation longitude
 
 dy_err_t init_config();
