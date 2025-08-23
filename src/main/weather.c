@@ -39,7 +39,7 @@ dy_err_t cronus_weather_init() {
         return dy_err(DY_ERR_NO_MEM, "xSemaphoreCreateMutex returned null");
     }
 
-    if (dy_is_err(err = dy_cloud_weather_scheduler_start(0, 0))) {
+    if (dy_is_err(err = dy_cloud_weather_scheduler_start())) {
         return dy_err_pfx("dy_cloud_weather_scheduler_start", err);
     }
 
@@ -64,7 +64,6 @@ bool cronus_is_weather_obsolete() {
     }
 
     time_t age = now - weather.ts;
-
     xSemaphoreGive(mux);
 
     return age <= 0 || age > 1800;

@@ -3,6 +3,7 @@
 #include "cronus/display.h"
 #include <stdint.h>
 #include <string.h>
+#include "esp_log.h"
 #include "esp_event.h"
 #include "dy/error.h"
 #include "dy/bt.h"
@@ -13,6 +14,7 @@
 
 typedef enum {
     CRONUS_BT_CHRC_TYPE_UINT8,
+    CRONUS_BT_CHRC_TYPE_FLOAT,
     CRONUS_BT_CHRC_TYPE_STRING,
 } cronus_bt_chrc_type_t;
 
@@ -59,6 +61,22 @@ static dy_err_t bt_chrc_uuid_to_cfg_id(cronus_bt_chrc_type_t type, esp_bt_uuid_t
             case CRONUS_BT_CHRC_UUID_SHOW_DUR_WEATHER_ICON:
                 *cfg_id = CRONUS_CFG_ID_SHOW_DUR_WEATHER_ICON;
                 break;
+            case CRONUS_BT_CHRC_UUID_LOCATION_NAME:
+                *cfg_id = CRONUS_CFG_ID_LOCATION_NAME;
+                break;
+            default:
+                return dy_err(DY_ERR_INVALID_ARG, "unexpected characteristic uuid: 0x%04x", uuid.uuid.uuid16);
+        }
+    }
+
+    if (type == CRONUS_BT_CHRC_TYPE_FLOAT) {
+        switch (uuid.uuid.uuid16) {
+            case CRONUS_BT_CHRC_UUID_LOCATION_LAT:
+                *cfg_id = CRONUS_CFG_ID_LOCATION_LAT;
+                break;
+            case CRONUS_BT_CHRC_UUID_LOCATION_LNG:
+                *cfg_id = CRONUS_CFG_ID_LOCATION_LNG;
+                break;
             default:
                 return dy_err(DY_ERR_INVALID_ARG, "unexpected characteristic uuid: 0x%04x", uuid.uuid.uuid16);
         }
@@ -67,7 +85,7 @@ static dy_err_t bt_chrc_uuid_to_cfg_id(cronus_bt_chrc_type_t type, esp_bt_uuid_t
     if (type == CRONUS_BT_CHRC_TYPE_STRING) {
         switch (uuid.uuid.uuid16) {
             case CRONUS_BT_CHRC_UUID_LOCATION_NAME:
-                *cfg_id = CRONUS_CFG_ID_GEO_LOCATION_NAME;
+                *cfg_id = CRONUS_CFG_ID_LOCATION_NAME;
                 break;
             default:
                 return dy_err(DY_ERR_INVALID_ARG, "unexpected characteristic uuid: 0x%04x", uuid.uuid.uuid16);
@@ -118,8 +136,9 @@ static dy_err_t on_uint8_read(esp_bt_uuid_t uuid, uint8_t *val, size_t *len) {
         return err;
     }
 
-    if (dy_is_err(err = dy_cfg2_get_u8(cfg_id, (uint8_t *) val))) {
-        return dy_err_pfx("dy_cfg2_get_u8", err);
+    if (dy_is_err(err = dy_cfg2_get_u8_dft(cfg_id, (uint8_t *) val, 0))) {
+        ESP_LOGW(LTAG, "dy_cfg2_get_u8 failed: %s", dy_err_str(err));
+        return err;
     }
 
     *len = sizeof(uint8_t);
@@ -135,7 +154,44 @@ static dy_err_t on_uint8_write(esp_bt_uuid_t uuid, const uint8_t *val, size_t le
         return err;
     }
 
-    if (dy_is_err(err = dy_cfg2_set_u8(cfg_id, (uint8_t) *val))) {
+    if (dy_is_err(err = dy_cfg2_set_u8(cfg_id, *val))) {
+        return err;
+    }
+
+    return dy_ok();
+}
+
+static dy_err_t on_float_read(esp_bt_uuid_t uuid, uint8_t *val, size_t *len) {
+    dy_err_t err;
+    int cfg_id = 0;
+    float value = 0;
+
+    if (dy_is_err(err = bt_chrc_uuid_to_cfg_id(CRONUS_BT_CHRC_TYPE_FLOAT, uuid, &cfg_id))) {
+        return err;
+    }
+
+    if (dy_is_err(err = dy_cfg2_get_float_dft(cfg_id, &value, 0))) {
+        ESP_LOGW(LTAG, "dy_cfg2_get_float failed: %s", dy_err_str(err));
+        return err;
+    }
+
+    memcpy(val, &value, sizeof(float));
+    *len = sizeof(float);
+
+    return dy_ok();
+}
+
+static dy_err_t on_float_write(esp_bt_uuid_t uuid, const uint8_t *val, size_t len) {
+    dy_err_t err;
+    int cfg_id = 0;
+    float value = 0;
+
+    if (dy_is_err(err = bt_chrc_uuid_to_cfg_id(CRONUS_BT_CHRC_TYPE_FLOAT, uuid, &cfg_id))) {
+        return err;
+    }
+
+    memcpy(&value, val, sizeof(float));
+    if (dy_is_err(err = dy_cfg2_set_float(cfg_id, value))) {
         return err;
     }
 
@@ -150,8 +206,9 @@ static dy_err_t on_string_read(esp_bt_uuid_t uuid, uint8_t *val, size_t *len) {
         return err;
     }
 
-    if (dy_is_err(err = dy_cfg2_get_str(cfg_id, (char *) val))) {
-        return dy_err_pfx("dy_cfg2_get_str", err);
+    if (dy_is_err(err = dy_cfg2_get_str_dft(cfg_id, (char *) val, ""))) {
+        ESP_LOGW(LTAG, "dy_cfg2_get_str failed: %s", dy_err_str(err));
+        return err;
     }
 
     *len = strlen((const char *) val);
@@ -163,11 +220,13 @@ static dy_err_t on_string_write(esp_bt_uuid_t uuid, const uint8_t *val, size_t l
     dy_err_t err;
     int cfg_id = 0;
 
+    len += 1; // for the null terminator
+
     if (dy_is_err(err = bt_chrc_uuid_to_cfg_id(CRONUS_BT_CHRC_TYPE_STRING, uuid, &cfg_id))) {
         return err;
     }
 
-    if (len >= DY_CFG2_STR_MAX_LEN) { // we need (DY_CFG2_STR_MAX_LEN - 1) to keep the terminator
+    if (len > DY_CFG2_STR_MAX_LEN) {
         return dy_err(DY_ERR_INVALID_ARG, "value is too long: %d", len);
     }
 
@@ -261,6 +320,16 @@ dy_err_t cronus_bt_init() {
     err = dy_bt_register_characteristic(CRONUS_BT_CHRC_UUID_LOCATION_NAME, on_string_read, on_string_write);
     if (dy_is_err(err)) {
         return dy_err_pfx("dy_bt_register_characteristic: LOCATION_NAME", err);
+    }
+
+    err = dy_bt_register_characteristic(CRONUS_BT_CHRC_UUID_LOCATION_LAT, on_float_read, on_float_write);
+    if (dy_is_err(err)) {
+        return dy_err_pfx("dy_bt_register_characteristic: LOCATION_LAT", err);
+    }
+
+    err = dy_bt_register_characteristic(CRONUS_BT_CHRC_UUID_LOCATION_LNG, on_float_read, on_float_write);
+    if (dy_is_err(err)) {
+        return dy_err_pfx("dy_bt_register_characteristic: LOCATION_LNG", err);
     }
 
     if (dy_is_err(err = dy_bt_init())) {

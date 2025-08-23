@@ -186,11 +186,21 @@ void app_main(void) {
         abort();
     }
 
-    // Config, MUST be called right AFTER init_nvs(), but BEFORE other initializations
+    // Config, MUST be called right AFTER init_nvs(), but BEFORE further initialization
     if (dy_is_err(err = init_config())) {
         ESP_LOGE(LTAG, "init_config: %s", dy_err_str(err));
         abort();
     }
+
+    float lat = 0;
+    if (dy_is_err(err = dy_cfg2_get_float_dft(CRONUS_CFG_ID_LOCATION_LAT, &lat, 0))) {
+        ESP_LOGE(LTAG, "dy_cfg2_get_float(CRONUS_CFG_ID_LOCATION_LAT): %s", dy_err_str(err));
+    }
+    float lng = 0;
+    if (dy_is_err(err = dy_cfg2_get_float_dft(CRONUS_CFG_ID_LOCATION_LNG, &lng, 0))) {
+        ESP_LOGE(LTAG, "dy_cfg2_get_float(CRONUS_CFG_ID_LOCATION_LNG): %s", dy_err_str(err));
+    }
+    dy_cloud_set_location(lat, lng);
 
     // Display
     if (dy_is_err(err = init_display())) {
@@ -201,59 +211,52 @@ void app_main(void) {
     // RTC
     if (dy_is_err(err = init_rtc())) {
         ESP_LOGE(LTAG, "init_rtc: %s", dy_err_str(err));
-        abort();
     }
 
     // Network
     if (dy_is_err(err = dy_net_init())) {
         ESP_LOGE(LTAG, "dy_net_init: %s", dy_err_str(err));
         abort();
-    }
-
-    // Network config
-    if (dy_is_err(err = dy_net_cfg_init())) {
-        ESP_LOGE(LTAG, "dy_net_cfg_init: %s", dy_err_str(err));
-        abort();
+    } else {
+        // Network config service
+        if (dy_is_err(err = dy_net_cfg_init())) {
+            ESP_LOGE(LTAG, "dy_net_cfg_init: %s", dy_err_str(err));
+        }
     }
 
     // Bluetooth
     if (dy_is_err(err = cronus_bt_init())) {
         ESP_LOGE(LTAG, "cronus_bt_init: %s", dy_err_str(err));
-        abort();
     }
 
     // Time sync
-    if (dy_is_err(err = dy_cloud_time_scheduler_start(0, 0))) {
+    if (dy_is_err(err = dy_cloud_time_scheduler_start())) {
         ESP_LOGE(LTAG, "dy_cloud_time_scheduler_start: %s", dy_err_str(err));
-        abort();
     }
 
     // Weather sync
     if (dy_is_err(err = cronus_weather_init())) {
         ESP_LOGE(LTAG, "cronus_weather_init: %s", dy_err_str(err));
-        abort();
     }
 
     // Firmware update scheduler
     uint8_t allow_alpha = 0;
     if (dy_is_err(err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_ALLOW_UNSTABLE_FW, &allow_alpha, 0))) {
         ESP_LOGE(LTAG, "get CRONUS_CFG_ID_ALLOW_UNSTABLE_FW: %s", dy_err_str(err));
-        abort();
-    }
-    if (dy_is_err(err = dy_cloud_fwupdate_scheduler_start((bool) allow_alpha))) {
-        ESP_LOGE(LTAG, "dy_cloud_fwupdate_scheduler_start: %s", dy_err_str(err));
-        abort();
-    }
-
-    // Screen
-    if (dy_is_err(err = cronus_screen_init())) {
-        ESP_LOGE(LTAG, "cronus_screen_init: %s", dy_err_str(err));
-        abort();
+    } else {
+        if (dy_is_err(err = dy_cloud_fwupdate_scheduler_start((bool) allow_alpha))) {
+            ESP_LOGE(LTAG, "dy_cloud_fwupdate_scheduler_start: %s", dy_err_str(err));
+        }
     }
 
     // Brightness monitor
     if (dy_is_err(err = cronus_brightness_monitor_init())) {
         ESP_LOGE(LTAG, "cronus_brightness_monitor_init: %s", dy_err_str(err));
+    }
+
+    // Screen
+    if (dy_is_err(err = cronus_screen_init())) {
+        ESP_LOGE(LTAG, "cronus_screen_init: %s", dy_err_str(err));
         abort();
     }
 }
