@@ -47,6 +47,7 @@ git submodule update --recursive --remote
 ### 0.0.3 (2025-XX-XX)
 
 - The [night mode](https://github.com/ashep/cronus/issues/21) for colorful screens added.
+- Added the [custom location](https://github.com/ashep/cronus/issues/13) options support.
 
 ### 0.0.2 (2025-08-11)
 
