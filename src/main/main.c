@@ -217,11 +217,11 @@ void app_main(void) {
     if (dy_is_err(err = dy_net_init())) {
         ESP_LOGE(LTAG, "dy_net_init: %s", dy_err_str(err));
         abort();
-    } else {
-        // Network config service
-        if (dy_is_err(err = dy_net_cfg_init())) {
-            ESP_LOGE(LTAG, "dy_net_cfg_init: %s", dy_err_str(err));
-        }
+    }
+
+    // Network config service
+    if (dy_is_err(err = dy_net_cfg_init())) {
+        ESP_LOGE(LTAG, "dy_net_cfg_init: %s", dy_err_str(err));
     }
 
     // Bluetooth
