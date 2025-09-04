@@ -22,6 +22,11 @@
 #define FMT_TEMP_NON_ZERO "%+d*"
 
 static dy_gfx_px_t widget_color(cronus_screen_cycle_num_t cycle_num) {
+    if (dy_display_get_brightness(0) == 0) {
+        // Night mode
+        return DY_GFX_PX_RED;
+    }
+
     dy_err_t err;
     uint8_t code = DY_GFX_COLOR_GREEN;
 
@@ -73,15 +78,9 @@ static void render_single_line(
     const char *odr_temp_str
 ) {
     int32_t x;
-    const uint8_t bri = dy_display_get_brightness(0);
     dy_cloud_weather_t weather;
     const dy_gfx_sprite_t *weather_icon;
-
     dy_gfx_px_t color = widget_color(cycle);
-    if (bri == 0) {
-        // Night mode
-        color = DY_GFX_PX_RED;
-    }
 
     switch (cycle) {
         case SHOW_CYCLE_TIME:
@@ -173,7 +172,8 @@ static void render_single_line(
             }
 
             dy_gfx_write_sprite(buf, 9, 1, weather_icon);
-            if (bri == 0) {
+            if (dy_display_get_brightness(0) == 0) {
+                // Night mode
                 dy_gfx_colorize(buf, color);
             }
             break;
@@ -192,20 +192,9 @@ static void render_multi_line(
     int32_t x;
     dy_cloud_weather_t weather;
 
+    dy_gfx_puts(buf, &dy_gfx_font_6x8v1, (dy_gfx_point_t){1, 0}, time_str, widget_color(SHOW_CYCLE_TIME), 1);
+
     dy_gfx_px_t color = widget_color(cycle);
-    if (dy_display_get_brightness(0) == 0) {
-        // Night mode
-        color = DY_GFX_PX_RED;
-    }
-
-
-    dy_gfx_px_t time_color = widget_color(SHOW_CYCLE_TIME);
-    if (dy_display_get_brightness(0) == 0) {
-        // Night mode
-        time_color = DY_GFX_PX_RED;
-    }
-    dy_gfx_puts(buf, &dy_gfx_font_6x8v1, (dy_gfx_point_t){1, 0}, time_str, time_color, 1);
-
     switch (cycle) {
         case SHOW_CYCLE_DATE:
             dy_gfx_puts(buf, &dy_gfx_font_6x7v1, (dy_gfx_point_t){1, 9}, date_str, color, 1);
