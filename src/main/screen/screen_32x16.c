@@ -21,6 +21,49 @@
 #define FMT_TEMP_ZERO "%d*"
 #define FMT_TEMP_NON_ZERO "%+d*"
 
+static dy_gfx_px_t widget_color(cronus_screen_cycle_num_t cycle_num) {
+    dy_err_t err;
+    uint8_t code = DY_GFX_COLOR_GREEN;
+
+    switch (cycle_num) {
+        case SHOW_CYCLE_TIME:
+            err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_WIDGET_TIME_COLOR, &code, DY_GFX_COLOR_GREEN);
+            if (dy_is_err(err)) {
+                ESP_LOGE(LTAG, "get CRONUS_CFG_ID_WIDGET_TIME_COLOR: %s", dy_err_str(err));
+            }
+            break;
+        case SHOW_CYCLE_DATE:
+            err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_WIDGET_DATE_COLOR, &code, DY_GFX_COLOR_GREEN);
+            if (dy_is_err(err)) {
+                ESP_LOGE(LTAG, "get CRONUS_CFG_ID_WIDGET_DATE_COLOR: %s", dy_err_str(err));
+            }
+            break;
+        case SHOW_CYCLE_DOW:
+            err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_WIDGET_DOW_COLOR, &code, DY_GFX_COLOR_GREEN);
+            if (dy_is_err(err)) {
+                ESP_LOGE(LTAG, "get CRONUS_CFG_ID_WIDGET_DOW_COLOR: %s", dy_err_str(err));
+            }
+            break;
+        case SHOW_CYCLE_AMB_TEMP:
+            err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_WIDGET_AMB_TEMP_COLOR, &code, DY_GFX_COLOR_GREEN);
+            if (dy_is_err(err)) {
+                ESP_LOGE(LTAG, "get CRONUS_CFG_ID_WIDGET_AMB_TEMP_COLOR: %s", dy_err_str(err));
+            }
+            break;
+        case SHOW_CYCLE_ODR_TEMP:
+            err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_WIDGET_ODR_TEMP_COLOR, &code, DY_GFX_COLOR_GREEN);
+            if (dy_is_err(err)) {
+                ESP_LOGE(LTAG, "get CRONUS_CFG_ID_WIDGET_ODR_TEMP_COLOR: %s", dy_err_str(err));
+            }
+            break;
+        case SHOW_CYCLE_WEATHER_ICON:
+        default:
+            break;
+    }
+
+    return dy_gfx_px_by_code(code);
+}
+
 static void render_single_line(
     cronus_display_type_t dt,
     cronus_screen_cycle_num_t cycle,
@@ -30,22 +73,22 @@ static void render_single_line(
     const char *odr_temp_str
 ) {
     int32_t x;
-    const dy_gfx_sprite_t *weather_icon;
+    const uint8_t bri = dy_display_get_brightness(0);
     dy_cloud_weather_t weather;
+    const dy_gfx_sprite_t *weather_icon;
 
-    uint8_t bri = dy_display_get_brightness(0);
-
-    dy_gfx_px_t color = DY_GFX_C_GREEN;
+    dy_gfx_px_t color = widget_color(cycle);
     if (bri == 0) {
-        color = DY_GFX_C_RED;
+        // Night mode
+        color = DY_GFX_PX_RED;
     }
 
     switch (cycle) {
         case SHOW_CYCLE_TIME:
-            dy_gfx_puts(buf, &dy_gfx_font_6x12v1, (dy_gfx_point_t) {1, 2}, time_str, color, 1);
+            dy_gfx_puts(buf, &dy_gfx_font_6x12v1, (dy_gfx_point_t){1, 2}, time_str, color, 1);
             break;
         case SHOW_CYCLE_DATE:
-            dy_gfx_puts(buf, &dy_gfx_font_6x12v1, (dy_gfx_point_t) {1, 2}, date_str, color, 1);
+            dy_gfx_puts(buf, &dy_gfx_font_6x12v1, (dy_gfx_point_t){1, 2}, date_str, color, 1);
             break;
         case SHOW_CYCLE_DOW:
         case SHOW_CYCLE_AMB_TEMP:
@@ -60,7 +103,7 @@ static void render_single_line(
             } else if (weather.feels > 0 || weather.feels < 0) {
                 x = 7;
             }
-            dy_gfx_puts(buf, &dy_gfx_font_6x12v1, (dy_gfx_point_t) {x, 2}, odr_temp_str, color, 1);
+            dy_gfx_puts(buf, &dy_gfx_font_6x12v1, (dy_gfx_point_t){x, 2}, odr_temp_str, color, 1);
             break;
         case SHOW_CYCLE_WEATHER_ICON:
             weather = cronus_weather_get();
@@ -149,16 +192,23 @@ static void render_multi_line(
     int32_t x;
     dy_cloud_weather_t weather;
 
-    dy_gfx_px_t color = DY_GFX_C_GREEN;
+    dy_gfx_px_t color = widget_color(cycle);
     if (dy_display_get_brightness(0) == 0) {
-        color = DY_GFX_C_RED;
+        // Night mode
+        color = DY_GFX_PX_RED;
     }
 
-    dy_gfx_puts(buf, &dy_gfx_font_6x8v1, (dy_gfx_point_t) {1, 0}, time_str, color, 1);
+
+    dy_gfx_px_t time_color = widget_color(SHOW_CYCLE_TIME);
+    if (dy_display_get_brightness(0) == 0) {
+        // Night mode
+        time_color = DY_GFX_PX_RED;
+    }
+    dy_gfx_puts(buf, &dy_gfx_font_6x8v1, (dy_gfx_point_t){1, 0}, time_str, time_color, 1);
 
     switch (cycle) {
         case SHOW_CYCLE_DATE:
-            dy_gfx_puts(buf, &dy_gfx_font_6x7v1, (dy_gfx_point_t) {1, 9}, date_str, color, 1);
+            dy_gfx_puts(buf, &dy_gfx_font_6x7v1, (dy_gfx_point_t){1, 9}, date_str, color, 1);
             break;
         case SHOW_CYCLE_ODR_TEMP:
             weather = cronus_weather_get();
@@ -168,7 +218,7 @@ static void render_multi_line(
             } else if (weather.feels > 0 || weather.feels < 0) {
                 x = 7;
             }
-            dy_gfx_puts(buf, &dy_gfx_font_6x7v1, (dy_gfx_point_t) {x, 9}, odr_temp_str, color, 1);
+            dy_gfx_puts(buf, &dy_gfx_font_6x7v1, (dy_gfx_point_t){x, 9}, odr_temp_str, color, 1);
             break;
         default:
             break;
