@@ -3,6 +3,7 @@
 #include "esp_log.h"
 #include "dy/error.h"
 #include "dy/cfg2.h"
+#include "dy/gfx/gfx.h"
 
 #define LTAG "MAIN"
 
@@ -46,16 +47,21 @@ static void set_config_defaults() {
     set_u8_if_not_set(CRONUS_CFG_ID_SHOW_MODE, CRONUS_CFG_USER_SHOW_MODE_SINGLE_LINE);
     set_u8_if_not_set(CRONUS_CFG_ID_BRIGHTNESS_MIN, 0);
     set_u8_if_not_set(CRONUS_CFG_ID_BRIGHTNESS_MAX, 15);
-    set_u8_if_not_set(CRONUS_CFG_ID_SHOW_DUR_TIME, 5);
-    set_u8_if_not_set(CRONUS_CFG_ID_SHOW_DUR_DATE, 2);
-    set_u8_if_not_set(CRONUS_CFG_ID_SHOW_DUR_DOW, 0); // not implemented yet
-    set_u8_if_not_set(CRONUS_CFG_ID_SHOW_DUR_AMB_TEMP, 0); // not implemented yet
-    set_u8_if_not_set(CRONUS_CFG_ID_SHOW_DUR_ODR_TEMP, 2);
+    set_u8_if_not_set(CRONUS_CFG_ID_WIDGET_TIME_DURATION, 5);
+    set_u8_if_not_set(CRONUS_CFG_ID_WIDGET_DATE_DURATION, 2);
+    set_u8_if_not_set(CRONUS_CFG_ID_WIDGET_DOW_DURATION, 0); // not implemented yet
+    set_u8_if_not_set(CRONUS_CFG_ID_WIDGET_AMB_TEMP_DURATION, 0); // not implemented yet
+    set_u8_if_not_set(CRONUS_CFG_ID_WIDGET_ODR_TEMP_DURATION, 2);
     set_u8_if_not_set(CRONUS_CFG_ID_ALLOW_UNSTABLE_FW, 0);
-    set_u8_if_not_set(CRONUS_CFG_ID_SHOW_DUR_WEATHER_ICON, 2);
+    set_u8_if_not_set(CRONUS_CFG_ID_WIDGET_WEATHER_DURATION, 2);
     set_str_if_not_set(CRONUS_CFG_ID_LOCATION_NAME, "");
     set_float_if_not_set(CRONUS_CFG_ID_LOCATION_LAT, 0);
     set_float_if_not_set(CRONUS_CFG_ID_LOCATION_LNG, 0);
+    set_u8_if_not_set(CRONUS_CFG_ID_WIDGET_TIME_COLOR, DY_GFX_COLOR_GREEN);
+    set_u8_if_not_set(CRONUS_CFG_ID_WIDGET_DATE_COLOR, DY_GFX_COLOR_GREEN);
+    set_u8_if_not_set(CRONUS_CFG_ID_WIDGET_DOW_COLOR, DY_GFX_COLOR_GREEN);
+    set_u8_if_not_set(CRONUS_CFG_ID_WIDGET_AMB_TEMP_COLOR, DY_GFX_COLOR_GREEN);
+    set_u8_if_not_set(CRONUS_CFG_ID_WIDGET_ODR_TEMP_COLOR, DY_GFX_COLOR_GREEN);
 }
 
 dy_err_t init_config() {

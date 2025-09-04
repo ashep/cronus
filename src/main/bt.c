@@ -41,28 +41,43 @@ static dy_err_t bt_chrc_uuid_to_cfg_id(cronus_bt_chrc_type_t type, esp_bt_uuid_t
                 *cfg_id = CRONUS_CFG_ID_BRIGHTNESS_MAX;
                 break;
             case CRONUS_BT_CHRC_UUID_SHOW_DUR_TIME:
-                *cfg_id = CRONUS_CFG_ID_SHOW_DUR_TIME;
+                *cfg_id = CRONUS_CFG_ID_WIDGET_TIME_DURATION;
                 break;
             case CRONUS_BT_CHRC_UUID_SHOW_DUR_DATE:
-                *cfg_id = CRONUS_CFG_ID_SHOW_DUR_DATE;
+                *cfg_id = CRONUS_CFG_ID_WIDGET_DATE_DURATION;
                 break;
             case CRONUS_BT_CHRC_UUID_SHOW_DUR_DOW:
-                *cfg_id = CRONUS_CFG_ID_SHOW_DUR_DOW;
+                *cfg_id = CRONUS_CFG_ID_WIDGET_DOW_DURATION;
                 break;
             case CRONUS_BT_CHRC_UUID_SHOW_DUR_AMB_TEMP:
-                *cfg_id = CRONUS_CFG_ID_SHOW_DUR_AMB_TEMP;
+                *cfg_id = CRONUS_CFG_ID_WIDGET_AMB_TEMP_DURATION;
                 break;
             case CRONUS_BT_CHRC_UUID_SHOW_DUR_ODR_TEMP:
-                *cfg_id = CRONUS_CFG_ID_SHOW_DUR_ODR_TEMP;
+                *cfg_id = CRONUS_CFG_ID_WIDGET_ODR_TEMP_DURATION;
                 break;
             case CRONUS_BT_CHRC_UUID_ALLOW_UNSTABLE_FIRMWARE:
                 *cfg_id = CRONUS_CFG_ID_ALLOW_UNSTABLE_FW;
                 break;
             case CRONUS_BT_CHRC_UUID_SHOW_DUR_WEATHER_ICON:
-                *cfg_id = CRONUS_CFG_ID_SHOW_DUR_WEATHER_ICON;
+                *cfg_id = CRONUS_CFG_ID_WIDGET_WEATHER_DURATION;
                 break;
             case CRONUS_BT_CHRC_UUID_LOCATION_NAME:
                 *cfg_id = CRONUS_CFG_ID_LOCATION_NAME;
+                break;
+            case CRONUS_BT_CHRC_UUID_WIDGET_TIME_COLOR:
+                *cfg_id = CRONUS_CFG_ID_WIDGET_TIME_COLOR;
+                break;
+            case CRONUS_BT_CHRC_UUID_WIDGET_DATE_COLOR:
+                *cfg_id = CRONUS_CFG_ID_WIDGET_DATE_COLOR;
+                break;
+            case CRONUS_BT_CHRC_UUID_WIDGET_DOW_COLOR:
+                *cfg_id = CRONUS_CFG_ID_WIDGET_DOW_COLOR;
+                break;
+            case CRONUS_BT_CHRC_UUID_WIDGET_AMB_TEMP_COLOR:
+                *cfg_id = CRONUS_CFG_ID_WIDGET_AMB_TEMP_COLOR;
+                break;
+            case CRONUS_BT_CHRC_UUID_WIDGET_ODR_TEMP_COLOR:
+                *cfg_id = CRONUS_CFG_ID_WIDGET_ODR_TEMP_COLOR;
                 break;
             default:
                 return dy_err(DY_ERR_INVALID_ARG, "unexpected characteristic uuid: 0x%04x", uuid.uuid.uuid16);
@@ -330,6 +345,31 @@ dy_err_t cronus_bt_init() {
     err = dy_bt_register_characteristic(CRONUS_BT_CHRC_UUID_LOCATION_LNG, on_float_read, on_float_write);
     if (dy_is_err(err)) {
         return dy_err_pfx("dy_bt_register_characteristic: LOCATION_LNG", err);
+    }
+
+    err = dy_bt_register_characteristic(CRONUS_BT_CHRC_UUID_WIDGET_TIME_COLOR, on_uint8_read, on_uint8_write);
+    if (dy_is_err(err)) {
+        return dy_err_pfx("dy_bt_register_characteristic: WIDGET_TIME_COLOR", err);
+    }
+
+    err = dy_bt_register_characteristic(CRONUS_BT_CHRC_UUID_WIDGET_DATE_COLOR, on_uint8_read, on_uint8_write);
+    if (dy_is_err(err)) {
+        return dy_err_pfx("dy_bt_register_characteristic: WIDGET_DATE_COLOR", err);
+    }
+
+    err = dy_bt_register_characteristic(CRONUS_BT_CHRC_UUID_WIDGET_DOW_COLOR, on_uint8_read, on_uint8_write);
+    if (dy_is_err(err)) {
+        return dy_err_pfx("dy_bt_register_characteristic: WIDGET_DOW_COLOR", err);
+    }
+
+    err = dy_bt_register_characteristic(CRONUS_BT_CHRC_UUID_WIDGET_AMB_TEMP_COLOR, on_uint8_read, on_uint8_write);
+    if (dy_is_err(err)) {
+        return dy_err_pfx("dy_bt_register_characteristic: WIDGET_AMB_TEMP_COLOR", err);
+    }
+
+    err = dy_bt_register_characteristic(CRONUS_BT_CHRC_UUID_WIDGET_ODR_TEMP_COLOR, on_uint8_read, on_uint8_write);
+    if (dy_is_err(err)) {
+        return dy_err_pfx("dy_bt_register_characteristic: WIDGET_ODR_TEMP_COLOR", err);
     }
 
     if (dy_is_err(err = dy_bt_init())) {
