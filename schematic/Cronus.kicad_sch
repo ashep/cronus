@@ -138,7 +138,7 @@
 			(in_bom yes)
 			(on_board yes)
 			(property "Reference" "U"
-				(at 3.048 8.636 0)
+				(at 3.048 9.906 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -146,7 +146,7 @@
 				)
 			)
 			(property "Value" "DS3231"
-				(at 6.096 6.096 0)
+				(at 6.096 7.366 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -154,7 +154,7 @@
 				)
 			)
 			(property "Footprint" "Cronus:DS3231-Dev-Board"
-				(at 19.05 -7.62 0)
+				(at 17.78 -8.89 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -182,8 +182,8 @@
 			)
 			(symbol "DS3231-Dev-Board_0_1"
 				(rectangle
-					(start -11.43 5.08)
-					(end 11.43 -5.08)
+					(start -11.43 6.35)
+					(end 11.43 -6.35)
 					(stroke
 						(width 0)
 						(type default)
@@ -195,9 +195,9 @@
 			)
 			(symbol "DS3231-Dev-Board_1_1"
 				(pin bidirectional line
-					(at -13.97 2.54 0)
+					(at -13.97 3.81 0)
 					(length 2.54)
-					(name "RTC_SDA"
+					(name "SDA"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -213,9 +213,9 @@
 					)
 				)
 				(pin input line
-					(at -13.97 0 0)
+					(at -13.97 1.27 0)
 					(length 2.54)
-					(name "RTC_SCL"
+					(name "SCL"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -231,7 +231,7 @@
 					)
 				)
 				(pin output line
-					(at -13.97 -2.54 0)
+					(at -13.97 -1.27 0)
 					(length 2.54)
 					(name "SQW"
 						(effects
@@ -249,9 +249,9 @@
 					)
 				)
 				(pin power_in line
-					(at -1.27 7.62 270)
+					(at -1.27 8.89 270)
 					(length 2.54)
-					(name "VCC"
+					(name "VCC1"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -267,9 +267,9 @@
 					)
 				)
 				(pin passive line
-					(at -1.27 -7.62 90)
+					(at -1.27 -8.89 90)
 					(length 2.54)
-					(name "GND"
+					(name "GND1"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -285,9 +285,9 @@
 					)
 				)
 				(pin power_in line
-					(at 1.27 7.62 270)
+					(at 1.27 8.89 270)
 					(length 2.54)
-					(name "VCC"
+					(name "VCC2"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -303,9 +303,9 @@
 					)
 				)
 				(pin passive line
-					(at 1.27 -7.62 90)
+					(at 1.27 -8.89 90)
 					(length 2.54)
-					(name "GND"
+					(name "GND2"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -321,9 +321,9 @@
 					)
 				)
 				(pin bidirectional line
-					(at 13.97 2.54 180)
+					(at 13.97 3.81 180)
 					(length 2.54)
-					(name "ROM_SDA"
+					(name "SDA"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -339,9 +339,9 @@
 					)
 				)
 				(pin input line
-					(at 13.97 0 180)
+					(at 13.97 1.27 180)
 					(length 2.54)
-					(name "ROM_SCL"
+					(name "SCL"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -357,7 +357,7 @@
 					)
 				)
 				(pin output line
-					(at 13.97 -2.54 180)
+					(at 13.97 -1.27 180)
 					(length 2.54)
 					(name "32K"
 						(effects
@@ -1406,23 +1406,27 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Mechanical:MountingHole"
+		(symbol "Mechanical:MountingHole_Pad"
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
 				(offset 1.016)
+				(hide yes)
 			)
-			(exclude_from_sim yes)
+			(exclude_from_sim no)
 			(in_bom no)
 			(on_board yes)
 			(property "Reference" "H"
-				(at 0 5.08 0)
+				(at 0 6.35 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
 				)
 			)
-			(property "Value" "MountingHole"
-				(at 0 3.175 0)
+			(property "Value" "MountingHole_Pad"
+				(at 0 4.445 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -1447,7 +1451,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "Mounting Hole without connection"
+			(property "Description" "Mounting Hole with connection"
 				(at 0 0 0)
 				(effects
 					(font
@@ -1465,7 +1469,7 @@
 					(hide yes)
 				)
 			)
-			(property "ki_fp_filters" "MountingHole*"
+			(property "ki_fp_filters" "MountingHole*Pad*"
 				(at 0 0 0)
 				(effects
 					(font
@@ -1474,9 +1478,9 @@
 					(hide yes)
 				)
 			)
-			(symbol "MountingHole_0_1"
+			(symbol "MountingHole_Pad_0_1"
 				(circle
-					(center 0 0)
+					(center 0 1.27)
 					(radius 1.27)
 					(stroke
 						(width 1.27)
@@ -1484,6 +1488,26 @@
 					)
 					(fill
 						(type none)
+					)
+				)
+			)
+			(symbol "MountingHole_Pad_1_1"
+				(pin input line
+					(at 0 -2.54 90)
+					(length 2.54)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
 					)
 				)
 			)
@@ -1747,6 +1771,18 @@
 		(uuid "3d46f061-2ccd-45c9-a320-1e04817bbfa9")
 	)
 	(junction
+		(at 190.5 104.14)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "4fff606f-6421-4bd0-825c-d5065f7b000c")
+	)
+	(junction
+		(at 190.5 86.36)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "52c9de3a-037d-4df3-84e9-aa235a71c3e3")
+	)
+	(junction
 		(at 147.32 81.28)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1765,22 +1801,28 @@
 		(uuid "88b968c6-182e-4925-8c89-1ee45ca9aaf1")
 	)
 	(junction
+		(at 15.494 41.402)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "950df398-5185-4fa5-ab90-cc4dfa9f42d7")
+	)
+	(junction
 		(at 127 66.04)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "98a30be4-adad-4a3e-a009-42723fe83612")
 	)
 	(junction
+		(at 15.494 34.29)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "a0b31fa2-13da-49f2-844c-283dfa062424")
+	)
+	(junction
 		(at 158.75 66.04)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "bb994a88-39a6-4c02-b814-1e5da18ced3c")
-	)
-	(junction
-		(at 190.5 86.36)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "be076173-5592-4bb4-962a-0b0777caa55f")
 	)
 	(junction
 		(at 129.54 132.08)
@@ -1793,12 +1835,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "d6bba885-5372-4ce7-8c3a-86f787e32e47")
-	)
-	(junction
-		(at 190.5 101.6)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "de051c8c-b363-469f-8219-9e38b3c16bf3")
 	)
 	(no_connect
 		(at 143.51 111.76)
@@ -1952,16 +1988,6 @@
 	)
 	(wire
 		(pts
-			(xy 190.5 66.04) (xy 190.5 86.36)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0438d1f8-70d5-4b90-bfa6-4f68629491eb")
-	)
-	(wire
-		(pts
 			(xy 111.76 63.5) (xy 132.08 63.5)
 		)
 		(stroke
@@ -1992,16 +2018,6 @@
 	)
 	(wire
 		(pts
-			(xy 190.5 101.6) (xy 190.5 105.41)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "13ac4655-fb78-4380-b557-82d971f58c36")
-	)
-	(wire
-		(pts
 			(xy 111.76 132.08) (xy 124.46 132.08)
 		)
 		(stroke
@@ -2009,6 +2025,16 @@
 			(type default)
 		)
 		(uuid "1ad5ddf5-fd4a-4a92-880c-987fcb03ec3e")
+	)
+	(wire
+		(pts
+			(xy 190.5 66.04) (xy 190.5 86.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2062b66b-56c9-4abd-98ad-3f4009bd0e87")
 	)
 	(wire
 		(pts
@@ -2022,16 +2048,6 @@
 	)
 	(wire
 		(pts
-			(xy 190.5 86.36) (xy 193.04 86.36)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "28745199-d5eb-4305-8810-06cd8d948d8e")
-	)
-	(wire
-		(pts
 			(xy 147.32 81.28) (xy 148.59 81.28)
 		)
 		(stroke
@@ -2039,16 +2055,6 @@
 			(type default)
 		)
 		(uuid "3b1260cf-6170-4e99-8caf-e875430808f1")
-	)
-	(wire
-		(pts
-			(xy 190.5 101.6) (xy 193.04 101.6)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4b225a22-d70e-4820-a8b5-6a2bcaae7dc0")
 	)
 	(wire
 		(pts
@@ -2062,6 +2068,16 @@
 	)
 	(wire
 		(pts
+			(xy 190.5 104.14) (xy 190.5 106.426)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "546b9f35-629e-4071-b0e6-f56c3b941fc0")
+	)
+	(wire
+		(pts
 			(xy 158.75 73.66) (xy 158.75 76.2)
 		)
 		(stroke
@@ -2072,6 +2088,16 @@
 	)
 	(wire
 		(pts
+			(xy 20.828 26.67) (xy 15.494 26.67)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "56de9133-7a54-46ef-8f83-6812965ca659")
+	)
+	(wire
+		(pts
 			(xy 167.64 91.44) (xy 177.8 91.44)
 		)
 		(stroke
@@ -2079,6 +2105,26 @@
 			(type default)
 		)
 		(uuid "6556c39b-c1e1-44cb-8ee7-9b5a8be3692c")
+	)
+	(wire
+		(pts
+			(xy 15.494 26.67) (xy 15.494 34.29)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6e3111d6-6c46-41c5-9566-d8446e7812a5")
+	)
+	(wire
+		(pts
+			(xy 15.494 41.402) (xy 15.494 44.45)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "70369de9-08cb-4095-ba19-654d62cdc098")
 	)
 	(wire
 		(pts
@@ -2142,6 +2188,16 @@
 	)
 	(wire
 		(pts
+			(xy 15.494 34.29) (xy 20.828 34.29)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "97b30587-ec61-4e54-94d5-5e036229c965")
+	)
+	(wire
+		(pts
 			(xy 147.32 107.95) (xy 147.32 132.08)
 		)
 		(stroke
@@ -2172,6 +2228,16 @@
 	)
 	(wire
 		(pts
+			(xy 15.494 41.402) (xy 20.828 41.402)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a7a42f03-ec6c-49c1-bf4d-d6366aacc52a")
+	)
+	(wire
+		(pts
 			(xy 167.64 66.04) (xy 190.5 66.04)
 		)
 		(stroke
@@ -2189,6 +2255,16 @@
 			(type default)
 		)
 		(uuid "a8e0d946-4cd4-41e6-aaf2-7baf46413298")
+	)
+	(wire
+		(pts
+			(xy 15.494 34.29) (xy 15.494 41.402)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ab21b54d-392f-4e6b-be77-8c4149b08857")
 	)
 	(wire
 		(pts
@@ -2239,6 +2315,16 @@
 			(type default)
 		)
 		(uuid "cfc94f59-3a22-471d-808e-f02ff39d316f")
+	)
+	(wire
+		(pts
+			(xy 190.5 86.36) (xy 193.04 86.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d6fb9304-7074-4c5e-ab67-407ad0ca2118")
 	)
 	(wire
 		(pts
@@ -2329,6 +2415,16 @@
 			(type default)
 		)
 		(uuid "f6585b1c-8ac4-4a3f-8cbc-ef1db662131a")
+	)
+	(wire
+		(pts
+			(xy 190.5 104.14) (xy 193.04 104.14)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f74fbeed-cb2e-4b52-bf9c-556e28e4acee")
 	)
 	(wire
 		(pts
@@ -2678,17 +2774,16 @@
 		)
 	)
 	(symbol
-		(lib_id "Mechanical:MountingHole")
-		(at 15.24 15.24 0)
+		(lib_id "Mechanical:MountingHole_Pad")
+		(at 20.828 24.13 0)
 		(unit 1)
-		(exclude_from_sim yes)
+		(exclude_from_sim no)
 		(in_bom no)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "2d340a30-016c-4007-844a-a99440d39c74")
 		(property "Reference" "H1"
-			(at 17.78 13.9699 0)
+			(at 23.368 22.8599 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2697,7 +2792,7 @@
 			)
 		)
 		(property "Value" "MountingHole"
-			(at 17.78 16.5099 0)
+			(at 23.368 25.3999 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2705,8 +2800,8 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "MountingHole:MountingHole_2.2mm_M2"
-			(at 15.24 15.24 0)
+		(property "Footprint" "MountingHole:MountingHole_2.1mm"
+			(at 20.828 24.13 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2715,7 +2810,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 15.24 15.24 0)
+			(at 20.828 24.13 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2723,14 +2818,17 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Mounting Hole without connection"
-			(at 15.24 15.24 0)
+		(property "Description" "Mounting Hole with connection"
+			(at 20.828 24.13 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(hide yes)
 			)
+		)
+		(pin "1"
+			(uuid "b8f69f9c-6281-4f5e-8ac4-ea0e0d0c72ed")
 		)
 		(instances
 			(project ""
@@ -2871,7 +2969,7 @@
 	)
 	(symbol
 		(lib_id "Cronus:DS3231-Dev-Board")
-		(at 191.77 93.98 0)
+		(at 191.77 95.25 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2880,7 +2978,7 @@
 		(fields_autoplaced yes)
 		(uuid "454540bb-89c3-40e9-bbba-87f4e2adf45b")
 		(property "Reference" "U2"
-			(at 193.9641 83.82 0)
+			(at 193.9641 85.09 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2889,7 +2987,7 @@
 			)
 		)
 		(property "Value" "DS3231"
-			(at 193.9641 86.36 0)
+			(at 193.9641 87.63 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2898,7 +2996,7 @@
 			)
 		)
 		(property "Footprint" "Cronus:DS3231-Dev-Board"
-			(at 206.502 101.346 0)
+			(at 206.502 102.616 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2907,7 +3005,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 189.23 93.98 0)
+			(at 189.23 95.25 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2916,7 +3014,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 189.23 93.98 0)
+			(at 189.23 95.25 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3163,6 +3261,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 15.494 44.45 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "955ff182-f8b6-4eff-b7a7-380d6122bb14")
+		(property "Reference" "#PWR04"
+			(at 15.494 50.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 15.494 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 15.494 44.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 15.494 44.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 15.494 44.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "d561b38e-13c5-4461-8104-509e06308eb7")
+		)
+		(instances
+			(project "Cronus"
+				(path "/4c973cd3-de62-4d41-b784-6255b612382d"
+					(reference "#PWR04")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Connector:Conn_01x01_Pin")
 		(at 106.68 132.08 0)
 		(unit 1)
@@ -3228,7 +3392,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 190.5 105.41 0)
+		(at 190.5 106.426 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -3237,7 +3401,7 @@
 		(fields_autoplaced yes)
 		(uuid "9d3a0e44-c913-475e-a7bd-513a00d8b875")
 		(property "Reference" "#PWR03"
-			(at 190.5 111.76 0)
+			(at 190.5 112.776 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3246,7 +3410,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 190.5 110.49 0)
+			(at 190.5 111.506 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3254,7 +3418,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 190.5 105.41 0)
+			(at 190.5 106.426 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3263,7 +3427,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 190.5 105.41 0)
+			(at 190.5 106.426 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3272,7 +3436,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 190.5 105.41 0)
+			(at 190.5 106.426 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3293,17 +3457,17 @@
 		)
 	)
 	(symbol
-		(lib_id "Mechanical:MountingHole")
-		(at 15.24 25.4 0)
+		(lib_id "Mechanical:MountingHole_Pad")
+		(at 20.828 31.75 0)
 		(unit 1)
-		(exclude_from_sim yes)
+		(exclude_from_sim no)
 		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "a6a6d372-219e-4588-93f1-e5ff1f5bcceb")
 		(property "Reference" "H3"
-			(at 17.78 24.1299 0)
+			(at 23.368 29.2099 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3312,7 +3476,7 @@
 			)
 		)
 		(property "Value" "MountingHole"
-			(at 17.78 26.6699 0)
+			(at 23.368 31.7499 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3320,8 +3484,8 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "MountingHole:MountingHole_2.2mm_M2"
-			(at 15.24 25.4 0)
+		(property "Footprint" "MountingHole:MountingHole_2.1mm"
+			(at 20.828 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3330,7 +3494,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 15.24 25.4 0)
+			(at 20.828 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3338,14 +3502,17 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Mounting Hole without connection"
-			(at 15.24 25.4 0)
+		(property "Description" "Mounting Hole with connection"
+			(at 20.828 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(hide yes)
 			)
+		)
+		(pin "1"
+			(uuid "27353469-dacb-454b-b984-d50180dbbf18")
 		)
 		(instances
 			(project "Cronus"
@@ -3357,17 +3524,17 @@
 		)
 	)
 	(symbol
-		(lib_id "Mechanical:MountingHole")
-		(at 15.24 30.48 0)
+		(lib_id "Mechanical:MountingHole_Pad")
+		(at 20.828 38.862 0)
 		(unit 1)
-		(exclude_from_sim yes)
+		(exclude_from_sim no)
 		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "ae9650e9-6481-4b23-8144-9d489fb137e0")
 		(property "Reference" "H4"
-			(at 17.78 29.2099 0)
+			(at 23.368 36.3219 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3376,7 +3543,7 @@
 			)
 		)
 		(property "Value" "MountingHole"
-			(at 17.78 31.7499 0)
+			(at 23.368 38.8619 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3384,8 +3551,8 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "MountingHole:MountingHole_2.2mm_M2"
-			(at 15.24 30.48 0)
+		(property "Footprint" "MountingHole:MountingHole_2.1mm"
+			(at 20.828 38.862 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3394,7 +3561,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 15.24 30.48 0)
+			(at 20.828 38.862 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3402,14 +3569,17 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Mounting Hole without connection"
-			(at 15.24 30.48 0)
+		(property "Description" "Mounting Hole with connection"
+			(at 20.828 38.862 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(hide yes)
 			)
+		)
+		(pin "1"
+			(uuid "144977be-3627-423e-9ca6-6a19279a46ad")
 		)
 		(instances
 			(project "Cronus"
@@ -3614,70 +3784,6 @@
 			(project ""
 				(path "/4c973cd3-de62-4d41-b784-6255b612382d"
 					(reference "R1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Mechanical:MountingHole")
-		(at 15.24 20.32 0)
-		(unit 1)
-		(exclude_from_sim yes)
-		(in_bom no)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "df2b3c0c-2e5d-4388-8b4e-d24653ed18a4")
-		(property "Reference" "H2"
-			(at 17.78 19.0499 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "MountingHole"
-			(at 17.78 21.5899 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "MountingHole:MountingHole_2.2mm_M2"
-			(at 15.24 20.32 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 15.24 20.32 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Mounting Hole without connection"
-			(at 15.24 20.32 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(instances
-			(project "Cronus"
-				(path "/4c973cd3-de62-4d41-b784-6255b612382d"
-					(reference "H2")
 					(unit 1)
 				)
 			)

@@ -94,6 +94,136 @@
 		(layer "F.SilkS")
 		(uuid "ee103217-0fdc-41ca-b2cd-9d8a67844e8f")
 	)
+	(fp_text user "SOW"
+		(at -4.45 -11.952381 270)
+		(unlocked yes)
+		(layer "B.SilkS")
+		(uuid "31ef96e7-6073-47c0-9c3c-d1cb80d1f324")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify left bottom mirror)
+		)
+	)
+	(fp_text user "SDA"
+		(at 0.65 -12.119048 270)
+		(unlocked yes)
+		(layer "B.SilkS")
+		(uuid "5c6e2459-9c08-419b-892e-6ad55426a8fe")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify left bottom mirror)
+		)
+	)
+	(fp_text user "SCL"
+		(at -1.9 -12.142857 270)
+		(unlocked yes)
+		(layer "B.SilkS")
+		(uuid "657ba548-4928-4993-b84e-fe3c34315ccd")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify left bottom mirror)
+		)
+	)
+	(fp_text user "GND"
+		(at 3 17.392857 270)
+		(unlocked yes)
+		(layer "B.SilkS")
+		(uuid "6763f3f3-0ba9-4380-b9e9-cadc87d07510")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify left bottom mirror)
+		)
+	)
+	(fp_text user "SDA"
+		(at -2 17.273809 270)
+		(unlocked yes)
+		(layer "B.SilkS")
+		(uuid "74ab7aa0-3355-4f4d-b4cf-38b067f86d92")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify left bottom mirror)
+		)
+	)
+	(fp_text user "SCL"
+		(at -4.5 17.25 270)
+		(unlocked yes)
+		(layer "B.SilkS")
+		(uuid "778b4880-6bb0-4161-9ecd-a0cf4c3f00d8")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify left bottom mirror)
+		)
+	)
+	(fp_text user "32K"
+		(at -7 -12.071429 270)
+		(unlocked yes)
+		(layer "B.SilkS")
+		(uuid "9b1e646e-27c3-40ad-9805-c3f41d86dad1")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify left bottom mirror)
+		)
+	)
+	(fp_text user "3V3"
+		(at 3.2 -12.142857 270)
+		(unlocked yes)
+		(layer "B.SilkS")
+		(uuid "a0f8f3b9-bd66-4933-bc89-ae0c963103d2")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify left bottom mirror)
+		)
+	)
+	(fp_text user "GND"
+		(at 5.75 -12 270)
+		(unlocked yes)
+		(layer "B.SilkS")
+		(uuid "cb7591ff-2c05-45d3-9e3c-d03ff616c477")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify left bottom mirror)
+		)
+	)
+	(fp_text user "3V3"
+		(at 0.5 17.25 270)
+		(unlocked yes)
+		(layer "B.SilkS")
+		(uuid "d558a542-8533-4639-a937-e44e9f0fff3b")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify left bottom mirror)
+		)
+	)
 	(fp_text user "${REFERENCE}"
 		(at 0 2.5 0)
 		(unlocked yes)
