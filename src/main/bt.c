@@ -79,6 +79,12 @@ static dy_err_t bt_chrc_uuid_to_cfg_id(cronus_bt_chrc_type_t type, esp_bt_uuid_t
             case CRONUS_BT_CHRC_UUID_WIDGET_ODR_TEMP_COLOR:
                 *cfg_id = CRONUS_CFG_ID_WIDGET_ODR_TEMP_COLOR;
                 break;
+            case CRONUS_BT_CHRC_UUID_NIGHT_MODE_ENABLED:
+                *cfg_id = CRONUS_CFG_ID_NIGHT_MODE_ENABLED;
+                break;
+            case CRONUS_BT_CHRC_UUID_NIGHT_MODE_COLOR:
+                *cfg_id = CRONUS_CFG_ID_NIGHT_MODE_COLOR;
+                break;
             default:
                 return dy_err(DY_ERR_INVALID_ARG, "unexpected characteristic uuid: 0x%04x", uuid.uuid.uuid16);
         }
@@ -370,6 +376,16 @@ dy_err_t cronus_bt_init() {
     err = dy_bt_register_characteristic(CRONUS_BT_CHRC_UUID_WIDGET_ODR_TEMP_COLOR, on_uint8_read, on_uint8_write);
     if (dy_is_err(err)) {
         return dy_err_pfx("dy_bt_register_characteristic: WIDGET_ODR_TEMP_COLOR", err);
+    }
+
+    err = dy_bt_register_characteristic(CRONUS_BT_CHRC_UUID_NIGHT_MODE_ENABLED, on_uint8_read, on_uint8_write);
+    if (dy_is_err(err)) {
+        return dy_err_pfx("dy_bt_register_characteristic: NIGHT_MODE_ENABLED", err);
+    }
+
+    err = dy_bt_register_characteristic(CRONUS_BT_CHRC_UUID_NIGHT_MODE_COLOR, on_uint8_read, on_uint8_write);
+    if (dy_is_err(err)) {
+        return dy_err_pfx("dy_bt_register_characteristic: NIGHT_MODE_COLOR", err);
     }
 
     if (dy_is_err(err = dy_bt_init())) {

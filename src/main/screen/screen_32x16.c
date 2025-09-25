@@ -22,14 +22,22 @@
 #define FMT_TEMP_NON_ZERO "%+d*"
 
 static dy_gfx_px_t widget_color(cronus_screen_cycle_num_t cycle_num) {
-    if (dy_display_get_brightness(0) == 0) {
-        // Night mode
-        return DY_GFX_PX_RED;
+    dy_err_t err;
+
+    uint8_t n_mode_on = 1;
+    if (dy_is_err(err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_NIGHT_MODE_ENABLED, &n_mode_on, 1))) {
+        ESP_LOGE(LTAG, "get CRONUS_CFG_ID_NIGHT_MODE_ENABLED: %s", dy_err_str(err));
     }
 
-    dy_err_t err;
-    uint8_t code = DY_GFX_COLOR_GREEN;
+    if (dy_display_get_brightness(0) == 0 && n_mode_on) {
+        uint8_t n_mode_color = DY_GFX_COLOR_RED;
+        if (dy_is_err(err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_NIGHT_MODE_COLOR, &n_mode_color, DY_GFX_COLOR_RED))) {
+            ESP_LOGE(LTAG, "get CRONUS_CFG_ID_NIGHT_MODE_COLOR: %s", dy_err_str(err));
+        }
+        return dy_gfx_px_by_code(n_mode_color);
+    }
 
+    uint8_t code = DY_GFX_COLOR_GREEN;
     switch (cycle_num) {
         case SHOW_CYCLE_TIME:
             err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_WIDGET_TIME_COLOR, &code, DY_GFX_COLOR_GREEN);
