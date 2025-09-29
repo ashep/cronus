@@ -24,5 +24,7 @@
 #define CRONUS_CFG_ID_WIDGET_DOW_COLOR          143 // color of the day of week widget
 #define CRONUS_CFG_ID_WIDGET_AMB_TEMP_COLOR     144 // color of the ambient temperature widget
 #define CRONUS_CFG_ID_WIDGET_ODR_TEMP_COLOR     145 // color of the outdoor temperature widget
+#define CRONUS_CFG_ID_NIGHT_MODE_ENABLED        146 // is night mode enabled
+#define CRONUS_CFG_ID_NIGHT_MODE_COLOR          147 // widget colors when the night is enabled
 
 dy_err_t init_config();
