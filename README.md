@@ -12,10 +12,11 @@
 - No disgusting bloody Arduino.
 
 ![Showcase](img/showcase/00-1.jpg)
+![Showcase](img/showcase/00-2.jpg)
+
 <details>
 <summary>See more</summary>
 
-![Showcase](img/showcase/00-2.jpg)
 ![Showcase](img/showcase/01.jpg)
 ![Showcase](img/showcase/02.jpg)
 ![Showcase](img/showcase/03.jpg)
