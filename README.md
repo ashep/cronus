@@ -45,7 +45,7 @@ git submodule update --recursive --remote
 
 ## Changelog
 
-### 0.0.4 (20XX-09-30)
+### 0.0.4 (2025-09-30)
 
 - Added [widget color](https://github.com/ashep/cronus/issues/26) options for colorful screens.
 - Added [night mode](https://github.com/ashep/cronus/issues/28) options for colorful screens.
