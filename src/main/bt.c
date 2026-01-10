@@ -1,7 +1,6 @@
 #include "cronus/bt.h"
 #include "cronus/cfg.h"
 #include "cronus/display.h"
-#include <stdint.h>
 #include <string.h>
 #include "esp_log.h"
 #include "esp_event.h"
@@ -9,6 +8,7 @@
 #include "dy/bt.h"
 #include "dy/appinfo.h"
 #include "dy/cfg2.h"
+#include "dy/cloud.h"
 
 #define LTAG "CRONUS_BT"
 
@@ -84,6 +84,9 @@ static dy_err_t bt_chrc_uuid_to_cfg_id(cronus_bt_chrc_type_t type, esp_bt_uuid_t
                 break;
             case CRONUS_BT_CHRC_UUID_NIGHT_MODE_COLOR:
                 *cfg_id = CRONUS_CFG_ID_NIGHT_MODE_COLOR;
+                break;
+            case CRONUS_BT_CHRC_UUID_SHOW_DUR_AIR_RAID_ALERT:
+                *cfg_id = CRONUS_CFG_ID_WIDGET_DUR_AIR_RAID_ALERT;
                 break;
             default:
                 return dy_err(DY_ERR_INVALID_ARG, "unexpected characteristic uuid: 0x%04x", uuid.uuid.uuid16);
@@ -179,6 +182,10 @@ static dy_err_t on_uint8_write(esp_bt_uuid_t uuid, const uint8_t *val, size_t le
         return err;
     }
 
+    if (cfg_id == CRONUS_CFG_ID_WIDGET_DUR_AIR_RAID_ALERT) {
+        dy_cloud_air_raid_alert_set_enabled(*val > 0);
+    }
+
     return dy_ok();
 }
 
@@ -214,6 +221,17 @@ static dy_err_t on_float_write(esp_bt_uuid_t uuid, const uint8_t *val, size_t le
     memcpy(&value, val, sizeof(float));
     if (dy_is_err(err = dy_cfg2_set_float(cfg_id, value))) {
         return err;
+    }
+
+    switch (cfg_id) {
+        case CRONUS_CFG_ID_LOCATION_LAT:
+            dy_cloud_set_location_lat(value);
+            break;
+        case CRONUS_CFG_ID_LOCATION_LNG:
+            dy_cloud_set_location_lng(value);;
+            break;
+        default:
+            break;
     }
 
     return dy_ok();
@@ -274,7 +292,8 @@ dy_err_t cronus_bt_init() {
         return dy_err_pfx("dy_bt_set_device_name_prefix", err);
     }
 
-    if (dy_is_err(err = dy_bt_set_device_appearance(0x0100))) { // Generic Clock
+    if (dy_is_err(err = dy_bt_set_device_appearance(0x0100))) {
+        // Generic Clock
         return dy_err_pfx("dy_bt_set_device_appearance", err);
     }
 
@@ -386,6 +405,11 @@ dy_err_t cronus_bt_init() {
     err = dy_bt_register_characteristic(CRONUS_BT_CHRC_UUID_NIGHT_MODE_COLOR, on_uint8_read, on_uint8_write);
     if (dy_is_err(err)) {
         return dy_err_pfx("dy_bt_register_characteristic: NIGHT_MODE_COLOR", err);
+    }
+
+    err = dy_bt_register_characteristic(CRONUS_BT_CHRC_UUID_SHOW_DUR_AIR_RAID_ALERT, on_uint8_read, on_uint8_write);
+    if (dy_is_err(err)) {
+        return dy_err_pfx("dy_bt_register_characteristic: SHOW_DUR_AIR_RAID_ALERT", err);
     }
 
     if (dy_is_err(err = dy_bt_init())) {

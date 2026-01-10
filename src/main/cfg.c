@@ -64,6 +64,7 @@ static void set_config_defaults() {
     set_u8_if_not_set(CRONUS_CFG_ID_WIDGET_ODR_TEMP_COLOR, DY_GFX_COLOR_GREEN);
     set_u8_if_not_set(CRONUS_CFG_ID_NIGHT_MODE_ENABLED, 1);
     set_u8_if_not_set(CRONUS_CFG_ID_NIGHT_MODE_COLOR, DY_GFX_COLOR_RED);
+    set_u8_if_not_set(CRONUS_CFG_ID_WIDGET_DUR_AIR_RAID_ALERT, 0);
 }
 
 dy_err_t init_config() {

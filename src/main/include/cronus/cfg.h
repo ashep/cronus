@@ -26,5 +26,6 @@
 #define CRONUS_CFG_ID_WIDGET_ODR_TEMP_COLOR     145 // color of the outdoor temperature widget
 #define CRONUS_CFG_ID_NIGHT_MODE_ENABLED        146 // is night mode enabled
 #define CRONUS_CFG_ID_NIGHT_MODE_COLOR          147 // widget colors when the night is enabled
+#define CRONUS_CFG_ID_WIDGET_DUR_AIR_RAID_ALERT 148 // air raid alert widget show duration
 
 dy_err_t init_config();

@@ -1,6 +1,7 @@
 #include "cronus/cfg.h"
 #include "cronus/bt.h"
 #include "cronus/weather.h"
+#include "cronus/air_raid.h"
 #include "cronus/screen.h"
 #include "cronus/brightness.h"
 
@@ -237,6 +238,11 @@ void app_main(void) {
     // Weather sync
     if (dy_is_err(err = cronus_weather_init())) {
         ESP_LOGE(LTAG, "cronus_weather_init: %s", dy_err_str(err));
+    }
+
+    // Air raid alerts sync
+    if (dy_is_err(err = cronus_air_raid_alert_init())) {
+        ESP_LOGE(LTAG, "cronus_air_raid_alert_init: %s", dy_err_str(err));
     }
 
     // Firmware update scheduler

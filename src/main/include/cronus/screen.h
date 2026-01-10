@@ -14,6 +14,7 @@ typedef enum {
     SHOW_CYCLE_AMB_TEMP,
     SHOW_CYCLE_ODR_TEMP,
     SHOW_CYCLE_WEATHER_ICON,
+    SHOW_CYCLE_AIR_RAID_ALERT,
     SHOW_CYCLE_MAX,
 } cronus_screen_cycle_num_t;
 

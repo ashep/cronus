@@ -2,6 +2,7 @@
 #include "cronus/display.h"
 #include "cronus/cfg.h"
 #include "cronus/weather.h"
+#include "cronus/air_raid.h"
 
 #include <sys/cdefs.h>
 #include <time.h>
@@ -19,22 +20,20 @@ extern void render_32x16(cronus_display_type_t dt, cronus_screen_cycle_num_t cyc
 static QueueHandle_t cycle_queue;
 
 _Noreturn static void switch_cycle_task() {
-    dy_err_t err;
     uint8_t cycle = SHOW_CYCLE_TIME;
     uint8_t mode = CRONUS_CFG_USER_SHOW_MODE_SINGLE_LINE;
     uint8_t delay = 0;
-    uint8_t next_cycle;
 
     while (1) {
         vTaskDelay(pdMS_TO_TICKS(1000 * (delay ? delay : 1)));
 
-        err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_SHOW_MODE, &mode, CRONUS_CFG_USER_SHOW_MODE_SINGLE_LINE);
+        dy_err_t err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_SHOW_MODE, &mode, CRONUS_CFG_USER_SHOW_MODE_SINGLE_LINE);
         if (dy_is_err(err)) {
             ESP_LOGE(LTAG, "get CRONUS_CFG_ID_SHOW_MODE: %s", dy_err_str(err));
         }
 
         delay = 0;
-        next_cycle = cycle;
+        uint8_t next_cycle = cycle;
 
         // Search for the next cycle in config.
         // Any "show mode" config, that has a non-zero show delay, makes the cycle visible for a given period.
@@ -78,9 +77,16 @@ _Noreturn static void switch_cycle_task() {
                     }
                     break;
                 case SHOW_CYCLE_WEATHER_ICON:
-                    if (!cronus_is_weather_obsolete() && mode == CRONUS_CFG_USER_SHOW_MODE_SINGLE_LINE) {
+                    if (mode == CRONUS_CFG_USER_SHOW_MODE_SINGLE_LINE && !cronus_is_weather_obsolete()) {
                         if (dy_is_err(err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_WIDGET_WEATHER_DURATION, &delay, 5))) {
                             ESP_LOGE(LTAG, "get CRONUS_CFG_ID_WIDGET_WEATHER_DURATION: %s", dy_err_str(err));
+                        }
+                    }
+                    break;
+                case SHOW_CYCLE_AIR_RAID_ALERT:
+                    if (mode == CRONUS_CFG_USER_SHOW_MODE_SINGLE_LINE && !cronus_is_air_raid_alert_obsolete()) {
+                        if (dy_is_err(err = dy_cfg2_get_u8_dft(CRONUS_CFG_ID_WIDGET_DUR_AIR_RAID_ALERT, &delay, 5))) {
+                            ESP_LOGE(LTAG, "get CRONUS_CFG_ID_WIDGET_DUR_AIR_RAID_ALERT: %s", dy_err_str(err));
                         }
                     }
                     break;
