@@ -9,6 +9,7 @@
 #include "cronus/cfg.h"
 
 #define LTAG "AIR_RAID_ALERT"
+#define ALERT_MAX_AGE_SECONDS 120
 
 static SemaphoreHandle_t mux;
 static dy_cloud_air_raid_alert_t alert;
@@ -79,5 +80,5 @@ bool cronus_is_air_raid_alert_obsolete() {
     time_t age = now - alert.ts;
     xSemaphoreGive(mux);
 
-    return age <= 0 || age > 120;
+    return age <= 0 || age > ALERT_MAX_AGE_SECONDS;
 }
