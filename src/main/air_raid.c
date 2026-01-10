@@ -58,7 +58,14 @@ dy_err_t cronus_air_raid_alert_init() {
 }
 
 dy_cloud_air_raid_alert_t cronus_air_raid_alert_get() {
-    return alert;
+    if (xSemaphoreTake(mux, portTICK_PERIOD_MS) != pdTRUE) {
+        ESP_LOGE(LTAG, "xSemaphoreTake failed");
+        return (dy_cloud_air_raid_alert_t){0};
+    }
+    const dy_cloud_air_raid_alert_t res = alert;
+    xSemaphoreGive(mux);
+
+    return res;
 }
 
 bool cronus_is_air_raid_alert_obsolete() {
