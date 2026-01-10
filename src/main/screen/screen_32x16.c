@@ -2,6 +2,7 @@
 #include "cronus/display.h"
 #include "cronus/cfg.h"
 #include "cronus/weather.h"
+#include "cronus/air_raid.h"
 #include "cronus/icon.h"
 
 #include <stdio.h>
@@ -87,6 +88,7 @@ static void render_single_line(
 ) {
     int32_t x;
     dy_cloud_weather_t weather;
+    dy_cloud_air_raid_alert_t air_raid_alert;
     const dy_gfx_sprite_t *weather_icon;
     dy_gfx_px_t color = widget_color(cycle);
 
@@ -180,8 +182,22 @@ static void render_single_line(
             }
 
             dy_gfx_write_sprite(buf, 9, 1, weather_icon);
+
+            // Night mode
             if (dy_display_get_brightness(0) == 0) {
-                // Night mode
+                dy_gfx_colorize(buf, color);
+            }
+            break;
+        case SHOW_CYCLE_AIR_RAID_ALERT:
+            air_raid_alert = cronus_air_raid_alert_get();
+            if (air_raid_alert.is_active) {
+                dy_gfx_write_sprite(buf, 9, 1, &cronus_icon_u_alert);
+            } else {
+                dy_gfx_write_sprite(buf, 9, 1, &cronus_icon_u_ok);
+            }
+
+            // Night mode
+            if (dy_display_get_brightness(0) == 0) {
                 dy_gfx_colorize(buf, color);
             }
             break;

@@ -24,6 +24,7 @@ idf_component_register(
         icon/mono/cloudy.c
         icon/mono/partly_cloudy_day.c
         icon/mono/partly_cloudy_night.c
+        icon/universal/alert.c
         icon/universal/clear_day.c
         icon/universal/clear_night.c
         icon/universal/heavy_rain.c
@@ -33,10 +34,12 @@ idf_component_register(
         icon/universal/medium_rain.c
         icon/universal/medium_snow.c
         icon/universal/mist.c
+        icon/universal/ok.c
         icon/universal/question.c
         icon/universal/thunderstorm.c
         screen/screen.c
         screen/screen_32x16.c
+        air_raid.c
         brightness.c
         bt.c
         cfg.c

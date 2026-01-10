@@ -52,7 +52,14 @@ dy_err_t cronus_weather_init() {
 }
 
 dy_cloud_weather_t cronus_weather_get() {
-    return weather;
+    if (xSemaphoreTake(mux, portTICK_PERIOD_MS) != pdTRUE) {
+        ESP_LOGE(LTAG, "xSemaphoreTake failed");
+        return (dy_cloud_weather_t){0};
+    }
+    const dy_cloud_weather_t res = weather;
+    xSemaphoreGive(mux);
+
+    return res;
 }
 
 bool cronus_is_weather_obsolete() {
