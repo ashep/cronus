@@ -228,7 +228,7 @@ static dy_err_t on_float_write(esp_bt_uuid_t uuid, const uint8_t *val, size_t le
             dy_cloud_set_location_lat(value);
             break;
         case CRONUS_CFG_ID_LOCATION_LNG:
-            dy_cloud_set_location_lng(value);;
+            dy_cloud_set_location_lng(value);
             break;
         default:
             break;
