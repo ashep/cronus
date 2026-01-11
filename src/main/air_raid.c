@@ -15,7 +15,7 @@ static SemaphoreHandle_t mux;
 static dy_cloud_air_raid_alert_t alert;
 
 static void update_handler(void *arg, esp_event_base_t base, int32_t id, void *data) {
-    dy_cloud_air_raid_alert_t *dt = data;
+    const dy_cloud_air_raid_alert_t *dt = data;
 
     if (xSemaphoreTake(mux, portTICK_PERIOD_MS) != pdTRUE) {
         ESP_LOGE(LTAG, "xSemaphoreTake failed");
@@ -31,7 +31,6 @@ static void update_handler(void *arg, esp_event_base_t base, int32_t id, void *d
 }
 
 dy_err_t cronus_air_raid_alert_init() {
-    esp_err_t esp_err;
     dy_err_t err;
 
     mux = xSemaphoreCreateMutex();
@@ -43,7 +42,8 @@ dy_err_t cronus_air_raid_alert_init() {
         return dy_err_pfx("dy_cloud_air_raid_alert_scheduler_start", err);
     }
 
-    esp_err = esp_event_handler_register(DY_CLOUD_EV_BASE, DY_CLOUD_EV_AIR_RAID_ALERT_UPDATED, update_handler, NULL);
+    const esp_err_t esp_err = esp_event_handler_register(
+        DY_CLOUD_EV_BASE, DY_CLOUD_EV_AIR_RAID_ALERT_UPDATED, update_handler,NULL);
     if (esp_err != ESP_OK) {
         return dy_err(DY_ERR_FAILED, "esp_event_handler_register: %s", esp_err_to_name(esp_err));
     }
@@ -70,14 +70,11 @@ dy_cloud_air_raid_alert_t cronus_air_raid_alert_get() {
 }
 
 bool cronus_is_air_raid_alert_obsolete() {
-    time_t now = time(NULL);
-
     if (xSemaphoreTake(mux, portTICK_PERIOD_MS) != pdTRUE) {
         ESP_LOGE(LTAG, "xSemaphoreTake failed");
         return 0;
     }
-
-    time_t age = now - alert.ts;
+    time_t age = time(NULL) - alert.ts;
     xSemaphoreGive(mux);
 
     return age <= 0 || age > ALERT_MAX_AGE_SECONDS;

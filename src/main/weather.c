@@ -11,7 +11,7 @@ static SemaphoreHandle_t mux;
 static dy_cloud_weather_t weather;
 
 static void weather_update_handler(void *arg, esp_event_base_t base, int32_t id, void *data) {
-    dy_cloud_weather_t *dt = (dy_cloud_weather_t *) data;
+    const dy_cloud_weather_t *dt = data;
 
     if (xSemaphoreTake(mux, portTICK_PERIOD_MS) != pdTRUE) {
         ESP_LOGE(LTAG, "xSemaphoreTake failed");
@@ -31,7 +31,6 @@ static void weather_update_handler(void *arg, esp_event_base_t base, int32_t id,
 }
 
 dy_err_t cronus_weather_init() {
-    esp_err_t esp_err;
     dy_err_t err;
 
     mux = xSemaphoreCreateMutex();
@@ -43,7 +42,8 @@ dy_err_t cronus_weather_init() {
         return dy_err_pfx("dy_cloud_weather_scheduler_start", err);
     }
 
-    esp_err = esp_event_handler_register(DY_CLOUD_EV_BASE, DY_CLOUD_EV_WEATHER_UPDATED, weather_update_handler, NULL);
+    const esp_err_t esp_err = esp_event_handler_register(
+        DY_CLOUD_EV_BASE, DY_CLOUD_EV_WEATHER_UPDATED, weather_update_handler, NULL);
     if (esp_err != ESP_OK) {
         return dy_err(DY_ERR_FAILED, "esp_event_handler_register: %s", esp_err_to_name(esp_err));
     }
@@ -63,14 +63,11 @@ dy_cloud_weather_t cronus_weather_get() {
 }
 
 bool cronus_is_weather_obsolete() {
-    time_t now = time(NULL);
-
     if (xSemaphoreTake(mux, portTICK_PERIOD_MS) != pdTRUE) {
         ESP_LOGE(LTAG, "xSemaphoreTake failed");
         return 0;
     }
-
-    time_t age = now - weather.ts;
+    const time_t age = time(NULL) - weather.ts;
     xSemaphoreGive(mux);
 
     return age <= 0 || age > 1800;

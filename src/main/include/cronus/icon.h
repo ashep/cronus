@@ -20,6 +20,7 @@ extern const dy_gfx_sprite_t cronus_icon_u_heavy_rain;
 extern const dy_gfx_sprite_t cronus_icon_u_heavy_snow;
 extern const dy_gfx_sprite_t cronus_icon_u_medium_rain;
 extern const dy_gfx_sprite_t cronus_icon_u_medium_snow;
+extern const dy_gfx_sprite_t cronus_icon_u_hourglass;
 extern const dy_gfx_sprite_t cronus_icon_u_light_rain;
 extern const dy_gfx_sprite_t cronus_icon_u_light_snow;
 extern const dy_gfx_sprite_t cronus_icon_u_mist;
