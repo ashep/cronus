@@ -43,7 +43,7 @@ dy_err_t cronus_air_raid_alert_init() {
     }
 
     const esp_err_t esp_err = esp_event_handler_register(
-        DY_CLOUD_EV_BASE, DY_CLOUD_EV_AIR_RAID_ALERT_UPDATED, update_handler,NULL);
+        DY_CLOUD_EV_BASE, DY_CLOUD_EV_AIR_RAID_ALERT_UPDATED, update_handler, NULL);
     if (esp_err != ESP_OK) {
         return dy_err(DY_ERR_FAILED, "esp_event_handler_register: %s", esp_err_to_name(esp_err));
     }
@@ -74,7 +74,7 @@ bool cronus_is_air_raid_alert_obsolete() {
         ESP_LOGE(LTAG, "xSemaphoreTake failed");
         return 0;
     }
-    time_t age = time(NULL) - alert.ts;
+    const time_t age = time(NULL) - alert.ts;
     xSemaphoreGive(mux);
 
     return age <= 0 || age > ALERT_MAX_AGE_SECONDS;
