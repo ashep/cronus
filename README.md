@@ -45,6 +45,12 @@ git submodule update --recursive --remote
 
 ## Changelog
 
+### 0.0.5 (2026-01-11)
+
+- Added [air raid alerts widget](https://github.com/ashep/cronus/issues/32).
+- Added [a "busy" icon upon OTA](https://github.com/ashep/cronus/issues/23).
+- Performance improvements and little optimizations.
+
 ### 0.0.4 (2025-09-30)
 
 - Added [widget color](https://github.com/ashep/cronus/issues/26) options for colorful screens.

@@ -29,6 +29,7 @@ idf_component_register(
         icon/universal/clear_night.c
         icon/universal/heavy_rain.c
         icon/universal/heavy_snow.c
+        icon/universal/hourglass.c
         icon/universal/light_rain.c
         icon/universal/light_snow.c
         icon/universal/medium_rain.c

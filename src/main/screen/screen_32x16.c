@@ -22,7 +22,7 @@
 #define FMT_TEMP_ZERO "%d*"
 #define FMT_TEMP_NON_ZERO "%+d*"
 
-static dy_gfx_px_t widget_color(cronus_screen_cycle_num_t cycle_num) {
+dy_gfx_px_t widget_color(cronus_screen_cycle_num_t cycle_num) {
     dy_err_t err;
 
     uint8_t n_mode_on = 1;
@@ -70,7 +70,6 @@ static dy_gfx_px_t widget_color(cronus_screen_cycle_num_t cycle_num) {
                 ESP_LOGE(LTAG, "get CRONUS_CFG_ID_WIDGET_ODR_TEMP_COLOR: %s", dy_err_str(err));
             }
             break;
-        case SHOW_CYCLE_WEATHER_ICON:
         default:
             break;
     }

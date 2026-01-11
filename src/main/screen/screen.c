@@ -1,6 +1,7 @@
 #include "cronus/screen.h"
 #include "cronus/display.h"
 #include "cronus/cfg.h"
+#include "cronus/icon.h"
 #include "cronus/weather.h"
 #include "cronus/air_raid.h"
 
@@ -12,10 +13,14 @@
 #include "dy/cfg2.h"
 #include "dy/display.h"
 #include "dy/gfx/gfx.h"
+#include "dy/gfx/sprite.h"
+#include "dy/cloud.h"
 
 #define LTAG "SCREEN"
 
 extern void render_32x16(cronus_display_type_t dt, cronus_screen_cycle_num_t cycle, dy_gfx_buf_t *buf, struct tm *ti);
+
+extern dy_gfx_px_t widget_color(cronus_screen_cycle_num_t cycle_num);
 
 static QueueHandle_t cycle_queue;
 
@@ -137,6 +142,7 @@ _Noreturn static void render_task() {
         ESP_LOGE(LTAG, "dy_display_set_brightness: %s", dy_err_str(err));
     }
 
+    uint8_t delay = 0;
     while (1) {
         time(&now);
         localtime_r(&now, &ti);
@@ -146,14 +152,27 @@ _Noreturn static void render_task() {
         switch (dt) {
             case CRONUS_DISPLAY_TYPE_MAX7219_32X16:
             case CRONUS_DISPLAY_TYPE_WS2812_32X16:
-                render_32x16(dt, cycle, buf, &ti);
+                if (dy_cloud_fwupdate_in_progress()) {
+                    dy_gfx_write_sprite(buf, 9, 1, &cronus_icon_u_hourglass);
+                    if (dy_display_get_brightness(0) == 0) {
+                        dy_gfx_colorize(buf, widget_color(cycle)); // night mode
+                    }
+                    delay = 255; // hold the screen until the update is finished and device restarts
+                } else {
+                    render_32x16(dt, cycle, buf, &ti);
+                }
                 break;
             default:
                 break;
         }
 
         dy_display_write(0, buf);
-        vTaskDelay(pdMS_TO_TICKS(250)); // screen framerate: 4 FPS
+
+        if (delay > 0) {
+            vTaskDelay(pdMS_TO_TICKS(1000 * delay));
+        } else {
+            vTaskDelay(pdMS_TO_TICKS(250)); // screen framerate: 4 FPS
+        }
     }
 }
 
