@@ -14,10 +14,10 @@ S10000 M3
 G17 G90 G94
 G54
 G0 X0.895 Y3.74
-Z18.1
-G1 Z8.1 F200
-Z3.3
-Z2.325
+Z15
+G1 Z5 F200
+Z0.2
+Z-0.775
 Y3.759
 Y69.056
 X0.901 Y69.106
@@ -43,7 +43,7 @@ G1 Y69.091
 G3 X2.696 Y69.291 I-0.2 J0
 G1 X1.091 Y69.26
 G3 X0.895 Y69.06 I0.004 J-0.2
-G1 Z1.55
+G1 Z-1.55
 Y69.056
 Y3.759
 X0.9 Y3.714
@@ -67,7 +67,7 @@ G1 X2.693 Y69.29
 G2 X2.9 Y69.091 I0.007 J-0.2
 G1 Y4.1
 Y3.716
-Z18.1
+Z15
 (When using Fusion for Personal Use, the feedrate of rapid)
 (moves is reduced to match the feedrate of cutting moves,)
 (which can increase machining time. Unrestricted rapid moves)
@@ -75,10 +75,10 @@ Z18.1
 
 (2D Contour7)
 G0 X42.9 Y47.567
-G1 Z18.1 F200
-Z8.1
-Z3.3
-Z2.05
+G1 Z15 F200
+Z5
+Z0.2
+Z-1.05
 Y25.233
 X39.8
 Y4.1
@@ -101,74 +101,74 @@ X39.8
 Y47.567
 X42.4
 X42.9
-Z1
+Z-2.1
 Y25.233
 X39.8
 Y16.409
-Z2
+Z-1.1
 Y14.409
-Z1
+Z-2.1
 Y3.6
 X29
 Y0.5
 X14.4
 Y3.6
 X10.407
-Z2
+Z-1.1
 X8.407
-Z1
+Z-2.1
 X0.5
 Y69.2
 X8.199
-Z2
+Z-1.1
 X10.199
-Z1
+Z-2.1
 X14.4
 Y72.3
 X29
 Y69.2
 X39.8
 Y56.716
-Z2
+Z-1.1
 Y54.716
-Z1
+Z-2.1
 Y47.567
 X42.9
-Z0
+Z-3.1
 Y25.233
 X39.8
 Y16.409
-Z2
+Z-1.1
 Y14.409
-Z0
+Z-3.1
 Y3.6
 X29
 Y0.5
 X14.4
 Y3.6
 X10.407
-Z2
+Z-1.1
 X8.407
-Z0
+Z-3.1
 X0.5
 Y69.2
 X8.199
-Z2
+Z-1.1
 X10.199
-Z0
+Z-3.1
 X14.4
 Y72.3
 X29
 Y69.2
 X39.8
 Y56.716
-Z2
+Z-1.1
 Y54.716
-Z0
+Z-3.1
 Y47.567
 X42.9
-Z8.1
-Z18.1
+Z5
+Z15
 
 G28 G91 Z0
 G90
