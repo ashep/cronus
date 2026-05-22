@@ -1,4 +1,5 @@
 (Front)
+(T1 D=1 CR=0 - ZMIN=-2.1 - flat end mill)
 G90 G94
 G17
 G21
@@ -10,6 +11,7 @@ G28 G91 Z0
 G90
 
 (2D Contour10)
+T1
 S10000 M3
 G17 G90 G94
 G54
