@@ -45,6 +45,10 @@ git submodule update --recursive --remote
 
 ## Changelog
 
+### 0.0.6 (2026-11-14)
+
+- ESP-IDF updated: 5.2.2 -> 5.5.6.
+
 ### 0.0.5 (2026-01-11)
 
 - Added [air raid alerts widget](https://github.com/ashep/cronus/issues/32).

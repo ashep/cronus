@@ -8,12 +8,14 @@ jobs:
       workdir: src
       app_name: cronus
       app_target: esp32s3_max7219v32x16
+      idf_version: v5.5.6
   esp32s3_ws2812v32x16:
     uses: ashep/ci/.github/workflows/esp-idf-build.yaml@v1
     with:
       workdir: src
       app_name: cronus
       app_target: esp32s3_ws2812v32x16
+      idf_version: v5.5.6
   publish-release:
     uses: ashep/ci/.github/workflows/publish-release.yaml@v1
     if: ${{ github.ref_type == 'tag' }}
