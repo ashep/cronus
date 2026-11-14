@@ -157,8 +157,9 @@ _Noreturn static void render_task() {
                     if (dy_display_get_brightness(0) == 0) {
                         dy_gfx_colorize(buf, widget_color(cycle)); // night mode
                     }
-                    delay = 255; // hold the screen until the update is finished and device restarts
+                    delay = 1; // keep the screen mostly idle during the update, but notice soon if it has failed
                 } else {
+                    delay = 0; // back to the normal framerate, e.g. after a failed update
                     render_32x16(dt, cycle, buf, &ti);
                 }
                 break;
