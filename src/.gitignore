@@ -1,5 +1,7 @@
 /cmake-build-default
 /build
+/build_max7219
+/build_ws2812
 /managed_components
 sdkconfig
 sdkconfig.old
