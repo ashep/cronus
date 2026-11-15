@@ -45,9 +45,13 @@ git submodule update --recursive --remote
 
 ## Changelog
 
-### 0.0.6 (2026-11-14)
+### 0.0.6 (2026-11-15)
 
 - ESP-IDF updated: 5.2.2 -> 5.5.6.
+- Fixed Wi-Fi network scan during Bluetooth configuration.
+- The "busy" icon now goes away soon after a failed firmware update instead of staying until reboot.
+- A failed firmware update is retried in 5 minutes instead of re-downloading the image in a tight loop.
+- More stack memory for the cloud tasks (time, weather, air raid alerts, firmware update).
 
 ### 0.0.5 (2026-01-11)
 
